@@ -21,6 +21,14 @@ bld/
 [Oo]bj/
 msbuild.log
 
+#VS Code stuff
+
+.vscode
+launchSettings.json
+#Asteroid-Team10.vcxproj.filters
+#Asteroid-Team10.vcxproj
+
+
 # Visual Studio 2015
 .vs/
 
@@ -252,9 +260,3 @@ Session.vim
 *.nvact
 *.opendb
 
-#VS Code stuff
-
-.vscode
-launchSettings.json
-Asteroid-Team10.vcxproj.filters
-Asteroid-Team10.vcxproj
