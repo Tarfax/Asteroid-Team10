@@ -26,7 +26,6 @@ bool Engine::Init() {
 }
 
 void Engine::Run() {
-
 	isRunning = true;
 
 	while (isRunning == true) {
@@ -59,11 +58,13 @@ void Engine::Input() {
 }
 
 void Engine::Update() {
-	
+
 }
 
 void Engine::Render() {
 	SDL_BlitSurface(image, NULL, screenSurface, NULL);
+
+	/*SDL_RenderClear(renderer);*/
 
 	SDL_UpdateWindowSurface(window);
 }

@@ -118,6 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Asteroid-Team10\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,9 +146,11 @@
   <ItemGroup>
     <ClCompile Include="src\Core\Engine.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Objects\IObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Engine.h" />
+    <ClInclude Include="src\Objects\GameObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
