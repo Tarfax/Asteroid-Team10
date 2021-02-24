@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{58609a68-80f3-43be-852d-710d5dffc63c}</ProjectGuid>
+    <ProjectGuid>{209ace25-ff70-4fbf-ad52-e4f86c910c1a}</ProjectGuid>
     <RootNamespace>AsteroidTeam10</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -78,8 +78,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>F:\FutureGames\GameProgrammingWithC++\Asteroid-Team10\SDL2\SDL2_image-2.0.5\include;F:\FutureGames\GameProgrammingWithC++\Asteroid-Team10\SDL2\SDL2_ttf-2.0.15\include;F:\FutureGames\GameProgrammingWithC++\Asteroid-Team10\SDL2\SDL2-2.0.14\include;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\FutureGames\GameProgrammingWithC++\Asteroid-Team10\SDL2\SDL2_image-2.0.5\lib\x64;F:\FutureGames\GameProgrammingWithC++\Asteroid-Team10\SDL2\SDL2_ttf-2.0.15\lib\x64;F:\FutureGames\GameProgrammingWithC++\Asteroid-Team10\SDL2\SDL2-2.0.14\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -118,17 +116,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>F:\FutureGames\GameProgrammingWithC++\Asteroid-Team10\Asteroid\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>F:\FutureGames\GameProgrammingWithC++\Asteroid-Team10\SDL2\SDL2_image-2.0.5\lib\x64;F:\FutureGames\GameProgrammingWithC++\Asteroid-Team10\SDL2\SDL2_ttf-2.0.15\lib\x64;F:\FutureGames\GameProgrammingWithC++\Asteroid-Team10\SDL2\SDL2-2.0.14\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;
-SDL2main.lib;
-SDL2test.lib;
-SDL2_ttf.lib;
-SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,14 +139,10 @@ SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Asteroid\Main.cpp" />
-    <ClCompile Include="Asteroid\src\Core\GameEngine.cpp" />
-    <ClCompile Include="src\Core\GameEngine.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Asteroid\src\Core\GameEngine.h" />
-    <ClInclude Include="src\Core\GameEngine.h" />
+    <ClInclude Include="src\Core\Engine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
