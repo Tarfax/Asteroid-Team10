@@ -6,6 +6,7 @@
 #include <string>
 
 #include "Objects/GameObject.h"
+#include "Time.h"
 
 const int SCREEN_WIDTH {640};
 const int SCREEN_HEIGHT {480};
@@ -32,6 +33,8 @@ private:
 	SDL_Surface* image;
 
 	GameObject* gameObject;
+
+	Time* time;
 
 	bool isRunning;
 };

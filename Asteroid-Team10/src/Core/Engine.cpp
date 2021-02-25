@@ -1,6 +1,9 @@
 #include "Engine.h"
 #include "PlayerController.h"
 #include "TextureCoordinator.h"
+#include <string>
+#include <iostream>
+#include <Structs/Vector2.h>
 
 Engine::Engine() { }
 
@@ -31,10 +34,18 @@ bool Engine::Init() {
 		return false;
 	}
 
+	time = new Time();
+
 	TextureCoordinator::Init(renderer);
 
 	gameObject = new GameObject();
 	gameObject->Init();
+
+	Vector2 a;
+	Vector2 b;
+	Vector2 c;
+
+	//c = a + b;
 
 	return true;
 }
@@ -43,9 +54,12 @@ void Engine::Run() {
 	isRunning = true;
 
 	while (isRunning == true) {
+		time->StartTick();
 		Input();
 		Update();
 		Render();
+		time->EndTick();
+		//std::cout << "deltaTime: " << std::to_string(time->GetDeltaTime()) << std::endl;
 	}
 }
 
@@ -72,7 +86,7 @@ void Engine::Input() {
 }
 
 void Engine::Update() {
-
+	gameObject->Update(time->GetDeltaTime());
 }
 
 void Engine::Render() {

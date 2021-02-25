@@ -1,12 +1,13 @@
 #pragma once
 #include <string>
 #include <SDL.h>
+#include <Structs/Vector2.h>
 
 class TextureCoordinator {
 
 public: 
 	static void Init(SDL_Renderer* renderer);
-	static SDL_Texture* LoadTexture(std::string textureId);
+	static SDL_Texture* LoadTexture(std::string textureId, Vector2& sizeOut);
 
 private:
 
