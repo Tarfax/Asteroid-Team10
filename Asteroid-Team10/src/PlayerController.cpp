@@ -27,6 +27,16 @@ void PlayerController::Update(float deltaTime) {
 					break;
 				case SDLK_s:
 					transform->Y() += speed * deltaTime;
+				
+					break;
+
+
+				case SDLK_h:
+					transform->Scale().X -= 1 * deltaTime;
+					break;
+
+				case SDLK_e:
+					transform->Rotation() += 1;
 					break;
 			}
 		}

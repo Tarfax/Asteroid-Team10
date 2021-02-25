@@ -30,7 +30,7 @@ void SpriteRenderer::Draw(SDL_Renderer* renderer, Transform* transform)
 	SDL_Rect rect = {transform->X(), transform->Y(), textureSize.X * transform->Scale().X, textureSize.Y * transform->Scale().Y};
 	SDL_Rect source = {0, 0, 32, 32};
 
-	SDL_RenderCopyEx(renderer, texture, &source, &rect, 0, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer, texture, &source, &rect, transform->Rotation(), nullptr, SDL_FLIP_NONE);
 
 }
 

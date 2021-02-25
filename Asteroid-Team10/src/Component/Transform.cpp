@@ -9,7 +9,7 @@ void Transform::Init() {
 }
 
 void Transform::Update(float deltaTime) {
-	std::cout << "Transform::Update - Position: " + position.ToString() << std::endl;
+	//std::cout << "Transform::Update - Position: " + position.ToString() << std::endl;
 }
 
 void Transform::Destroy() { }
