@@ -31,5 +31,7 @@ private:
 	SDL_Surface* screenSurface;
 	SDL_Surface* image;
 
+	GameObject* gameObject;
+
 	bool isRunning;
 };

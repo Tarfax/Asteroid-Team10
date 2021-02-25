@@ -144,13 +144,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Component\SpriteRenderer.cpp" />
     <ClCompile Include="src\Core\Engine.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Objects\IObject.h" />
+    <ClCompile Include="src\PlayerController.cpp" />
+    <ClCompile Include="src\TextureCoordinator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Component\IComponent.h" />
+    <ClInclude Include="src\Component\SpriteRenderer.h" />
     <ClInclude Include="src\Core\Engine.h" />
     <ClInclude Include="src\Objects\GameObject.h" />
+    <ClInclude Include="src\PlayerController.h" />
+    <ClInclude Include="src\TextureCoordinator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

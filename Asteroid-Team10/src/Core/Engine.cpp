@@ -1,17 +1,26 @@
 #include "Engine.h"
+#include "PlayerController.h"
+#include "TextureCoordinator.h"
 
 Engine::Engine() { }
 
 bool Engine::Init() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		printf("SDL could not SDL_Init()! SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
 
 	window = SDL_CreateWindow("Asteroids - by Team 10", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 	if (window == NULL) {
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		printf("SDL could not SDL_CreateWindow()! SDL_Error: %s\n", SDL_GetError());
+		return false;
+	}
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	if (renderer == NULL) {
+		printf("SDL could not SDL_CreateRenderer()! SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
 
@@ -21,6 +30,11 @@ bool Engine::Init() {
 		printf("Unable to load image %s! SDL Error: %s\n", "CoolImage.bmp", SDL_GetError());
 		return false;
 	}
+
+	TextureCoordinator::Init(renderer);
+
+	gameObject = new GameObject();
+	gameObject->Init();
 
 	return true;
 }
@@ -62,11 +76,14 @@ void Engine::Update() {
 }
 
 void Engine::Render() {
-	SDL_BlitSurface(image, NULL, screenSurface, NULL);
+	SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
 
-	/*SDL_RenderClear(renderer);*/
+	// TODO: Get what's supposed to be rendering
+	// Renderer::RenderYourShit();
+	gameObject->Draw(renderer);
 
-	SDL_UpdateWindowSurface(window);
+	SDL_RenderPresent(renderer);
 }
 
 bool Engine::LoadMedia(std::string path) {
@@ -76,15 +93,23 @@ bool Engine::LoadMedia(std::string path) {
 		return false;
 	}
 
+	PlayerController::Instance();
+
 	return true;
 }
 
 void Engine::Close() {
+	gameObject->Destroy();
+	delete gameObject;
+
 	SDL_FreeSurface(image);
 	image = NULL;
 
 	SDL_DestroyWindow(window);
 	window = NULL;
+
+	SDL_DestroyRenderer(renderer);
+	renderer = NULL;
 
 	SDL_Quit();
 }
