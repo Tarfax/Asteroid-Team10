@@ -1,4 +1,5 @@
 #include "PlayerController.h"
+#include "Core/Input.h"
 #include <SDL.h>
 
 PlayerController* PlayerController::playerController = nullptr;
@@ -6,41 +7,24 @@ PlayerController* PlayerController::playerController = nullptr;
 void PlayerController::Init() { }
 
 void PlayerController::Update(float deltaTime) {
-	SDL_Event e { };
 
-	while (SDL_PollEvent(&e) != 0) {
+	if(Input::GetKeyDown(SDL_SCANCODE_A))
+		transform->X() -= speed * deltaTime;
 
+	if (Input::GetKeyDown(SDL_SCANCODE_D))
+		transform->X() += speed * deltaTime;
 
-		if (e.type == SDL_KEYDOWN) {
+	if (Input::GetKeyDown(SDL_SCANCODE_W))
+		transform->Y() -= speed * deltaTime;
 
-			// switch to allow further implementation of inputs.
-			switch (e.key.keysym.sym) {
+	if (Input::GetKeyDown(SDL_SCANCODE_S))
+		transform->Y() += speed * deltaTime;
 
-				case SDLK_a:
-					transform->X() -= speed * deltaTime;
-					break;
-				case SDLK_d:
-					transform->X() += speed * deltaTime;
-					break;
-				case SDLK_w:
-					transform->Y() -= speed * deltaTime;
-					break;
-				case SDLK_s:
-					transform->Y() += speed * deltaTime;
-				
-					break;
+	if (Input::GetKeyDown(SDL_SCANCODE_E))
+		transform->Rotation() += 1;
 
-
-				case SDLK_h:
-					transform->Scale().X -= 1 * deltaTime;
-					break;
-
-				case SDLK_e:
-					transform->Rotation() += 1;
-					break;
-			}
-		}
-	}
+	if (Input::GetKeyDown(SDL_SCANCODE_H))
+		transform->Scale().X -= 1 * deltaTime;
 }
 
 void PlayerController::Destroy() {}

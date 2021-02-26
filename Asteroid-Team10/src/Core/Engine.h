@@ -7,6 +7,7 @@
 
 #include "Objects/GameObject.h"
 #include "Time.h"
+#include "Core/Input.h"
 
 const int SCREEN_WIDTH {640};
 const int SCREEN_HEIGHT {480};
@@ -23,7 +24,7 @@ public:
 
 private:
 	bool LoadMedia(std::string path);
-	void Input();
+	void HandleInput();
 	void Update();
 	void Render();
 
@@ -32,6 +33,7 @@ private:
 	SDL_Surface* screenSurface;
 	SDL_Surface* image;
 
+	Input* input;
 	GameObject* gameObject;
 
 	Time* time;

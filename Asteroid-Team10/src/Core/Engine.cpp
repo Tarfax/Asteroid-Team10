@@ -36,16 +36,12 @@ bool Engine::Init() {
 
 	time = new Time();
 
+	input = Input::Init();
+
 	TextureCoordinator::Init(renderer);
 
 	gameObject = new GameObject();
 	gameObject->Init();
-
-	Vector2 a;
-	Vector2 b;
-	Vector2 c;
-
-	//c = a + b;
 
 	return true;
 }
@@ -55,7 +51,7 @@ void Engine::Run() {
 
 	while (isRunning == true) {
 		time->StartTick();
-		Input();
+		HandleInput();
 		Update();
 		Render();
 		time->EndTick();
@@ -63,26 +59,8 @@ void Engine::Run() {
 	}
 }
 
-void Engine::Input() {
-	SDL_Event e { };
-
-	while (SDL_PollEvent(&e) != 0) {
-
-		if (e.type == SDL_QUIT) {
-			isRunning = false;
-		}
-
-		else if (e.type == SDL_KEYDOWN) {
-
-			// switch to allow further implementation of inputs.
-			switch (e.key.keysym.sym) {
-
-				case SDLK_ESCAPE:
-					isRunning = false;
-					break;
-			}
-		}
-	}
+void Engine::HandleInput() {
+	input->Listen();
 }
 
 void Engine::Update() {

@@ -147,6 +147,7 @@
     <ClCompile Include="src\Component\SpriteRenderer.cpp" />
     <ClCompile Include="src\Component\Transform.cpp" />
     <ClCompile Include="src\Core\Engine.cpp" />
+    <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Objects\GameObject.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="src\Component\SpriteRenderer.h" />
     <ClInclude Include="src\Component\Transform.h" />
     <ClInclude Include="src\Core\Engine.h" />
+    <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Time.h" />
     <ClInclude Include="src\Objects\GameObject.h" />
     <ClInclude Include="src\PlayerController.h" />
