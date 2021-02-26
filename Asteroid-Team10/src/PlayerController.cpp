@@ -4,18 +4,21 @@
 
 PlayerController* PlayerController::playerController = nullptr;
 
-void PlayerController::Init() { }
+void PlayerController::Init() {
+
+}
 
 void PlayerController::Update(float deltaTime) {
 
-	if(Input::GetKeyDown(SDL_SCANCODE_A))
+	if (Input::GetKeyDown(SDL_SCANCODE_A))
 		transform->X() -= speed * deltaTime;
 
 	if (Input::GetKeyDown(SDL_SCANCODE_D))
 		transform->X() += speed * deltaTime;
 
-	if (Input::GetKeyDown(SDL_SCANCODE_W))
-		transform->Y() -= speed * deltaTime;
+	if (Input::GetKeyDown(SDL_SCANCODE_W)) {
+		transform->Translate(Vector2((speed * deltaTime) * transform->forward.X, (speed * deltaTime) * transform->forward.Y));
+	}
 
 	if (Input::GetKeyDown(SDL_SCANCODE_S))
 		transform->Y() += speed * deltaTime;
@@ -26,6 +29,9 @@ void PlayerController::Update(float deltaTime) {
 	if (Input::GetKeyDown(SDL_SCANCODE_H))
 		transform->Scale().X -= 1 * deltaTime;
 }
+
+
+
 
 void PlayerController::Destroy() {}
 

@@ -1,5 +1,5 @@
 #include "Vector2.h"
-#define PI 3.1415f
+#include "Math/Mathf.h"
 
 Vector2& Vector2::Add(const Vector2& vec)
 {
@@ -43,19 +43,23 @@ Vector2& Vector2::Normalize()
 
 Vector2 Vector2::Normalized() {
 	if (X != 0 || Y != 0) {
-		float lenght = Length(this);
+		float length = Magnitude();
 		return Vector2(
-			X / lenght,
-			Y / lenght);
+			X / length,
+			Y / length);
 	}
 	else {
 		return Vector2(0, 0);
 	}
 }
 
-float Vector2::Length(const Vector2& v1)
+/// <summary>
+/// The length of this vector
+/// </summary>
+/// <returns></returns>
+float Vector2::Magnitude()
 {
-	return sqrt(pow(X, 2) + pow(Y, 2));
+	return sqrt((X * X) + (Y *Y));
 }
 
 float Vector2::Distance(const Vector2& v1, const Vector2& v2)

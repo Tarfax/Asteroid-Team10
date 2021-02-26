@@ -16,6 +16,10 @@ public:
 	void Update(float deltaTime) override;
 	void Destroy() override;
 
+	void Translate(Vector2 move);
+
+	Vector2 forward;
+
 private:
 	Vector2 position;
 	double rotation;
