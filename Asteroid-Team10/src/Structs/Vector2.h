@@ -15,14 +15,12 @@ struct Vector2 {
 		return std::to_string(X) + ", " + std::to_string(Y);
 	}
 
-	
-
 	Vector2& Normalize();
+	Vector2 Normalized();
+	float Length(const Vector2& v1);
 	static float Distance(const Vector2& v1, const Vector2& v2);
 	static float Direction(const Vector2& v1, const Vector2& v2);
 	static float DotProduct(const Vector2& v1, const Vector2& v2);
-	Vector2 Normalized();
-	float Length(const Vector2& v1);
 
 	friend Vector2& operator+(Vector2& v1, const Vector2& v2);
 	friend Vector2& operator-(Vector2& v1, const Vector2& v2);
