@@ -152,7 +152,6 @@
     <ClCompile Include="src\Objects\GameObject.cpp" />
     <ClCompile Include="src\Objects\IObject.h" />
     <ClCompile Include="src\PlayerController.cpp" />
-    <ClCompile Include="src\Structs\Vector2.cpp" />
     <ClCompile Include="src\TextureCoordinator.cpp" />
   </ItemGroup>
   <ItemGroup>
