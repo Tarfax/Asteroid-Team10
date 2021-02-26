@@ -34,4 +34,8 @@ private:
 	float targetSpeed;
 	float currentSpeed;
 	float acceleration = 30;
+	float rotationSpeed = 100;
+
+	bool useMomentum;
+	Vector2 momentum;
 };

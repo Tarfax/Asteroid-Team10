@@ -8,21 +8,27 @@ PlayerController* PlayerController::playerController = nullptr;
 void PlayerController::Init() {
 	targetSpeed = speed;
 	acceleration = 100.0f;
+	rotationSpeed = 100.0f;
 }
 
 void PlayerController::Update(float deltaTime) {
 	targetSpeed = 0.0f;
+	//useMomentum = true;
 
 	if (Input::GetKeyDown(SDL_SCANCODE_A)) {
-		transform->Rotation() -= 100 * deltaTime;
+		transform->Rotation() -= rotationSpeed * deltaTime;
 	}
-	
+
 	if (Input::GetKeyDown(SDL_SCANCODE_D)) {
-		transform->Rotation() += 100 * deltaTime;
+		transform->Rotation() += rotationSpeed * deltaTime;
 	}
 
 	if (Input::GetKeyDown(SDL_SCANCODE_W)) {
 		targetSpeed = speed;
+		/*useMomentum = false;*/
+
+		momentum.X = IncrementTowards(momentum.X, transform->forward.X, 1, deltaTime);
+		momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, 1, deltaTime);
 	}
 
 	if (Input::GetKeyDown(SDL_SCANCODE_S)) {
@@ -34,7 +40,14 @@ void PlayerController::Update(float deltaTime) {
 	}
 
 	currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, deltaTime);
-	transform->Translate(Vector2((currentSpeed * deltaTime) * transform->forward.X, (currentSpeed * deltaTime) * transform->forward.Y));
+
+	//if (useMomentum == true) {
+		transform->Translate(Vector2((currentSpeed * deltaTime) * momentum.X, (currentSpeed * deltaTime) * momentum.Y));
+
+	//}
+	//else {
+		//transform->Translate(Vector2((currentSpeed * deltaTime) * transform->forward.X, (currentSpeed * deltaTime) * transform->forward.Y));
+	//}
 }
 
 
@@ -48,8 +61,6 @@ float PlayerController::IncrementTowards(float n, float target, float alpha, flo
 
 	return (direction == Mathf::Sign(target - n)) ? n : target;
 }
-
-
 
 void PlayerController::Destroy() {}
 
