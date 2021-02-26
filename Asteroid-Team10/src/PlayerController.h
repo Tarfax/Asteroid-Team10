@@ -29,5 +29,5 @@ private:
 	Transform* transform;
 	static PlayerController* playerController;
 
-	float speed = 2500;
+	float speed = 250;
 };

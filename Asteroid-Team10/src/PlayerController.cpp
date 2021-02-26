@@ -21,7 +21,7 @@ void PlayerController::Update(float deltaTime) {
 		transform->Y() += speed * deltaTime;
 
 	if (Input::GetKeyDown(SDL_SCANCODE_E))
-		transform->Rotation() += 1;
+		transform->Rotation() += 100 * deltaTime;
 
 	if (Input::GetKeyDown(SDL_SCANCODE_H))
 		transform->Scale().X -= 1 * deltaTime;
