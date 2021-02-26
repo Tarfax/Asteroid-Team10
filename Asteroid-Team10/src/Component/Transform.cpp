@@ -18,8 +18,8 @@ void Transform::Update(float deltaTime) {
 		rotation = 0.0f;
 	}
 
-	forward.X = cos(DegToRad2(Rotation()));
-	forward.Y = sin(DegToRad2(Rotation()));
+	forward.X = cos(Mathf::DegToRad2(Rotation()));
+	forward.Y = sin(Mathf::DegToRad2(Rotation()));
 }
 
 

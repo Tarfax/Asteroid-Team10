@@ -5,7 +5,7 @@
 class Mathf {
 public:
 
-	float DegToRad2(double degree) {
+	static float DegToRad2(double degree) {
 		return (degree * (PI / 180));
 	}
 
