@@ -18,6 +18,7 @@ public:
 	}
 
 	inline void SetTransform(Transform* transform) { this->transform = transform; }
+	float IncrementTowards(float currentSpeed, float targetSpeed, float acceleration, float deltaTime);
 
 	void Init();
 	void Update(float deltaTime);
@@ -30,4 +31,7 @@ private:
 	static PlayerController* playerController;
 
 	float speed = 250;
+	float targetSpeed;
+	float currentSpeed;
+	float acceleration = 30;
 };
