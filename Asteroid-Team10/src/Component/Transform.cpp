@@ -7,7 +7,6 @@ void Transform::Init() {
 	scale = Vector2(1);
 	position = {0, 0};
 	rotation = 0;
-	//forward = {0, -1};
 }
 
 void Transform::Update(float deltaTime) {

@@ -40,8 +40,9 @@ bool Engine::Init() {
 
 	TextureCoordinator::Init(renderer);
 
-	gameObject = new GameObject();
-	gameObject->Init();
+	gameObject = PlayerController::CreateInstance();
+
+	PlayerController* pc = gameObject->GetComponent<PlayerController>();
 
 	return true;
 }
@@ -85,7 +86,7 @@ bool Engine::LoadMedia(std::string path) {
 		return false;
 	}
 
-	PlayerController::Instance();
+	//PlayerController::Instance();
 
 	return true;
 }

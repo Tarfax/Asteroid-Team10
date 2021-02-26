@@ -5,6 +5,8 @@
 
 class Transform: public IComponent {
 public:
+	Transform(GameObject* gameObject) : IComponent(gameObject) { }
+
 	Vector2& Position() { return position; }
 	double& Rotation() { return rotation; }
 	Vector2& Scale() { return scale; }

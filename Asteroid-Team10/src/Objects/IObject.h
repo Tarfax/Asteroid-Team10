@@ -1,5 +1,8 @@
 #pragma once
 #include <SDL.h>
+#include <Component/IComponent.h>
+
+class IComponent;
 
 class IObject {
 public:

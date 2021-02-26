@@ -2,14 +2,9 @@
 #include <TextureCoordinator.h>
 #include <iostream>
 
-void SpriteRenderer::Init() {
+void SpriteRenderer::Init() { }
 
-
-}
-
-void SpriteRenderer::Update(float deltaTime) {
-
-}
+void SpriteRenderer::Update(float deltaTime) { }
 
 void SpriteRenderer::Destroy() {
 	delete texture;
@@ -21,12 +16,7 @@ void SpriteRenderer::SetSprite(const std::string textureId) {
 
 }
 
-void SpriteRenderer::Draw(SDL_Renderer* renderer, Transform* transform)
-{
-
-	//std::cout << "SpriteRenderer::Draw - Size " << textureSize.ToString() << std::endl;
-	//std::cout << "SpriteRenderer::Draw - Scale" << transform->Scale().ToString() << std::endl;
-
+void SpriteRenderer::Draw(SDL_Renderer* renderer, Transform* transform) {
 	SDL_Rect rect = {transform->X(), transform->Y(), textureSize.X * transform->Scale().X, textureSize.Y * transform->Scale().Y};
 	SDL_Rect source = {0, 0, 32, 32};
 

@@ -2,30 +2,27 @@
 
 #include "Component/IComponent.h"
 #include "Component/Transform.h"
+#include <Objects/GameObject.h>
+
 
 class PlayerController: public IComponent {
 
 public:
-	PlayerController() {
-		transform = nullptr;
-		if (playerController == nullptr) {
-			playerController = this;
-		}
-	}
+	PlayerController(GameObject* gameObject) : IComponent(gameObject) { }
+		
+	static GameObject* CreateInstance();
 
-	static PlayerController* Instance() {
-		return playerController = (playerController != nullptr) ? playerController : nullptr;
-	}
-
-	inline void SetTransform(Transform* transform) { this->transform = transform; }
 	float IncrementTowards(float currentSpeed, float targetSpeed, float acceleration, float deltaTime);
 
 	void Init();
 	void Update(float deltaTime);
+	void HandleInput(float deltaTime);
 	void Destroy();
 
 private:
 	~PlayerController() { delete playerController; }
+
+	std::string textureId = "Assets/Sprites/ship.png";
 
 	Transform* transform;
 	static PlayerController* playerController;
@@ -37,5 +34,6 @@ private:
 	float rotationSpeed = 100;
 
 	bool useMomentum;
+	float momentumAcceleration;
 	Vector2 momentum;
 };

@@ -1,14 +1,17 @@
 #pragma once
 
 #include <SDL.h>
-#include <Component/IComponent.h>
 #include <string>
-#include <Component/Transform.h>
+
 #include <Structs/Vector2.h>
 
-class SpriteRenderer : IComponent {
+#include <Component/IComponent.h>
+#include <Component/Transform.h>
 
-public: 
+class SpriteRenderer: public IComponent {
+
+public:
+	SpriteRenderer(GameObject* gameObject) : IComponent(gameObject) { }
 	void Init();
 	void Update(float deltaTime);
 	void Destroy();
@@ -25,7 +28,7 @@ private:
 	SDL_Texture* texture;
 
 	//Methods
-private: 
+private:
 
 
 };
