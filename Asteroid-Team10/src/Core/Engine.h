@@ -35,6 +35,7 @@ private:
 
 	Input* input;
 	GameObject* gameObject;
+	GameObject* asteroid;
 
 	Time* time;
 

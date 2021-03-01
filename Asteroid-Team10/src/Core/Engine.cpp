@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "PlayerController.h"
 #include "TextureCoordinator.h"
+#include "Component/Asteroid.h"
 #include <string>
 #include <iostream>
 #include <Structs/Vector2.h>
@@ -44,6 +45,8 @@ bool Engine::Init() {
 
 	PlayerController* pc = gameObject->GetComponent<PlayerController>();
 
+	asteroid = Asteroid::CreateInstance();
+
 	return true;
 }
 
@@ -66,6 +69,7 @@ void Engine::HandleInput() {
 
 void Engine::Update() {
 	gameObject->Update(time->GetDeltaTime());
+	asteroid->Update(time->GetDeltaTime());
 }
 
 void Engine::Render() {
@@ -75,6 +79,7 @@ void Engine::Render() {
 	// TODO: Get what's supposed to be rendering
 	// Renderer::RenderYourShit();
 	gameObject->Draw(renderer);
+	asteroid->Draw(renderer);
 
 	SDL_RenderPresent(renderer);
 }
