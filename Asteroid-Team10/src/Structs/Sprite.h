@@ -8,8 +8,9 @@ struct Sprite {
 
 public:
 	Sprite();
-	~Sprite();
 	void SetTexture(const std::string textureId);
+
+	void Destroy();
 
 	const SDL_Rect& GetRect () { return Rect; }
 
