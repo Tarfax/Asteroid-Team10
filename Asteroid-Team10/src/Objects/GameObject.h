@@ -4,13 +4,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include <Component/SpriteRenderer.h>
 //#include <Component/Transform.h>
 
 class GameObject: public IObject {
 
 public:
-
+	GameObject();
 	virtual void Init();
 	virtual void Start() override {}
 	virtual void Update(float deltaTime) override;
@@ -18,13 +19,15 @@ public:
 	virtual void Draw(SDL_Renderer* renderer) override;
 
 
-	virtual void Destroy() {
-		for (IComponent* component : components) {
-			component->Destroy();
-			delete component;
-		}
-		components.clear();
-	}
+	void Destroy();
+
+public: //Static
+
+	static void DoUpdate(float deltaTime);
+	static void DoDraw(SDL_Renderer* renderer);
+	static void DoDestroy(GameObject* gameObject);
+	static void CleanUp();
+
 
 public: //Components
 
@@ -50,9 +53,15 @@ public: //Components
 
 
 private:
+	int id;
+
 	SpriteRenderer* spriteRenderer;
 	Transform* transform;
 
-
 	std::vector<IComponent*> components;
+
+	static int nextId;
+	static std::map<int, GameObject*> gameObjects;
+	static std::map<int, GameObject*> gameObjectsToDestroy;
+
 };

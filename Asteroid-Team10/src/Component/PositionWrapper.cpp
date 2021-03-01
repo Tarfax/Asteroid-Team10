@@ -23,5 +23,5 @@ void PositionWrapper::SetTexDimensions(SDL_Rect rect)
 {
 	texDimensions.X = rect.w;
 	texDimensions.Y = rect.h;
-	std::cout << texDimensions.X << " " << texDimensions.Y << '\n';
+	//std::cout << texDimensions.X << " " << texDimensions.Y << '\n';
 }

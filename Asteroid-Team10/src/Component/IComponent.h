@@ -6,6 +6,7 @@ class IComponent {
 
 public:
 	IComponent(GameObject* gameObject) : gameObject(gameObject)  {}
+	virtual ~IComponent() {}
 	virtual void Init() = 0;
 	virtual void Update(float deltaTime) = 0;
 	virtual void Destroy() = 0;

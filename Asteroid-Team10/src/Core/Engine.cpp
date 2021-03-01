@@ -60,6 +60,7 @@ void Engine::Run() {
 		HandleInput();
 		Update();
 		Render();
+		GameObject::CleanUp();
 		time->EndTick();
 
 		if (counter == 200) {
@@ -75,8 +76,10 @@ void Engine::HandleInput() {
 }
 
 void Engine::Update() {
-	gameObject->Update(time->GetDeltaTime());
-	asteroid->Update(time->GetDeltaTime());
+	/*gameObject->Update(time->GetDeltaTime());
+	asteroid->Update(time->GetDeltaTime());*/
+
+	GameObject::DoUpdate(time->GetDeltaTime());
 }
 
 void Engine::Render() {
@@ -85,8 +88,10 @@ void Engine::Render() {
 
 	// TODO: Get what's supposed to be rendering
 	// Renderer::RenderYourShit();
-	gameObject->Draw(renderer);
-	asteroid->Draw(renderer);
+	//gameObject->Draw(renderer);
+	//asteroid->Draw(renderer);
+
+	GameObject::DoDraw(renderer);
 
 	SDL_RenderPresent(renderer);
 }

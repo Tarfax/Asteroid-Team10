@@ -3,6 +3,7 @@
 #include "Math/Mathf.h"
 #include "Component/PositionWrapper.h"
 #include <iostream>
+#include <Structs/Sprite.h>
 
 void Asteroid::Init()
 {
@@ -35,6 +36,7 @@ GameObject* Asteroid::CreateInstance()
 
 	Asteroid* asteroid = gameObject->AddComponent<Asteroid>();
 	SpriteRenderer* spriteRenderer = gameObject->AddComponent<SpriteRenderer>();
+
 	Sprite sprite;
 	sprite.SetTexture(asteroid->textureID);
 	spriteRenderer->SetSprite(sprite);

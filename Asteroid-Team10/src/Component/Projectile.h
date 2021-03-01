@@ -11,7 +11,8 @@ public:
 	static GameObject* GetInstance();
 
 	Projectile(GameObject* gameObject): IComponent(gameObject) { }
-
+	
+	~Projectile();
 	void Init() override;
 	void Update(float deltaTime) override;
 	void Destroy() override;
@@ -24,5 +25,5 @@ private:
 	Vector2 direction;
 	float speed;
 	float lifeTime = 3.0f;
-	std::string textureId = "Assets/Sprites/projectile.png";
+	std::string textureId = "Assets/Sprites/projectile.jpg";
 };

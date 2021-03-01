@@ -4,6 +4,7 @@
 #include <Math/Mathf.h>
 #include <Component/PositionWrapper.h>
 #include <Component/Projectile.h>
+#include "Structs/Sprite.h"
 
 PlayerController* PlayerController::playerController = nullptr;
 

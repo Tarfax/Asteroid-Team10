@@ -9,6 +9,8 @@
 #include <Component/IComponent.h>
 #include <Component/Transform.h>
 
+
+
 class SpriteRenderer: public IComponent {
 
 public:

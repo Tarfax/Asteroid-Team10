@@ -15,6 +15,7 @@ void Sprite::SetTexture(const std::string textureId) {
 
 void Sprite::Destroy() {
 	SDL_DestroyTexture(Texture);
+	Texture = nullptr;
 }
 
 
