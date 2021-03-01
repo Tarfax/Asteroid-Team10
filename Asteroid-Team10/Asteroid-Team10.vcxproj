@@ -152,6 +152,7 @@
     <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Math\Mathf.cpp" />
     <ClCompile Include="src\Objects\GameObject.cpp" />
     <ClCompile Include="src\Objects\IObject.h" />
     <ClCompile Include="src\PlayerController.cpp" />

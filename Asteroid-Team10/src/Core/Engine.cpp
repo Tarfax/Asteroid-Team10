@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <Structs/Vector2.h>
+#include <Math/Mathf.h>
 
 Engine::Engine() { }
 
@@ -52,13 +53,19 @@ bool Engine::Init() {
 
 void Engine::Run() {
 	isRunning = true;
-
+	int counter = 0;
 	while (isRunning == true) {
+		counter++;
 		time->StartTick();
 		HandleInput();
 		Update();
 		Render();
 		time->EndTick();
+
+		if (counter == 200) {
+			Mathf::RandomFloat();
+			counter = 0;
+		}
 		//std::cout << "deltaTime: " << std::to_string(time->GetDeltaTime()) << std::endl;
 	}
 }
