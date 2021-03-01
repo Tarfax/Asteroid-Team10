@@ -15,7 +15,9 @@ GameObject* PlayerController::CreateInstance() {
 
 		playerController = gameObject->AddComponent<PlayerController>();
 		SpriteRenderer* spriteRenderer = gameObject->AddComponent<SpriteRenderer>();
-		spriteRenderer->SetSprite(playerController->textureId);
+		Sprite sprite;
+		sprite.SetTexture(playerController->textureId);
+		spriteRenderer->SetSprite(sprite);
 
 		gameObject->AddComponent<PositionWrapper>();
 

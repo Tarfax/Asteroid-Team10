@@ -1,27 +1,19 @@
 #include "SpriteRenderer.h"
-#include <TextureCoordinator.h>
-#include <iostream>
+//#include <TextureCoordinator.h>
+//#include <iostream>
 
 void SpriteRenderer::Init() { }
 
 void SpriteRenderer::Update(float deltaTime) { }
 
-void SpriteRenderer::Destroy() {
-	delete texture;
-}
+void  SpriteRenderer::Destroy() {}
 
-void SpriteRenderer::SetSprite(const std::string textureId) {
-	this->textureId = textureId;
-	texture = TextureCoordinator::LoadTexture(textureId, textureSize);
-
+void SpriteRenderer::SetSprite(Sprite sprite) {
+	this->sprite = sprite;
 }
 
 void SpriteRenderer::Draw(SDL_Renderer* renderer, Transform* transform) {
-	SDL_Rect rect = {transform->X(), transform->Y(), textureSize.X * transform->Scale().X, textureSize.Y * transform->Scale().Y};
-	SDL_Rect source = {0, 0, 32, 32};
-
-	SDL_RenderCopyEx(renderer, texture, &source, &rect, transform->Rotation(), nullptr, SDL_FLIP_NONE);
-
+	SDL_Rect rect = {transform->X(), transform->Y(), sprite.Size.X * transform->Scale().X, sprite.Size.Y * transform->Scale().Y};
+	SDL_RenderCopyEx(renderer, sprite.Texture, &sprite.GetRect(), &rect, transform->Rotation(), nullptr, SDL_FLIP_NONE);
 }
-
 

@@ -154,6 +154,7 @@
     <ClCompile Include="src\Objects\GameObject.cpp" />
     <ClCompile Include="src\Objects\IObject.h" />
     <ClCompile Include="src\PlayerController.cpp" />
+    <ClCompile Include="src\Structs\Sprite.cpp" />
     <ClCompile Include="src\Structs\Vector2.cpp" />
     <ClCompile Include="src\TextureCoordinator.cpp" />
   </ItemGroup>
@@ -168,6 +169,7 @@
     <ClInclude Include="src\Math\Mathf.h" />
     <ClInclude Include="src\Objects\GameObject.h" />
     <ClInclude Include="src\PlayerController.h" />
+    <ClInclude Include="src\Structs\Sprite.h" />
     <ClInclude Include="src\Structs\Vector2.h" />
     <ClInclude Include="src\TextureCoordinator.h" />
   </ItemGroup>

@@ -4,6 +4,7 @@
 #include <string>
 
 #include <Structs/Vector2.h>
+#include <Structs/Sprite.h>
 
 #include <Component/IComponent.h>
 #include <Component/Transform.h>
@@ -16,16 +17,16 @@ public:
 	void Update(float deltaTime);
 	void Destroy();
 
-	void SetSprite(const std::string textureId);
+	void SetSprite(Sprite sprite);
 
 	void Draw(SDL_Renderer* renderer, Transform* transform);
 
 	//Variables
 private:
-	Vector2 textureSize;
-
+	/*Vector2 textureSize;
 	std::string textureId;
-	SDL_Texture* texture;
+	SDL_Texture* texture;*/
+	Sprite sprite;
 
 	//Methods
 private:
