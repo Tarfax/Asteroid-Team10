@@ -1,5 +1,6 @@
 #pragma once
 #include "Component/Transform.h"
+#include <SDL.h>
 
 class PositionWrapper : public IComponent {
 public:
@@ -7,11 +8,13 @@ public:
 
 	void Init();
 	void Update(float deltaTime);
-	void Destroy() {}
+	void Destroy();
+	void SetTexDimensions(SDL_Rect rect);
 
 private:
 	
 	Transform* transform;
-	float margin = { 35.0f };
+	Vector2 texDimensions { 0, 0 };
+	float margin{ 5.0f };
 
 };

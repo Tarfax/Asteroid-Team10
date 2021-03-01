@@ -21,6 +21,8 @@ public:
 
 	void Draw(SDL_Renderer* renderer, Transform* transform);
 
+	SDL_Rect GetRect();
+
 	//Variables
 private:
 	/*Vector2 textureSize;

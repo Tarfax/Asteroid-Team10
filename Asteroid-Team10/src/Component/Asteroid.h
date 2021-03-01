@@ -11,8 +11,8 @@ public:
 	static GameObject* CreateInstance();
 private:
 	Transform* transform;
-	Vector2 direction;
-	float speed;
-	float rotationSpeed;
+	Vector2 direction{};
+	float speed{};
+	float rotationSpeed{};
 	std::string textureID{"Assets/Sprites/asteroid_1.png"};
 };
