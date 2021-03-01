@@ -26,10 +26,8 @@ public:
 			randomEngine.seed(std::random_device()());
 			randomInit = true;
 		}
-		//static std::mt19937 randomEngine;
-		//static std::uniform_int_distribution<std::mt19937::result_type> distribution;
+
 		float randomValue = (float)distribution(randomEngine) / (float)std::numeric_limits<uint32_t>::max();
-		std::cout << randomValue << std::endl;
 		return randomValue;
 	}
 
