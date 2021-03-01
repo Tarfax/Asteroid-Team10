@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <Math/Mathf.h>
 #include <Component/PositionWrapper.h>
+#include <Component/Projectile.h>
 
 PlayerController* PlayerController::playerController = nullptr;
 
@@ -85,6 +86,12 @@ void PlayerController::HandleInput(float deltaTime)
 
 	if (Input::GetKeyDown(SDL_SCANCODE_H)) {
 		transform->Scale().X -= 1 * deltaTime;
+	}
+
+	if (Input::GetKeyDown(SDL_SCANCODE_SPACE)) {
+		GameObject* gameObject = Projectile::GetInstance();
+		Projectile* projectile = gameObject->GetComponent<Projectile>();
+		projectile->SetDirection(transform->forward);
 	}
 }
 
