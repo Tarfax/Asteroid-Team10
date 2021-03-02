@@ -45,6 +45,7 @@ void PlayerController::Init() {
 
 void PlayerController::Update(float deltaTime) {
 	targetSpeed = 0.0f;
+	targetSpeed = currentSpeed * 0.9999;
 	fireRateTimer -= deltaTime;
 
 	HandleInput(deltaTime);
