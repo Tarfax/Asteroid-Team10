@@ -7,12 +7,15 @@ void PositionWrapper::Init() {
 }
 
 void PositionWrapper::Update(float deltaTime) {
-	if (transform->Position().X > SCREEN_WIDTH + margin) transform->Position().X = 0 - (texDimensions.X + margin);
-	if (transform->Position().X < 0 - (texDimensions.X + margin)) transform->Position().X = SCREEN_WIDTH + margin;
+	if (transform->Position().X > (SCREEN_WIDTH + margin))
+		transform->Position().X = 0 - ((texDimensions.X + margin) * transform->Scale().X);
+	if (transform->Position().X < 0 - ((texDimensions.X + margin) * transform->Scale().X))
+		transform->Position().X = (SCREEN_WIDTH + margin);
 
-	if (transform->Position().Y > SCREEN_HEIGHT + margin) transform->Position().Y = 0 - (texDimensions.Y + margin);
-	if (transform->Position().Y < 0 - (texDimensions.Y + margin)) transform->Position().Y = SCREEN_HEIGHT + margin;
-
+	if (transform->Position().Y > (SCREEN_HEIGHT + margin))
+		transform->Position().Y = 0 - ((texDimensions.Y + margin) * transform->Scale().Y);
+	if (transform->Position().Y < 0 - ((texDimensions.Y + margin) * transform->Scale().Y))
+		transform->Position().Y = (SCREEN_HEIGHT + margin);
 }
 
 void PositionWrapper::Destroy()
