@@ -17,6 +17,7 @@ public:
 	void Init();
 	void Update(float deltaTime);
 	void HandleInput(float deltaTime);
+	void Fire();
 	void Destroy();
 
 private:
@@ -36,4 +37,7 @@ private:
 	bool useMomentum;
 	float momentumAcceleration;
 	Vector2 momentum;
+
+	float fireRate;
+	float fireRateTimer;
 };

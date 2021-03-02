@@ -32,12 +32,14 @@ void PlayerController::Init() {
 	targetSpeed = speed;
 	acceleration = 100.0f;
 	rotationSpeed = 120.0f;
+	fireRate = 0.2f;
 	momentumAcceleration = 1;
 	transform = gameObject->GetComponent<Transform>();
 }
 
 void PlayerController::Update(float deltaTime) {
 	targetSpeed = 0.0f;
+	fireRateTimer -= deltaTime;
 
 	HandleInput(deltaTime);
 
@@ -90,10 +92,22 @@ void PlayerController::HandleInput(float deltaTime)
 	}
 
 	if (Input::GetKeyDown(SDL_SCANCODE_SPACE)) {
-		GameObject* gameObject = Projectile::GetInstance();
-		Projectile* projectile = gameObject->GetComponent<Projectile>();
-		projectile->SetDirection(transform->forward);
+
+		if (fireRateTimer <= 0.0f) {
+			Fire();
+			fireRateTimer = fireRate;
+		}
 	}
+}
+
+void PlayerController::Fire() {
+	GameObject* gameObject = Projectile::GetInstance();
+	Transform* transform = gameObject->GetComponent<Transform>();
+	transform->Position() = this->transform->Position();
+
+	Projectile* projectile = gameObject->GetComponent<Projectile>();
+
+	projectile->SetDirection(this->transform->forward);
 }
 
 

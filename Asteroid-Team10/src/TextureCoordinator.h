@@ -2,6 +2,7 @@
 #include <string>
 #include <SDL.h>
 #include <Structs/Vector2.h>
+#include <map>
 
 class TextureCoordinator {
 
@@ -11,12 +12,13 @@ public:
 
 private:
 
-	static TextureCoordinator* intance;
+	static TextureCoordinator* instance;
 	static TextureCoordinator* GetInstance() {
-		return intance = (intance != nullptr) ? intance : new TextureCoordinator();
+		return instance = (instance != nullptr) ? instance : new TextureCoordinator();
 	}
 
 	SDL_Renderer* renderer;
-
+	std::map<std::string, SDL_Texture*> textures;
+	std::map<std::string, Vector2> textureSize;
 };
 

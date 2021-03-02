@@ -5,7 +5,7 @@
 #include <Structs/Vector2.h>
 #include <iostream>
 
-class Sprite {
+struct Sprite {
 
 public:
 	Sprite();
