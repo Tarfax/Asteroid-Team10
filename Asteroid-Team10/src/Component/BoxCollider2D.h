@@ -6,6 +6,17 @@
 #include <SDL.h>
 #include <map>
 
+enum Layer {
+	lNothing = 1 << 0,
+	lAsteroid = 1 << 1,
+	lPlayer = 1 << 2,
+	lProjectile = 1 << 3
+};
+
+inline Layer operator|(Layer a, Layer b) {
+	return static_cast<Layer>(static_cast<int>(a) | static_cast<int>(b));
+}
+
 class BoxCollider2D : public IComponent {
 
 public:
@@ -21,14 +32,21 @@ public:
 	void SetBounds(SDL_Rect rect);
 
 	void Set(int x, int y, Vector2 scale);
+	void SetLayer(Layer layer);
+	void SetCollideWithLayer(Layer layer);
 
-	bool IsColliding(SDL_Rect testAgainst);
+	inline SDL_Rect GetBounds() const { return bounds; }
+
+	bool IsColliding(SDL_Rect testAgainst, Layer collideWithLayer);
 
 private:
 	SDL_Rect bounds;
 
 	int id;
 	static int nextId;
+
+	Layer layer;
+	Layer collideWithlayer;
 
 	static bool renderCollider;
 	static std::map<int, BoxCollider2D*> colliders;

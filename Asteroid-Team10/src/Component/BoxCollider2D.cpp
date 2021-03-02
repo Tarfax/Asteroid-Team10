@@ -9,6 +9,7 @@ int BoxCollider2D::nextId;
 BoxCollider2D::BoxCollider2D(GameObject* gameObject): IComponent(gameObject) {
 	id = nextId++;
 	colliders[id] = this;
+	//layer = Layer::Asteroid | Layer::Player;
 }
 
 void BoxCollider2D::Init() { }
@@ -20,10 +21,11 @@ void BoxCollider2D::Update(float deltaTime) {
 	}
 
 	std::map<int, BoxCollider2D*>::iterator it;
-	for (it = colliders.begin(); it != colliders.end(); it++) {
-		if (it->second != this && it->second->IsColliding(this->bounds)) {
+    	for (it = colliders.begin(); it != colliders.end(); it++) {
+		if (it->second != this && it->second->IsColliding(this->bounds, collideWithlayer)) {
+			int i = it->second->id;
 			colissions++;
-			std::cout << "Collided! " << colissions << "\n";
+			std::cout << id <<" collided with " << i << "\n";
 		}
 	}
 }
@@ -53,7 +55,19 @@ void BoxCollider2D::Set(int x, int y, Vector2 scale) {
 	bounds = {x, y, (int)(bounds.w * scale.X), (int)(bounds.h * scale.Y)};
 }
 
-bool BoxCollider2D::IsColliding(SDL_Rect other) {
+void BoxCollider2D::SetLayer(Layer layer) {
+	this->layer = layer;
+}
+
+void BoxCollider2D::SetCollideWithLayer(Layer layer) {
+	this->collideWithlayer = layer;
+}
+
+bool BoxCollider2D::IsColliding(SDL_Rect other, Layer collideWithLayer) {
+	if (layer != collideWithLayer) {
+		return false;
+	}
+
 	bool isOverlapX = (bounds.x < other.x + other.w) && (bounds.x + bounds.w > other.x);
 	bool isOverlapY = (bounds.y < other.y + other.h) && (bounds.y + bounds.h > other.y);
 

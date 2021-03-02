@@ -24,6 +24,6 @@ private:
 
 	Vector2 direction;
 	float speed;
-	float lifeTime = 3.0f;
+	float lifeTime = 1.0f;
 	std::string textureId = "Assets/Sprites/projectile.png";
 };

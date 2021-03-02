@@ -22,6 +22,8 @@ GameObject* Projectile::GetInstance() {
 
 	BoxCollider2D* collider = gameObject->AddComponent<BoxCollider2D>();
 	collider->SetBounds(spriteRenderer->GetRect());
+	collider->SetLayer(Layer::lProjectile);
+	collider->SetCollideWithLayer(Layer::lAsteroid);
 
 	return gameObject;
 }
@@ -33,6 +35,7 @@ Projectile::~Projectile() {
 void Projectile::Init() {
 	transform = gameObject->GetComponent<Transform>();
 	speed = 350;
+	transform->Scale() * 0.2f;
 }
 
 void Projectile::SetDirection(Vector2 direction) {

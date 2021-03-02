@@ -173,6 +173,7 @@
     <ClInclude Include="src\Core\Engine.h" />
     <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Time.h" />
+    <ClInclude Include="src\Enums\Layer.h" />
     <ClInclude Include="src\Math\Mathf.h" />
     <ClInclude Include="src\Objects\GameObject.h" />
     <ClInclude Include="src\PlayerController.h" />

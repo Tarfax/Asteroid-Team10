@@ -27,6 +27,7 @@ SDL_Texture* TextureCoordinator::LoadTexture(std::string textureId, Vector2& siz
 	sizeOut.X = size.X;
 	sizeOut.Y = size.Y;
 
+
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(GetInstance()->renderer, surface);
 
 	if (texture == nullptr) {

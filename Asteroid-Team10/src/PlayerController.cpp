@@ -26,7 +26,9 @@ GameObject* PlayerController::CreateInstance() {
 		positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
 
 		BoxCollider2D* collider = gameObject->AddComponent<BoxCollider2D>();
-		collider->SetBounds(0, 0, 32, 32);
+		collider->SetBounds(spriteRenderer->GetRect());
+		collider->SetLayer(Layer::lPlayer);
+		collider->SetCollideWithLayer(Layer::lAsteroid);
 
 	}
 	return gameObject;
@@ -107,10 +109,22 @@ void PlayerController::HandleInput(float deltaTime)
 void PlayerController::Fire() {
 	GameObject* gameObject = Projectile::GetInstance();
 	Transform* transform = gameObject->GetComponent<Transform>();
-	transform->Position() = this->transform->Position();
+	
+	Vector2 position = this->transform->Position();
+	float rotation = this->transform->Rotation();
+
+	float x = cos(Mathf::DegToRad(rotation));
+	float y = sin(Mathf::DegToRad(rotation));
+
+	int width = this->gameObject->GetComponent<BoxCollider2D>()->GetBounds().w;
+	int height = this->gameObject->GetComponent<BoxCollider2D>()->GetBounds().h;
+
+	position.X += (width / 2 * x) + width / 2;
+	position.Y += (height / 2 * y) + height / 2;
+
+	transform->Position() = position;
 
 	Projectile* projectile = gameObject->GetComponent<Projectile>();
-
 	projectile->SetDirection(this->transform->forward);
 }
 
