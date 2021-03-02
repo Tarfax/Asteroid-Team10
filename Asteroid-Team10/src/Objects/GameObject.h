@@ -59,7 +59,6 @@ private:
 
 	SpriteRenderer* spriteRenderer;
 	BoxCollider2D* collider;
-
 	Transform* transform;
 
 	std::vector<IComponent*> components;

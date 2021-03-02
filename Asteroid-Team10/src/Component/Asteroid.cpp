@@ -1,15 +1,10 @@
 #include "Asteroid.h"
-#include "Objects/GameObject.h"
 #include "Math/Mathf.h"
 #include "Component/PositionWrapper.h"
-#include "Component/Core/SpriteRenderer.h"
-#include <iostream>
+#include "Component/Core/BoxCollider2D.h"
 #include <Structs/Sprite.h>
 
-void Asteroid::Init()
-{
-	
-
+void Asteroid::Init() {
 	speed = Mathf::RandomFloat() * 100.0f;
 	rotationSpeed = Mathf::RandomFloat() * 100.0f;
 	direction.X = Mathf::RandomFloat();
@@ -25,9 +20,7 @@ void Asteroid::Update(float deltaTime)
 	transform->Rotation() += (double)rotationSpeed * (double)deltaTime;
 }
 
-void Asteroid::Destroy()
-{
-}
+void Asteroid::Destroy() { }
 
 GameObject* Asteroid::CreateInstance()
 {
@@ -37,16 +30,23 @@ GameObject* Asteroid::CreateInstance()
 	gameObject->Init();
 
 	Asteroid* asteroid = gameObject->AddComponent<Asteroid>();
-	SpriteRenderer* spriteRenderer = gameObject->AddComponent<SpriteRenderer>();
 
 	Sprite sprite;
 	sprite.SetTexture(asteroid->textureID);
+
+	SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
 	spriteRenderer->SetSprite(sprite);
 
 	PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
 	positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
 
-	
+	BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
+	collider->SetBounds(spriteRenderer->GetRect());
+
+	std::cout << collider->GetBounds().w << " " << collider->GetBounds().h << std::endl;
+
+	collider->SetLayer(Layer::lAsteroid);
+	collider->SetCollideWithLayer(Layer::lProjectile);
 
 	return gameObject;
 }

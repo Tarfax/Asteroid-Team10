@@ -1,5 +1,6 @@
 #include "BoxCollider2D.h"
 #include "Core/Input.h"
+#include "Objects/GameObject.h"
 #include <iostream>
 
 bool BoxCollider2D::renderCollider;
@@ -26,6 +27,7 @@ void BoxCollider2D::Update(float deltaTime) {
 			int i = it->second->id;
 			colissions++;
 			std::cout << id <<" collided with " << i << "\n";
+			GameObject::DoDestroy(gameObject);
 		}
 	}
 }
@@ -36,8 +38,6 @@ void BoxCollider2D::Destroy() {
 
 void BoxCollider2D::Draw(SDL_Renderer* renderer, Transform* transform) {
 	if (renderCollider == true) {
-		//SDL_Rect box = {transform->X(), transform->Y(), bounds.w, bounds.h};
-
 		SDL_SetRenderDrawColor(renderer, 0, 250, 230, 255);
 		SDL_RenderDrawRect(renderer, &bounds);
 	}
@@ -48,11 +48,11 @@ void BoxCollider2D::SetBounds(int x, int y, int h, int w) {
 }
 
 void BoxCollider2D::SetBounds(SDL_Rect rect) {
-	this->bounds = rect;
+	this->originalBounds = rect;
 }
 
 void BoxCollider2D::Set(int x, int y, Vector2 scale) {
-	bounds = {x, y, (int)(bounds.w * scale.X), (int)(bounds.h * scale.Y)};
+	bounds = {x, y, (int)(originalBounds.w * scale.X), (int)(originalBounds.h * scale.Y)};
 }
 
 void BoxCollider2D::SetLayer(Layer layer) {

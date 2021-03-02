@@ -7,37 +7,37 @@ std::map<int, GameObject*> GameObject::gameObjectsToDestroy;
 GameObject::GameObject() {
 	id = nextId++;
 	gameObjects[id] = this;
-	spriteRenderer = nullptr;
+	transform = AddComponent<Transform>();
+	spriteRenderer = AddComponent<SpriteRenderer>();
+	collider = AddComponent<BoxCollider2D>();;
 }
 
-void GameObject::Init() {
-	transform = AddComponent<Transform>();
-}
+void GameObject::Init() { }
 
 void GameObject::Update(float deltaTime) {
 	for (IComponent* c : components) {
 		c->Update(deltaTime);
 	}
 
-	if (collider != nullptr) {
+	//if (collider != nullptr) {
 		collider->Set(transform->X(), transform->Y(), transform->Scale());
-	}
+	//}
 }
 
 void GameObject::Draw(SDL_Renderer* renderer) {
-	if (spriteRenderer == nullptr) {
+	/*if (spriteRenderer == nullptr) {
 		spriteRenderer = GetComponent<SpriteRenderer>();
-	}
-	
+	}*/
+
 	spriteRenderer->Draw(renderer, transform);
 
-	if (collider != nullptr) {
+	//if (collider != nullptr) {
 		collider->Draw(renderer, transform);
 
-	}
-	else {
-		collider = GetComponent<BoxCollider2D>();
-	}
+	
+	//else {
+		//collider = GetComponent<BoxCollider2D>();
+	//}
 }
 
 void GameObject::Destroy() {

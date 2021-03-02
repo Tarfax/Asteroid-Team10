@@ -41,6 +41,7 @@ public:
 
 private:
 	SDL_Rect bounds;
+	SDL_Rect originalBounds;
 
 	int id;
 	static int nextId;

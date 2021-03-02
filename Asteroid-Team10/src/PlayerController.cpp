@@ -17,7 +17,7 @@ GameObject* PlayerController::CreateInstance() {
 		gameObject->Init();
 
 		playerController = gameObject->AddComponent<PlayerController>();
-		SpriteRenderer* spriteRenderer = gameObject->AddComponent<SpriteRenderer>();
+		SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
 		Sprite sprite;
 		sprite.SetTexture(playerController->textureId);
 		spriteRenderer->SetSprite(sprite);
@@ -25,10 +25,10 @@ GameObject* PlayerController::CreateInstance() {
 		PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
 		positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
 
-		BoxCollider2D* collider = gameObject->AddComponent<BoxCollider2D>();
+		BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
 		collider->SetBounds(spriteRenderer->GetRect());
 		collider->SetLayer(Layer::lPlayer);
-		collider->SetCollideWithLayer(Layer::lAsteroid);
+		collider->SetCollideWithLayer(Layer::lNothing);
 
 	}
 	return gameObject;

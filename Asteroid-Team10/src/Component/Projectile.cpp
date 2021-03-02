@@ -11,7 +11,7 @@ GameObject* Projectile::GetInstance() {
 
 	Projectile* projectile = gameObject->AddComponent<Projectile>();
 
-	SpriteRenderer* spriteRenderer = gameObject->AddComponent<SpriteRenderer>();
+	SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
 
 	Sprite sprite;
 	sprite.SetTexture(projectile->textureId);
@@ -20,7 +20,7 @@ GameObject* Projectile::GetInstance() {
 	PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
 	positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
 
-	BoxCollider2D* collider = gameObject->AddComponent<BoxCollider2D>();
+	BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
 	collider->SetBounds(spriteRenderer->GetRect());
 	collider->SetLayer(Layer::lProjectile);
 	collider->SetCollideWithLayer(Layer::lAsteroid);
