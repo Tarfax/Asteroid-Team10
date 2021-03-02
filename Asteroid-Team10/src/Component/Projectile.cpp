@@ -43,7 +43,6 @@ void Projectile::Update(float deltaTime) {
 
 	transform->Translate(Vector2((speed * deltaTime) * direction.X, (speed * deltaTime) * direction.Y));
 
-	std::cout << "HELLO?" << std::endl;
 	lifeTime -= deltaTime;
 	if (lifeTime < 0.0f) {
 		GameObject::DoDestroy(gameObject);
