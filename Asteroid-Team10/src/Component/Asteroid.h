@@ -1,16 +1,14 @@
 #pragma once
-#include "Component/IComponent.h"
-#include "Component/Transform.h"
+#include "Component/Behaviour/Behaviour.h"
 
-class Asteroid : public IComponent {
+class Asteroid : public Behaviour {
 public:
-	Asteroid(GameObject* gameObject) : IComponent(gameObject) {}
+	Asteroid(GameObject* gameObject) : Behaviour(gameObject) {}
 	void Init() override;
 	void Update(float deltaTime) override;
 	void Destroy() override;
 	static GameObject* CreateInstance();
 private:
-	Transform* transform;
 	Vector2 direction{};
 	float speed{};
 	float rotationSpeed{};

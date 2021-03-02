@@ -2,12 +2,14 @@
 #include "Objects/GameObject.h"
 #include "Math/Mathf.h"
 #include "Component/PositionWrapper.h"
+#include "Component/Core/SpriteRenderer.h"
 #include <iostream>
 #include <Structs/Sprite.h>
 
 void Asteroid::Init()
 {
-	transform = gameObject->GetComponent<Transform>();
+	
+
 	speed = Mathf::RandomFloat() * 100.0f;
 	rotationSpeed = Mathf::RandomFloat() * 100.0f;
 	direction.X = Mathf::RandomFloat();

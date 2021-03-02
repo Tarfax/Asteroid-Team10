@@ -6,8 +6,8 @@
 #include <Structs/Vector2.h>
 #include <Structs/Sprite.h>
 
-#include <Component/IComponent.h>
-#include <Component/Transform.h>
+#include <Component/Core/IComponent.h>
+#include <Component/Core/Transform.h>
 
 
 

@@ -1,7 +1,7 @@
 #include "Projectile.h"
 #include "Math/Mathf.h"
 #include "Structs/Sprite.h"
-#include <Component/BoxCollider2D.h>
+#include <Component/Core/BoxCollider2D.h>
 
 GameObject* Projectile::GetInstance() {
 	GameObject* gameObject = nullptr;
@@ -33,7 +33,6 @@ Projectile::~Projectile() {
 }
 
 void Projectile::Init() {
-	transform = gameObject->GetComponent<Transform>();
 	speed = 350;
 	transform->Scale() * 0.2f;
 }

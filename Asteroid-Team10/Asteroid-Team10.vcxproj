@@ -145,11 +145,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Component\Asteroid.cpp" />
-    <ClCompile Include="src\Component\BoxCollider2D.cpp" />
+    <ClCompile Include="src\Component\Behaviour\Behaviour.cpp" />
+    <ClCompile Include="src\Component\Core\BoxCollider2D.cpp" />
     <ClCompile Include="src\Component\PositionWrapper.cpp" />
     <ClCompile Include="src\Component\Projectile.cpp" />
-    <ClCompile Include="src\Component\SpriteRenderer.cpp" />
-    <ClCompile Include="src\Component\Transform.cpp" />
+    <ClCompile Include="src\Component\Core\SpriteRenderer.cpp" />
+    <ClCompile Include="src\Component\Core\Transform.cpp" />
     <ClCompile Include="src\Core\Engine.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
@@ -164,12 +165,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Component\Asteroid.h" />
-    <ClInclude Include="src\Component\BoxCollider2D.h" />
-    <ClInclude Include="src\Component\IComponent.h" />
+    <ClInclude Include="src\Component\Behaviour\Behaviour.h" />
+    <ClInclude Include="src\Component\Core\BoxCollider2D.h" />
+    <ClInclude Include="src\Component\Core\IComponent.h" />
     <ClInclude Include="src\Component\PositionWrapper.h" />
     <ClInclude Include="src\Component\Projectile.h" />
-    <ClInclude Include="src\Component\SpriteRenderer.h" />
-    <ClInclude Include="src\Component\Transform.h" />
+    <ClInclude Include="src\Component\Core\SpriteRenderer.h" />
+    <ClInclude Include="src\Component\Core\Transform.h" />
     <ClInclude Include="src\Core\Engine.h" />
     <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Time.h" />

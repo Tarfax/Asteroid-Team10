@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Component/IComponent.h"
-#include "Component/Transform.h"
+#include "Component/Core/IComponent.h"
+#include "Component/Core/Transform.h"
 //#include "Structs/Vector2.h"
 #include <SDL.h>
 #include <map>

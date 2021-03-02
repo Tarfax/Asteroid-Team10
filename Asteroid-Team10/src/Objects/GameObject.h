@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <Component/SpriteRenderer.h>
-#include <Component/BoxCollider2D.h>
+#include <Component/Core/SpriteRenderer.h>
+#include <Component/Core/BoxCollider2D.h>
 
 //#include <Component/Transform.h>
 

@@ -4,7 +4,7 @@
 #include <Math/Mathf.h>
 #include <Component/PositionWrapper.h>
 #include <Component/Projectile.h>
-#include <Component/BoxCollider2D.h>
+#include <Component/Core/BoxCollider2D.h>
 #include "Structs/Sprite.h"
 
 PlayerController* PlayerController::playerController = nullptr;

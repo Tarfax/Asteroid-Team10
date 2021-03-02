@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL.h>
-#include <Component/IComponent.h>
+#include <Component/Core/IComponent.h>
 
 class IComponent;
 

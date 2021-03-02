@@ -2,9 +2,7 @@
 #include "Core/Engine.h"
 #include <iostream>
 
-void PositionWrapper::Init() {
-	this->transform = gameObject->GetComponent<Transform>();
-}
+void PositionWrapper::Init() { }
 
 void PositionWrapper::Update(float deltaTime) {
 	if (transform->Position().X > (SCREEN_WIDTH + margin))
@@ -18,9 +16,7 @@ void PositionWrapper::Update(float deltaTime) {
 		transform->Position().Y = (SCREEN_HEIGHT + margin);
 }
 
-void PositionWrapper::Destroy()
-{
-}
+void PositionWrapper::Destroy() { }
 
 void PositionWrapper::SetTexDimensions(SDL_Rect rect)
 {

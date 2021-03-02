@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Structs/Vector2.h>
-#include <Component/IComponent.h>
+#include <Component/Core/IComponent.h>
 
 class Transform: public IComponent {
 public:

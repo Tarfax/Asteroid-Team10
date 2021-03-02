@@ -1,16 +1,16 @@
 #pragma once
 
-#include "Component/IComponent.h"
-#include "Component/Transform.h"
+#include "Component/Behaviour/Behaviour.h"
+#include "Component/Core/Transform.h"
 #include "Component/PositionWrapper.h"
 #include "Objects/GameObject.h"
 
-class Projectile : public IComponent { 
+class Projectile : public Behaviour { 
 
 public:
 	static GameObject* GetInstance();
 
-	Projectile(GameObject* gameObject): IComponent(gameObject) { }
+	Projectile(GameObject* gameObject): Behaviour(gameObject) { }
 	
 	~Projectile();
 	void Init() override;
@@ -20,8 +20,6 @@ public:
 	void SetDirection(Vector2 direction);
 
 private:
-	Transform* transform = nullptr;
-
 	Vector2 direction;
 	float speed;
 	float lifeTime = 1.0f;
