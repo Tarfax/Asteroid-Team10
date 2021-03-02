@@ -46,7 +46,7 @@ bool Engine::Init() {
 
 	PlayerController* pc = gameObject->GetComponent<PlayerController>();
 
-	asteroid = Asteroid::CreateInstance();
+	asteroid = Asteroid::GetInstance();
 
 	return true;
 }

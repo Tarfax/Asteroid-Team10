@@ -22,7 +22,7 @@ void Asteroid::Update(float deltaTime)
 
 void Asteroid::Destroy() { }
 
-GameObject* Asteroid::CreateInstance()
+GameObject* Asteroid::GetInstance()
 {
 	GameObject* gameObject = nullptr;
 	

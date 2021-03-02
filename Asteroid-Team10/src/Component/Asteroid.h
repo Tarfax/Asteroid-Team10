@@ -7,7 +7,7 @@ public:
 	void Init() override;
 	void Update(float deltaTime) override;
 	void Destroy() override;
-	static GameObject* CreateInstance();
+	static GameObject* GetInstance();
 private:
 	Vector2 direction{};
 	float speed{};

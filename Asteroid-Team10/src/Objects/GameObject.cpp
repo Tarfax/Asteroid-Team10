@@ -19,25 +19,12 @@ void GameObject::Update(float deltaTime) {
 		c->Update(deltaTime);
 	}
 
-	//if (collider != nullptr) {
-		collider->Set(transform->X(), transform->Y(), transform->Scale());
-	//}
+	collider->Set(transform->X(), transform->Y(), transform->Scale());
 }
 
 void GameObject::Draw(SDL_Renderer* renderer) {
-	/*if (spriteRenderer == nullptr) {
-		spriteRenderer = GetComponent<SpriteRenderer>();
-	}*/
-
 	spriteRenderer->Draw(renderer, transform);
-
-	//if (collider != nullptr) {
-		collider->Draw(renderer, transform);
-
-	
-	//else {
-		//collider = GetComponent<BoxCollider2D>();
-	//}
+	collider->Draw(renderer, transform);
 }
 
 void GameObject::Destroy() {
@@ -64,8 +51,6 @@ void GameObject::DoDraw(SDL_Renderer* renderer) {
 }
 
 void GameObject::DoDestroy(GameObject* gameObject) {
-	//std::cout << "GameObject::DoDestroy()" << std::endl;
-
 	gameObjectsToDestroy[gameObject->id] = gameObject;
 }
 
@@ -74,8 +59,6 @@ void GameObject::CleanUp() {
 	for (it = gameObjectsToDestroy.begin(); it != gameObjectsToDestroy.end(); it++) {
 		it->second->Destroy();
 		gameObjects.erase(it->second->id);
-		//std::cout << "Cleaning " << it->second->id << std::endl;
-		//std::cout << "size() " << sizeof(gameObjects) << std::endl;
 		delete it->second;
 	}
 	gameObjectsToDestroy.clear();
