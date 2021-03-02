@@ -84,7 +84,6 @@ void Engine::Update() {
 
 void Engine::Render() {
 	SDL_RenderClear(renderer);
-	SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
 
 	// TODO: Get what's supposed to be rendering
 	// Renderer::RenderYourShit();
@@ -92,6 +91,7 @@ void Engine::Render() {
 	//asteroid->Draw(renderer);
 
 	GameObject::DoDraw(renderer);
+	SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
 
 	SDL_RenderPresent(renderer);
 }

@@ -6,6 +6,8 @@
 #include <vector>
 #include <map>
 #include <Component/SpriteRenderer.h>
+#include <Component/BoxCollider2D.h>
+
 //#include <Component/Transform.h>
 
 class GameObject: public IObject {
@@ -56,6 +58,8 @@ private:
 	int id;
 
 	SpriteRenderer* spriteRenderer;
+	BoxCollider2D* collider;
+
 	Transform* transform;
 
 	std::vector<IComponent*> components;

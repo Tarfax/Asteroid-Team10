@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Component\Asteroid.cpp" />
+    <ClCompile Include="src\Component\BoxCollider2D.cpp" />
     <ClCompile Include="src\Component\PositionWrapper.cpp" />
     <ClCompile Include="src\Component\Projectile.cpp" />
     <ClCompile Include="src\Component\SpriteRenderer.cpp" />
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Component\Asteroid.h" />
+    <ClInclude Include="src\Component\BoxCollider2D.h" />
     <ClInclude Include="src\Component\IComponent.h" />
     <ClInclude Include="src\Component\PositionWrapper.h" />
     <ClInclude Include="src\Component\Projectile.h" />

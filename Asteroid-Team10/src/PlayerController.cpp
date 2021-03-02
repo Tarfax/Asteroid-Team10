@@ -4,6 +4,7 @@
 #include <Math/Mathf.h>
 #include <Component/PositionWrapper.h>
 #include <Component/Projectile.h>
+#include <Component/BoxCollider2D.h>
 #include "Structs/Sprite.h"
 
 PlayerController* PlayerController::playerController = nullptr;
@@ -23,6 +24,9 @@ GameObject* PlayerController::CreateInstance() {
 
 		PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
 		positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
+
+		BoxCollider2D* collider = gameObject->AddComponent<BoxCollider2D>();
+		collider->SetBounds(0, 0, 32, 32);
 
 	}
 	return gameObject;

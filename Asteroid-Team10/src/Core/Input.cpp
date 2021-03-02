@@ -19,8 +19,7 @@ void Input::Listen()
 	}
 }
 
-bool Input::GetKeyDown(SDL_Scancode key)
-{
+bool Input::GetKeyDown(SDL_Scancode key) {
 	return instance->keyStates[key] == 1;
 }
 

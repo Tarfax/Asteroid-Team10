@@ -1,6 +1,7 @@
 #include "Projectile.h"
 #include "Math/Mathf.h"
 #include "Structs/Sprite.h"
+#include <Component/BoxCollider2D.h>
 
 GameObject* Projectile::GetInstance() {
 	GameObject* gameObject = nullptr;
@@ -16,9 +17,11 @@ GameObject* Projectile::GetInstance() {
 	sprite.SetTexture(projectile->textureId);
 	spriteRenderer->SetSprite(sprite);
 
-
 	PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
 	positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
+
+	BoxCollider2D* collider = gameObject->AddComponent<BoxCollider2D>();
+	collider->SetBounds(spriteRenderer->GetRect());
 
 	return gameObject;
 }
@@ -28,11 +31,8 @@ Projectile::~Projectile() {
 }
 
 void Projectile::Init() {
-
 	transform = gameObject->GetComponent<Transform>();
-
 	speed = 350;
-
 }
 
 void Projectile::SetDirection(Vector2 direction) {

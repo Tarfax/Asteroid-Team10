@@ -18,13 +18,26 @@ void GameObject::Update(float deltaTime) {
 	for (IComponent* c : components) {
 		c->Update(deltaTime);
 	}
+
+	if (collider != nullptr) {
+		collider->Set(transform->X(), transform->Y(), transform->Scale());
+	}
 }
 
 void GameObject::Draw(SDL_Renderer* renderer) {
 	if (spriteRenderer == nullptr) {
 		spriteRenderer = GetComponent<SpriteRenderer>();
 	}
+	
 	spriteRenderer->Draw(renderer, transform);
+
+	if (collider != nullptr) {
+		collider->Draw(renderer, transform);
+
+	}
+	else {
+		collider = GetComponent<BoxCollider2D>();
+	}
 }
 
 void GameObject::Destroy() {
