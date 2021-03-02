@@ -33,7 +33,7 @@ Projectile::~Projectile() {
 }
 
 void Projectile::Init() {
-	speed = 350;
+	speed = 450;
 	transform->Scale() * 0.2f;
 }
 

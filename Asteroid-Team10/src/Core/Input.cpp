@@ -11,6 +11,9 @@ void Input::Listen()
 		case SDL_KEYDOWN:
 			KeyDown();
 			break;
+		case SDL_KEYUP:
+			//KeyUp();
+			break;
 		case SDL_QUIT:
 			// quit func
 			break;

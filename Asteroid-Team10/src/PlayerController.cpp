@@ -38,7 +38,7 @@ void PlayerController::Init() {
 	targetSpeed = speed;
 	acceleration = 100.0f;
 	rotationSpeed = 120.0f;
-	fireRate = 0.2f;
+	fireRate = 0.14f;
 	momentumAcceleration = 1;
 	transform = gameObject->GetComponent<Transform>();
 }
