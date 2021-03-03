@@ -48,6 +48,18 @@ bool Engine::Init() {
 
 	asteroid = Asteroid::GetInstance();
 
+	asteroid->GetComponent<Asteroid>()->SetActive(true);
+	asteroid->GetComponent<Asteroid>()->SetActive(true);
+	asteroid->GetComponent<Asteroid>()->SetActive(false);
+	asteroid->GetComponent<Asteroid>()->SetActive(false);
+
+	asteroid2 = Asteroid::GetInstance();
+
+	asteroid2->GetComponent<Asteroid>()->SetActive(true);
+	asteroid2->GetComponent<Asteroid>()->SetActive(true);
+	asteroid2->GetComponent<Asteroid>()->SetActive(false);
+	asteroid2->GetComponent<Asteroid>()->SetActive(false);
+
 	return true;
 }
 
