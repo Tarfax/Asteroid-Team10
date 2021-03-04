@@ -41,19 +41,48 @@ void PlayerController::Init() {
 	fireRate = 0.14f;
 	momentumAcceleration = 1;
 	transform = gameObject->GetComponent<Transform>();
-
-	/*action = Action<PlayerController>::GetInstance(this, &PlayerController::doIt);
-	action->Invoke();*/
-
-	action = new Action<PlayerController>(&PlayerController::doIt, this);
-	action->Invoke();
+	
+	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_W);
+	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_A);
+	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_S);
+	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_D);
 }
 
-void PlayerController::doIt()  {
-	std::cout << "I have  afunction ?";
+void PlayerController::OnEvent(Event& e) {
+	EventDispatcher dispatcher(e);
+	dispatcher.Dispatch<KeyPressedEvent>(CreateFunctionCallback(PlayerController::OnKeyPressedEvent, this));
 }
 
-void Func() {}
+bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
+	static int counter = 0;
+	counter++;
+	if (e.GetKeyCode() == SDL_SCANCODE_W) {
+		std::cout << "W was pressed\n";
+	}
+
+
+
+
+	if (e.GetKeyCode() == SDL_SCANCODE_A) {
+		transform->Rotation() -= rotationSpeed * e.GetDeltaTime();
+
+		std::cout << "A was pressed " << counter << " deltaTime: " << e.GetDeltaTime() << "\n";
+	}
+
+
+
+
+	if (e.GetKeyCode() == SDL_SCANCODE_S) {
+		std::cout << "S was pressed\n";
+	}	
+	if (e.GetKeyCode() == SDL_SCANCODE_D) {
+		transform->Rotation() += rotationSpeed * e.GetDeltaTime();
+
+		std::cout << "D was pressed " << counter << "\n";
+	}
+
+	return true;
+}
 
 void PlayerController::Update(float deltaTime) {
 	targetSpeed = 0.0f;
@@ -69,15 +98,18 @@ void PlayerController::Update(float deltaTime) {
 
 void PlayerController::HandleInput(float deltaTime)
 {
-	if (Input::GetKeyDown(SDL_SCANCODE_A)) {
-		transform->Rotation() -= rotationSpeed * deltaTime;
+	if (Input::GetKey(SDL_SCANCODE_A)) {
+		std::cout << "Input::GetKey:: A was pressed " << deltaTime << "\n";
+
+		//transform->Rotation() -= rotationSpeed * deltaTime;
 	}
 
-	if (Input::GetKeyDown(SDL_SCANCODE_D)) {
+	/*
+	if (Input::GetKey(SDL_SCANCODE_D)) {
 		transform->Rotation() += rotationSpeed * deltaTime;
-	}
+	}*/
 
-	if (Input::GetKeyDown(SDL_SCANCODE_W)) {
+	if (Input::GetKey(SDL_SCANCODE_W)) {
 		targetSpeed = speed;
 
 
@@ -92,7 +124,7 @@ void PlayerController::HandleInput(float deltaTime)
 		momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, momentumAcceleration, deltaTime);
 	}
 
-	if (Input::GetKeyDown(SDL_SCANCODE_S)) {
+	if (Input::GetKey(SDL_SCANCODE_S)) {
 		targetSpeed = -speed;
 
 		if (targetSpeed > 0) {
@@ -155,6 +187,9 @@ float PlayerController::IncrementTowards(float n, float target, float alpha, flo
 }
 
 void PlayerController::Destroy() {
-
+	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_W);
+	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_A);
+	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_S);
+	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_D);
 }
 

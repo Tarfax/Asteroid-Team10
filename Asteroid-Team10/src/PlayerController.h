@@ -4,6 +4,8 @@
 #include "Component/Core/Transform.h"
 #include <Objects/GameObject.h>
 #include <Action.h>
+#include <EventSystem/Event.h>
+#include <EventSystem/KeyEvent.h>
 
 class PlayerController: public IComponent {
 
@@ -17,14 +19,14 @@ public:
 	void Init();
 	void Update(float deltaTime);
 	void HandleInput(float deltaTime);
-	void doIt();
 	void Fire();
 	void Destroy();
 
 private:
 	~PlayerController() { delete playerController; }
 
-	Action<PlayerController>* action;
+	void OnEvent(Event& event);
+	bool OnKeyPressedEvent(KeyPressedEvent& e);
 
 	std::string textureId = "Assets/Sprites/ship.png";
 

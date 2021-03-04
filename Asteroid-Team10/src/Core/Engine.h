@@ -8,25 +8,41 @@
 #include "Objects/GameObject.h"
 #include "Time.h"
 #include "Core/Input.h"
+#include <EventSystem/EngineEvent.h>
+
+
+
 
 const int SCREEN_WIDTH {640};
 const int SCREEN_HEIGHT {480};
 
 class Engine {
+	static void* emptyPointer;
 
 public:
 	Engine();
+	
 	bool Init();
 
 	void Run();
 
 	void Quit();
 
+	static void* GetEmptyPointer() { return emptyPointer; }
+
 private:
 	void Update();
 	void Render();
 
-	std::function<void(int)> InputCallback;
+	void SetupEventSystem();
+
+	/// <summary>
+	/// 
+	/// </summary>
+
+	void OnEvent(Event& e);
+	bool OnWindowClose(EngineCloseEvent& e);
+
 
 	SDL_Renderer* renderer;
 	SDL_Window* window;

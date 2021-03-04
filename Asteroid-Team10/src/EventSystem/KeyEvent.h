@@ -2,6 +2,7 @@
 
 #include <EventSystem/Event.h>
 #include <sstream>
+#include <SDL.h>
 
 class KeyEvent: public Event {
 public:
@@ -9,18 +10,19 @@ public:
 
 	EventClassCategory(EventCategoryInput | EventCategoryKeyboard)
 protected:
-	KeyEvent(int keyCode)
+	KeyEvent(SDL_Scancode keyCode)
 		: keyCode(keyCode) { }
 
-	int keyCode;
+	SDL_Scancode keyCode;
 };
 
 class KeyPressedEvent: public KeyEvent {
 public:
-	KeyPressedEvent(int keyCode, int repeatCount)
-		: KeyEvent(keyCode), repeatCount(repeatCount) { }
+	KeyPressedEvent(SDL_Scancode keyCode, int repeatCount, float deltaTime)
+		: KeyEvent(keyCode), repeatCount(repeatCount), deltaTime(deltaTime) { }
 
 	inline int GetRepeatCount() const { return repeatCount; }
+	inline float GetDeltaTime() const { return deltaTime; }
 	std::string ToString() const override {
 		std::stringstream ss;
 		ss << "KeyPressedEvent: " << keyCode << " (" << repeatCount << " repeats)";
@@ -31,13 +33,13 @@ public:
 
 private:
 	int repeatCount;
-
+	float deltaTime;
 };
 
 class KeyReleasedEvent: public KeyEvent {
 
 public:
-	KeyReleasedEvent(int keyCode)
+	KeyReleasedEvent(SDL_Scancode keyCode)
 		: KeyEvent(keyCode) { }
 
 	//inline int GetRepeatCount() const { return repeatCount; }

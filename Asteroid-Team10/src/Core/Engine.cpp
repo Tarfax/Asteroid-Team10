@@ -7,6 +7,8 @@
 #include <Structs/Vector2.h>
 #include <Math/Mathf.h>
 
+void* Engine::emptyPointer;
+
 Engine::Engine() { }
 
 bool Engine::Init() {
@@ -55,6 +57,8 @@ bool Engine::Init() {
 	asteroid2->GetComponent<Asteroid>()->SetActive(false);
 	asteroid2->GetComponent<Asteroid>()->SetActive(false);
 
+	SetupEventSystem();
+
 	return true;
 }
 
@@ -62,7 +66,8 @@ void Engine::Run() {
 	isRunning = true;
 	while (isRunning == true) {
 		time->StartTick();
-		input->Listen();
+		input->Listen(time->GetDeltaTime());
+		//input->HandleInput();
 
 		Update();
 		Render();
@@ -71,9 +76,9 @@ void Engine::Run() {
 		input->Reset();
 		time->EndTick();
 
-		if (input->hasQuitBeenCalled == true) {
-			isRunning = false;
-		}
+		//if (input->hasQuitBeenCalled == true) {
+		//	isRunning = false;
+		//}
 	}
 	Quit();
 }
@@ -111,3 +116,22 @@ void Engine::Quit() {
 
 	SDL_Quit();
 }
+
+void Engine::SetupEventSystem() {
+	//input->RemoveCallback(CreateFunctionCallback(Engine::OnEvent, this), SDL_SCANCODE_F);
+	input->AddCallback(CreateFunctionCallback(Engine::OnEvent, this), EventType::WindowClose);
+	
+}
+
+
+void Engine::OnEvent(Event& e) {
+	EventDispatcher dispatcher(e);
+	dispatcher.Dispatch<EngineCloseEvent>(CreateFunctionCallback(Engine::OnWindowClose, this));
+}
+
+bool Engine::OnWindowClose(EngineCloseEvent& e) {
+	std::cout << "Don't you fucking quit on me!!\n";
+	isRunning = false;
+	return true;
+}
+
