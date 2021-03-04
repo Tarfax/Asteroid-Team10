@@ -164,6 +164,7 @@
     <ClCompile Include="src\TextureCoordinator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Action.h" />
     <ClInclude Include="src\Component\Asteroid.h" />
     <ClInclude Include="src\Component\Behaviour\Behaviour.h" />
     <ClInclude Include="src\Component\Core\BoxCollider2D.h" />
@@ -176,6 +177,8 @@
     <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Time.h" />
     <ClInclude Include="src\Enums\Layer.h" />
+    <ClInclude Include="src\EventSystem\Event.h" />
+    <ClInclude Include="src\EventSystem\KeyEvent.h" />
     <ClInclude Include="src\Math\Mathf.h" />
     <ClInclude Include="src\Objects\GameObject.h" />
     <ClInclude Include="src\PlayerController.h" />

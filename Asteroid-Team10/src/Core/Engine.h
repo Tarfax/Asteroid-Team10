@@ -20,13 +20,13 @@ public:
 
 	void Run();
 
-	void Close();
+	void Quit();
 
 private:
-	bool LoadMedia(std::string path);
-	void HandleInput();
 	void Update();
 	void Render();
+
+	std::function<void(int)> InputCallback;
 
 	SDL_Renderer* renderer;
 	SDL_Window* window;

@@ -3,7 +3,7 @@
 #include "Component/Core/IComponent.h"
 #include "Component/Core/Transform.h"
 #include <Objects/GameObject.h>
-
+#include <Action.h>
 
 class PlayerController: public IComponent {
 
@@ -17,11 +17,14 @@ public:
 	void Init();
 	void Update(float deltaTime);
 	void HandleInput(float deltaTime);
+	void doIt();
 	void Fire();
 	void Destroy();
 
 private:
 	~PlayerController() { delete playerController; }
+
+	Action<PlayerController>* action;
 
 	std::string textureId = "Assets/Sprites/ship.png";
 
@@ -41,3 +44,4 @@ private:
 	float fireRate;
 	float fireRateTimer;
 };
+

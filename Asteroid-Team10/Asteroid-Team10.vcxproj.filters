@@ -125,5 +125,14 @@
     <ClInclude Include="src\Component\Behaviour\Behaviour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Action.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EventSystem\Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EventSystem\KeyEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

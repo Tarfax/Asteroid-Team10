@@ -41,7 +41,19 @@ void PlayerController::Init() {
 	fireRate = 0.14f;
 	momentumAcceleration = 1;
 	transform = gameObject->GetComponent<Transform>();
+
+	/*action = Action<PlayerController>::GetInstance(this, &PlayerController::doIt);
+	action->Invoke();*/
+
+	action = new Action<PlayerController>(&PlayerController::doIt, this);
+	action->Invoke();
 }
+
+void PlayerController::doIt()  {
+	std::cout << "I have  afunction ?";
+}
+
+void Func() {}
 
 void PlayerController::Update(float deltaTime) {
 	targetSpeed = 0.0f;
@@ -106,6 +118,7 @@ void PlayerController::HandleInput(float deltaTime)
 		}
 	}
 }
+
 
 void PlayerController::Fire() {
 	GameObject* gameObject = Projectile::GetInstance();

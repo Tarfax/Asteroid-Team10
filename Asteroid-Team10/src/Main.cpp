@@ -7,7 +7,7 @@ int main(int argc, char* args[]) {
 		engine.Run();
 	}
 
-	engine.Close();
+	engine.Quit();
 
 	return 0;
 }

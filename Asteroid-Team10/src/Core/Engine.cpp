@@ -17,24 +17,19 @@ bool Engine::Init() {
 
 	window = SDL_CreateWindow("Asteroids - by Team 10", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
-	if (window == NULL) {
+	if (window == nullptr) {
 		printf("SDL could not SDL_CreateWindow()! SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-	if (renderer == NULL) {
+	if (renderer == nullptr) {
 		printf("SDL could not SDL_CreateRenderer()! SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
 
 	screenSurface = SDL_GetWindowSurface(window);
-
-	if (LoadMedia("Assets/Sprites/CoolImage.bmp") == false) {
-		printf("Unable to load image %s! SDL Error: %s\n", "CoolImage.bmp", SDL_GetError());
-		return false;
-	}
 
 	time = new Time();
 
@@ -65,32 +60,25 @@ bool Engine::Init() {
 
 void Engine::Run() {
 	isRunning = true;
-	int counter = 0;
 	while (isRunning == true) {
-		counter++;
 		time->StartTick();
-		HandleInput();
+		input->Listen();
+
 		Update();
 		Render();
 		GameObject::CleanUp();
+
+		input->Reset();
 		time->EndTick();
 
-		if (counter == 200) {
-			Mathf::RandomFloat();
-			counter = 0;
+		if (input->hasQuitBeenCalled == true) {
+			isRunning = false;
 		}
-		//std::cout << "deltaTime: " << std::to_string(time->GetDeltaTime()) << std::endl;
 	}
-}
-
-void Engine::HandleInput() {
-	input->Listen();
+	Quit();
 }
 
 void Engine::Update() {
-	/*gameObject->Update(time->GetDeltaTime());
-	asteroid->Update(time->GetDeltaTime());*/
-
 	GameObject::DoUpdate(time->GetDeltaTime());
 }
 
@@ -99,39 +87,27 @@ void Engine::Render() {
 
 	// TODO: Get what's supposed to be rendering
 	// Renderer::RenderYourShit();
-	//gameObject->Draw(renderer);
-	//asteroid->Draw(renderer);
 
 	GameObject::DoDraw(renderer);
+
+	//Background color
 	SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
 
 	SDL_RenderPresent(renderer);
 }
 
-bool Engine::LoadMedia(std::string path) {
-	image = SDL_LoadBMP(path.c_str());
+void Engine::Quit() {
 
-	if (image == NULL) {
-		return false;
-	}
-
-	//PlayerController::Instance();
-
-	return true;
-}
-
-void Engine::Close() {
-	gameObject->Destroy();
-	delete gameObject;
-
-	SDL_FreeSurface(image);
-	image = NULL;
+	// TODO:
+	//
+	// Clean up all the game objects?
+	//
 
 	SDL_DestroyWindow(window);
-	window = NULL;
+	window = nullptr;
 
 	SDL_DestroyRenderer(renderer);
-	renderer = NULL;
+	renderer = nullptr;
 
 	SDL_Quit();
 }
