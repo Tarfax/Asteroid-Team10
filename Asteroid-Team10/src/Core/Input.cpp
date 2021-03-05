@@ -27,7 +27,7 @@ void Input::Listen(float deltaTime) {
 				//hasQuitBeenCalled = true;
 
 				EngineCloseEvent event { };
-				FireEvent(event, GenericCallback);
+				FireEvent(event);
 				break;
 		}
 
@@ -63,7 +63,7 @@ void Input::SendKeyCallbacks() {
 			}
 
 			keyStateFrameCount[key]++;
-			//std::cout << "key " << key << " was found\n ";
+			//std::cout << "key " << key << " was pressed\n ";
 		}
 	}
 
@@ -87,14 +87,13 @@ void Input::SendKeyCallbacks() {
 
 void Input::FireEvent(Event& event, CallbackData data) {
 	data.EventCallback(event);
-	//CallbackData& data = /**(CallbackData*)*//*Engine::GetEmptyPointer()*/ /*&*/this->data;
+}
 
-	//KeyPressedEvent event {1,2 };
-	//data.EventCallback = this->data.EventCallback;
-	//data.keyStates = 
-	//std::cout << data.info << std::endl;
-
-	//data.EventCallback(event);
+void Input::FireEvent(Event& event) {
+	for (int i = 0; i < callbacks.size(); i++) {
+		CallbackData data = callbacks[i];
+		data.EventCallback(event);
+	}
 }
 
 bool Input::GetKeyDown(SDL_Scancode key) {
@@ -128,42 +127,40 @@ bool Input::GetKey(SDL_Scancode key) {
 
 void Input::KeyDown() {
 	keyStates = SDL_GetKeyboardState(nullptr);
-	/*std::cout << "Input::KeyDown()" << "\n ";*/
-
-	
-
-	//for (int i = 0; i < inputCallbacks.size(); i++) {
-	//	SDL_Scancode key = inputCallbacks[i].key;
-	//	if (keyStates[key] == 1) {
-	//		if (keyStateFrameCount.count(key) != 1) {
-	//			keyStateFrameCount[key] = 0;
-	//		}
-	//		KeyPressedEvent event {key, instance->keyStateFrameCount[key]};
-	//		FireEvent(event, inputCallbacks[i]);
-	//		keyStateFrameCount[key]++;
-	//	}
-	//}
 }
 
 void Input::KeyUp() {
 	keyStates = SDL_GetKeyboardState(nullptr);
-
-	//std::unordered_map<SDL_Scancode, int>::iterator it;
-	//for (it = keyStateFrameCount.begin(); it != keyStateFrameCount.end(); it++) {
-	//	if (keyStates[it->first] == 0 && it->second > 0) {
-
-
-	//		KeyReleasedEvent event {it->first};
-
-	//		for (int i = 0; i < inputCallbacks[it->first].size(); i++) {
-	//			FireEvent(event, inputCallbacks[it->first][i]);
-	//		}
-	//		//FireEvent(event, );
-	//		//instance->data.EventCallback(event);
-	//		//std::cout << it->first << " was released" << std::endl;
-	//		wasKeyUp[it->first] = true;
-	//		it->second = 0;
-	//	}
-	//}
-
 }
+
+void Input::AddCallback(const EventCallbackFunc& callback) {
+	callbacks.emplace_back(callback);
+}
+
+void Input::RemoveCallback(const EventCallbackFunc& callback) {
+	for (int i = 0; i < callbacks.size(); i++) {
+		CallbackData cd = callbacks[i];
+		if (cd.EventCallback.target_type().hash_code() == callback.target_type().hash_code()) {
+			//std::cout << "callback found" << std::endl;
+			callbacks.erase(callbacks.begin() + i);
+			return;
+		}
+	}
+}
+
+/* --Can't get this to work? */
+
+//void Input::AddInputCallback(const EventCallbackFunc& callback, SDL_Scancode keyCode) {
+//	instance->inputCallbacks[keyCode].emplace_back(callback);
+//}
+//
+//void Input::RemoveInputCallback(const EventCallbackFunc& callback, SDL_Scancode keyCode) {
+//	for (int i = 0; i < instance->inputCallbacks[keyCode].size(); i++) {
+//		CallbackData cd = instance->inputCallbacks[keyCode][i];
+//		if (cd.EventCallback.target_type().hash_code() == callback.target_type().hash_code()) {
+//			//std::cout << "callback found" << std::endl;
+//			instance->inputCallbacks[keyCode].erase(instance->inputCallbacks[keyCode].begin() + i);
+//			return;
+//		}
+//	}
+//}

@@ -115,7 +115,7 @@ void Engine::Quit() {
 
 void Engine::SetupEventSystem() {
 	//input->RemoveCallback(CreateFunctionCallback(Engine::OnEvent, this), SDL_SCANCODE_F);
-	input->AddCallback(CreateFunctionCallback(Engine::OnEvent, this), EventType::WindowClose);
+	input->AddCallback(CreateFunctionCallback(Engine::OnEvent, this));
 	
 }
 

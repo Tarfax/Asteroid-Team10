@@ -2,7 +2,6 @@
 #include "Core/Input.h"
 #include <SDL.h>
 #include <unordered_map>
-#include <PlayerController.h>
 #include <EventSystem/Event.h>
 #include <EventSystem/KeyEvent.h>
 
@@ -22,44 +21,36 @@ public:
 		inputCallbacks.reserve(10);
 	}
 
+	static Input* Init();
+
 	static bool GetKeyDown(SDL_Scancode);
 	static bool GetKeyUp(SDL_Scancode);
 	static bool GetKey(SDL_Scancode);
 
-	static Input* Init();
 	void Listen(float deltaTime);
 	void Reset();
-
-	inline void AddCallback(const EventCallbackFunc& callback, EventType type) {
-		if (callbacks.count(type) == 0) {
-			callbacks[type].emplace_back(callback);
-		}
-	}
-
-	template <typename T, typename = std::enable_if_t<std::is_base_of<Event, T>::value>>
-	inline void FireEvent(Event& event) {
-		std::unordered_map<EventType, std::vector<CallbackData>>::iterator it;
-		for (it = callbacks.begin(); it != callbacks.end(); it++) {
-			if (event.GetEventType() == it->first) {
-				EventDispatcher dispatcher(event);
-				for (int i = 0; i < it->second.size(); i++) {
-					dispatcher.Dispatch<T>(it->second[i].EventCallback);
-				}
-			}
-		}
-	}
 
 	/// <summary>
 	/// Warning: Same function can be added several times.
 	/// </summary>
-	static inline void AddInputCallback(const EventCallbackFunc& callback, SDL_Scancode keyCode) {
-		instance->inputCallbacks[keyCode].emplace_back(callback);
-	}
+	void AddCallback(const EventCallbackFunc& callback);
 
 	/// <summary>
 	/// Nothing happens if you try to remove the same method twice.
 	/// </summary>
-	static inline void RemoveInputCallback(const EventCallbackFunc& callback, SDL_Scancode keyCode) {
+	void RemoveCallback(const EventCallbackFunc& callback);
+
+
+	/// <summary>
+	/// Warning: Same function can be added several times.
+	/// </summary>
+	inline static void AddInputCallback(const EventCallbackFunc& callback, SDL_Scancode keyCode) {
+		instance->inputCallbacks[keyCode].emplace_back(callback);
+	}
+	/// <summary>
+	/// Nothing happens if you try to remove the same method twice.
+	/// </summary>
+	inline static void RemoveInputCallback(const EventCallbackFunc& callback, SDL_Scancode keyCode) {
 		for (int i = 0; i < instance->inputCallbacks[keyCode].size(); i++) {
 			CallbackData cd = instance->inputCallbacks[keyCode][i];
 			if (cd.EventCallback.target_type().hash_code() == callback.target_type().hash_code()) {
@@ -69,8 +60,6 @@ public:
 			}
 		}
 	}
-
-
 
 private:
 
@@ -97,15 +86,11 @@ private: //Event System
 
 	std::unordered_map<SDL_Scancode, std::vector<CallbackData>> inputCallbacks;
 
-	CallbackData GenericCallback;
-
-	std::unordered_map<EventType, std::vector<CallbackData>> callbacks;
+	std::vector<CallbackData> callbacks;
 
 	void SendKeyCallbacks();
 
-	//std::map<Event&, CallbackData> eventsToSendThisFrame;
-
 	void FireEvent(Event& event, CallbackData data);
-	//EventDispatcher dispatcher;
+	void FireEvent(Event& e);
 
 };

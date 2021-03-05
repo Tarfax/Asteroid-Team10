@@ -41,11 +41,12 @@ void PlayerController::Init() {
 	fireRate = 0.14f;
 	momentumAcceleration = 1;
 	transform = gameObject->GetComponent<Transform>();
-	
+
 	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_W);
 	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_A);
 	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_S);
 	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_D);
+	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
 }
 
 void PlayerController::OnEvent(Event& e) {
@@ -57,95 +58,59 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 	static int counter = 0;
 	counter++;
 	if (e.GetKeyCode() == SDL_SCANCODE_W) {
-		std::cout << "W was pressed\n";
+		//std::cout << "W was pressed\n";
+		targetSpeed = speed;
+
+		momentum.X = IncrementTowards(momentum.X, transform->forward.X, momentumAcceleration, e.GetDeltaTime());
+		momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, momentumAcceleration, e.GetDeltaTime());
+		//currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, e.GetDeltaTime());
 	}
-
-
-
 
 	if (e.GetKeyCode() == SDL_SCANCODE_A) {
-		transform->Rotation() -= rotationSpeed * e.GetDeltaTime();
-		std::cout << "A was pressed " << counter << " deltaTime: " << e.GetDeltaTime() << "\n";
+		transform->Rotation() -= (double)(rotationSpeed * e.GetDeltaTime());
+		//std::cout << "A was pressed " << counter << " deltaTime: " << e.GetDeltaTime() << "\n";
 	}
 
-
-
-
 	if (e.GetKeyCode() == SDL_SCANCODE_S) {
-		std::cout << "S was pressed\n";
-	}	
+		//std::cout << "S was pressed\n";
+		targetSpeed = -speed;
+
+		momentum.X = IncrementTowards(momentum.X, transform->forward.X, momentumAcceleration, e.GetDeltaTime());
+		momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, momentumAcceleration, e.GetDeltaTime());
+	}
+
 	if (e.GetKeyCode() == SDL_SCANCODE_D) {
-		transform->Rotation() += rotationSpeed * e.GetDeltaTime();
-		std::cout << "D was pressed " << counter << "\n";
+		transform->Rotation() += (double)(rotationSpeed * e.GetDeltaTime());
+		//std::cout << "D was pressed " << counter << "\n";
+	}
+
+	if (e.GetKeyCode() == SDL_SCANCODE_SPACE) {
+		if (fireRateTimer <= 0.0f) {
+			Fire();
+			fireRateTimer = fireRate;
+		}
 	}
 
 	return true;
 }
 
 void PlayerController::Update(float deltaTime) {
-	targetSpeed = 0.0f;
-	targetSpeed = currentSpeed * 0.9999;
+
+	currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, deltaTime);
+	targetSpeed = currentSpeed * 0.9999f;
+
 	fireRateTimer -= deltaTime;
 
 	HandleInput(deltaTime);
 
-	currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, deltaTime);
+
 	transform->Translate(Vector2((currentSpeed * deltaTime) * momentum.X, (currentSpeed * deltaTime) * momentum.Y));
 
 }
 
-void PlayerController::HandleInput(float deltaTime)
-{
-	if (Input::GetKey(SDL_SCANCODE_A)) {
-		std::cout << "Input::GetKey:: A was pressed " << deltaTime << "\n";
-
-		//transform->Rotation() -= rotationSpeed * deltaTime;
-	}
-
-	/*
-	if (Input::GetKey(SDL_SCANCODE_D)) {
-		transform->Rotation() += rotationSpeed * deltaTime;
-	}*/
-
-	if (Input::GetKey(SDL_SCANCODE_W)) {
-		targetSpeed = speed;
-
-
-		if (targetSpeed < 0) {
-			momentumAcceleration = 500;
-		}
-		else {
-			momentumAcceleration = 10;
-		}
-
-		momentum.X = IncrementTowards(momentum.X, transform->forward.X, momentumAcceleration, deltaTime);
-		momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, momentumAcceleration, deltaTime);
-	}
-
-	if (Input::GetKey(SDL_SCANCODE_S)) {
-		targetSpeed = -speed;
-
-		if (targetSpeed > 0) {
-			momentumAcceleration = 500;
-		}
-		else {
-			momentumAcceleration = 10;
-		}
-
-		momentum.X = IncrementTowards(momentum.X, transform->forward.X, momentumAcceleration, deltaTime);
-		momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, momentumAcceleration, deltaTime);
-	}
-
+void PlayerController::HandleInput(float deltaTime) {
 	if (Input::GetKeyDown(SDL_SCANCODE_H)) {
 		transform->Scale().X -= 1 * deltaTime;
-	}
-
-	if (Input::GetKeyDown(SDL_SCANCODE_SPACE)) {
-
-		if (fireRateTimer <= 0.0f) {
-			Fire();
-			fireRateTimer = fireRate;
-		}
 	}
 }
 
@@ -153,7 +118,7 @@ void PlayerController::HandleInput(float deltaTime)
 void PlayerController::Fire() {
 	GameObject* gameObject = Projectile::GetInstance();
 	Transform* transform = gameObject->GetComponent<Transform>();
-	
+
 	Vector2 position = this->transform->Position();
 	float rotation = this->transform->Rotation();
 
@@ -189,5 +154,6 @@ void PlayerController::Destroy() {
 	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_A);
 	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_S);
 	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_D);
+	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
 }
 
