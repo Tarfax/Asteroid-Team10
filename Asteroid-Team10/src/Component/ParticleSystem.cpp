@@ -16,7 +16,7 @@ GameObject* ParticleSystem::GetInstance() {
 	particleData.Repeat = true;
 
 	EmitData emitData;
-	emitData.Amount = 10000;
+	emitData.Amount = 100;
 
 	emitData.MinLifeTime = 1;
 	emitData.MaxLifeTime = 3;
@@ -46,7 +46,7 @@ void ParticleSystem::Init() {
 	Transform* transform = gameObject->GetComponent<Transform>();
 	transform->Translate({150, 150});
 
-	maxParticles = 10000;
+	maxParticles = 100;
 
 	activeParticles.reserve(maxParticles);
 	inactiveParticles.reserve(maxParticles);
@@ -58,8 +58,6 @@ void ParticleSystem::Destroy() {
 
 void ParticleSystem::Update(float deltaTime) {
 	if (isEmitting == true) {
-		Timer timer;
-
 		std::vector<int> deadParticles;
 
 		std::vector<Particle*>::iterator it;
@@ -68,9 +66,6 @@ void ParticleSystem::Update(float deltaTime) {
 			Particle* p = *it;
 			p->Update(deltaTime);
 			if (p->IsDead() == true) {
-				/*if (counter == 0) {
-					std::cout << "Time to remove stuff" << std::endl;
-				}*/
 				inactiveParticles.push_back(p);
 				it = activeParticles.erase(activeParticles.begin() + counter);
 				if (it == activeParticles.end()) {
@@ -87,7 +82,7 @@ void ParticleSystem::Update(float deltaTime) {
 
 	}
 
-	if (/*isEmitting == false && */repeat == true) {
+	if (repeat == true) {
 		timer -= deltaTime;
 		if (timer < 0.0f) {
 			Emit();
