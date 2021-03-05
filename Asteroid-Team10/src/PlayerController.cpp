@@ -65,7 +65,6 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 
 	if (e.GetKeyCode() == SDL_SCANCODE_A) {
 		transform->Rotation() -= rotationSpeed * e.GetDeltaTime();
-
 		std::cout << "A was pressed " << counter << " deltaTime: " << e.GetDeltaTime() << "\n";
 	}
 
@@ -77,7 +76,6 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 	}	
 	if (e.GetKeyCode() == SDL_SCANCODE_D) {
 		transform->Rotation() += rotationSpeed * e.GetDeltaTime();
-
 		std::cout << "D was pressed " << counter << "\n";
 	}
 

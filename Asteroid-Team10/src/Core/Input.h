@@ -70,6 +70,8 @@ public:
 		}
 	}
 
+
+
 private:
 
 	static Input* instance;
@@ -99,6 +101,9 @@ private: //Event System
 
 	std::unordered_map<EventType, std::vector<CallbackData>> callbacks;
 
+	void SendKeyCallbacks();
+
+	//std::map<Event&, CallbackData> eventsToSendThisFrame;
 
 	void FireEvent(Event& event, CallbackData data);
 	//EventDispatcher dispatcher;
