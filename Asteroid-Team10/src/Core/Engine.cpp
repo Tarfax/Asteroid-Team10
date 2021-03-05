@@ -43,21 +43,17 @@ bool Engine::Init() {
 
 	PlayerController* pc = gameObject->GetComponent<PlayerController>();
 
-	asteroid = Asteroid::GetInstance();
-
-	asteroid->GetComponent<Asteroid>()->SetActive(true);
-	asteroid->GetComponent<Asteroid>()->SetActive(true);
-	asteroid->GetComponent<Asteroid>()->SetActive(false);
-	asteroid->GetComponent<Asteroid>()->SetActive(false);
-
-	asteroid2 = Asteroid::GetInstance();
-
-	asteroid2->GetComponent<Asteroid>()->SetActive(true);
-	asteroid2->GetComponent<Asteroid>()->SetActive(true);
-	asteroid2->GetComponent<Asteroid>()->SetActive(false);
-	asteroid2->GetComponent<Asteroid>()->SetActive(false);
-
 	SetupEventSystem();
+
+	astPool = new ObjectPool();
+
+	astPool->Init<Asteroid>(5);
+
+	astPool->PrintPools();
+
+	GameObject* ast1 = astPool->GetFromPool();
+
+	astPool->PrintPools();
 
 	return true;
 }

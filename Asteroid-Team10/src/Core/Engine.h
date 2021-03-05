@@ -9,6 +9,7 @@
 #include "Time.h"
 #include "Core/Input.h"
 #include <EventSystem/EngineEvent.h>
+#include "ObjectPool.h"
 
 
 
@@ -51,8 +52,7 @@ private:
 
 	Input* input;
 	GameObject* gameObject;
-	GameObject* asteroid;
-	GameObject* asteroid2;
+	ObjectPool* astPool;
 
 	Time* time;
 

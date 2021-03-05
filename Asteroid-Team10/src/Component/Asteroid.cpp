@@ -4,8 +4,8 @@
 #include "Component/Core/BoxCollider2D.h"
 #include <Structs/Sprite.h>
 
-std::list<GameObject*> Asteroid::activeObjecets{};
-std::list<GameObject*> Asteroid::inactiveObjecets{};
+std::unordered_map<int, GameObject*> Asteroid::activeObjects{};
+std::unordered_map<int, GameObject*> Asteroid::inactiveObjects{};
 
 void Asteroid::Init() {
 	speed = Mathf::RandomFloat() * 100.0f;
@@ -14,7 +14,6 @@ void Asteroid::Init() {
 	direction.Y = Mathf::RandomFloat();
 	direction.Normalize();
 	transform->Scale() = Mathf::RandomFloat();
-	std::cout << Mathf::RandomFloat() << '\n';
 }
 
 void Asteroid::Update(float deltaTime)
@@ -35,6 +34,7 @@ GameObject* Asteroid::GetInstance()
 	Asteroid* asteroid = gameObject->AddComponent<Asteroid>();
 
 	asteroid->myGameObject = gameObject;
+	asteroid->myID = gameObject->id;
 
 	Sprite sprite;
 	sprite.SetTexture(asteroid->textureID);
@@ -53,69 +53,51 @@ GameObject* Asteroid::GetInstance()
 	collider->SetLayer(Layer::lAsteroid);
 	collider->SetCollideWithLayer(Layer::lProjectile);
 
-	//temp
 	asteroid->AddToPool();
-	asteroid->SetActive(false);
-	//end temp
 
 	return gameObject;
 }
 
 void Asteroid::AddToPool()
 {
-	std::cout << "Asteroid->AddToPool: adding object " << myGameObject << '\n';
-	inactiveObjecets.push_back(myGameObject);
+	if (inactiveObjects.count(myID) == 0) {
+		inactiveObjects.insert(std::pair<int, GameObject*>(myID, myGameObject));
+
+		// call to GameObject to add object to inactive container
+	}
+}
+
+GameObject* Asteroid::GetFromPool() 
+{
+	if (inactiveObjects.empty()) return nullptr;
+
+	GameObject* gameObject = inactiveObjects.begin()->second;
+
+	gameObject->GetComponent<Asteroid>()->SetActive(true);
+
+	return gameObject;
+}
+
+bool Asteroid::IsActive()
+{
+	return false;
+	//return pooledObjecets[myGameObject];
 }
 
 void Asteroid::SetActive(bool setActive)
 {
 	if (setActive) {
-		for (GameObject* gObj : activeObjecets)
-		{
-			if (myGameObject == gObj) {
-				std::cout << "Asteroid->SetActive(true): couldn't add object to 'activeObjects': it already exists!\n";
-				return;
-			}
-		}
-		activeObjecets.push_back(myGameObject);
-		inactiveObjecets.remove(myGameObject);
 
-		// debugging
-		std::cout << "Asteroid->SetActive(true): activating object " << myGameObject << '\n';
-		std::cout << "Asteroid->SetActive(true): listSize: " << activeObjecets.size() << '\n';
-		std::cout << "Asteroid->SetActive(true): list: ";
-
-		for (GameObject* gObj : activeObjecets)
-		{
-			std::cout << gObj << ", ";
+		if (inactiveObjects.count(myID) == 1 && activeObjects.count(myID) == 0) {
+			activeObjects.insert(std::pair<int, GameObject*>(myID, myGameObject));
+			inactiveObjects.erase(myID);
 		}
-		std::cout << '\n';
-		std::cout << '\n';
-		//end debugging
 	}
 	else {
-		for (GameObject* gObj : inactiveObjecets)
-		{
-			if (myGameObject == gObj) {
-				std::cout << "Asteroid->SetActive(false): couldn't add object to 'inactiveObjects': it already exists!\n";
-				return;
-			}
+
+		if (activeObjects.count(myID) == 1 && inactiveObjects.count(myID) == 0) {
+			inactiveObjects.insert(std::pair<int, GameObject*>(myID, myGameObject));
+			activeObjects.erase(myID);
 		}
-
-		inactiveObjecets.push_back(myGameObject);
-		activeObjecets.remove(myGameObject);
-
-		// debugging
-		std::cout << "Asteroid->SetActive(false): deactivating object " << myGameObject << '\n';
-		std::cout << "Asteroid->SetActive(false): listSize: " << inactiveObjecets.size() << '\n';
-		std::cout << "Asteroid->SetActive(false): list: ";
-
-		for (GameObject* gObj : inactiveObjecets)
-		{
-			std::cout << gObj << ", ";
-		}
-		std::cout << '\n';
-		std::cout << '\n';
-		//end debugging
 	}
 }

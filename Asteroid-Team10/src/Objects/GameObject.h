@@ -54,8 +54,8 @@ public: //Components
 
 
 
+	const int id;
 private:
-	int id;
 
 	SpriteRenderer* spriteRenderer;
 	BoxCollider2D* collider;

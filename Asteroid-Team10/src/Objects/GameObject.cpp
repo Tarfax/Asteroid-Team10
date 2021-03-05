@@ -4,8 +4,8 @@ int GameObject::nextId = 0;
 std::map<int, GameObject*> GameObject::gameObjects;
 std::map<int, GameObject*> GameObject::gameObjectsToDestroy;
 
-GameObject::GameObject() {
-	id = nextId++;
+GameObject::GameObject() : id(nextId++) {
+	//id = nextId++;
 	gameObjects[id] = this;
 	transform = AddComponent<Transform>();
 	spriteRenderer = AddComponent<SpriteRenderer>();
