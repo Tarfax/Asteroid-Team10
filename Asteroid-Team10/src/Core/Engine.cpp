@@ -45,11 +45,11 @@ bool Engine::Init() {
 
 	SetupEventSystem();
 
-	//particleSystem = ParticleSystem::GetInstance()->GetComponent<ParticleSystem>();
+	particleSystem = ParticleSystem::GetInstance()->GetComponent<ParticleSystem>();
 
-	for (int i = 0; i < 1; i++) {
-		Asteroid::GetInstance();
-	}
+	//for (int i = 0; i < 1; i++) {
+	//	Asteroid::GetInstance();
+	//}
 
 	return true;
 }
@@ -89,7 +89,7 @@ void Engine::Render() {
 	// Renderer::RenderYourShit();
 
 	GameObject::DoDraw(renderer);
-	//particleSystem->Draw(renderer);
+	particleSystem->Draw(renderer);
 
 	//Background color
 	SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);

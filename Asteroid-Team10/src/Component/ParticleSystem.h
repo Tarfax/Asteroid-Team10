@@ -25,7 +25,6 @@ public:
 
 	void SetParticleData(ParticleData data);
 
-
 private:
 	void SetEmissionTime();
 	void Emit();

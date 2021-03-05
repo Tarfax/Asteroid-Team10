@@ -34,11 +34,13 @@ struct Particle {
 		this->lifeTime = other.lifeTime;
 	}
 
-	//~Particle() { std::cout << "Particle died " << lifeTime << std::endl; }
+	~Particle() { std::cout << "Particle died " << lifeTime << std::endl; }
 
 	void Draw();
 	void Update(float deltaTime);
 	bool IsDead();
+
+	void SetData(Vector2 position, Vector2 velocity, float lifeTime);
 
 	Vector2 position;
 	Vector2 velocity;

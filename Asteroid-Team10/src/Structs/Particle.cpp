@@ -12,3 +12,9 @@ void Particle::Update(float deltaTime) {
 bool Particle::IsDead() {
 	return lifeTime < 0.0f;
 }
+
+void Particle::SetData(Vector2 position, Vector2 velocity, float lifeTime) {
+	this->position = position;
+	this->velocity = velocity;
+	this->lifeTime = lifeTime;
+}

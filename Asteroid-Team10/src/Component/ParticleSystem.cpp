@@ -19,7 +19,7 @@ GameObject* ParticleSystem::GetInstance() {
 	emitData.Amount = 10000;
 
 	emitData.MinLifeTime = 1;
-	emitData.MaxLifeTime = 1;
+	emitData.MaxLifeTime = 3;
 
 	emitData.MinVelocity.X = -100;
 	emitData.MinVelocity.Y = -100;
@@ -46,7 +46,7 @@ void ParticleSystem::Init() {
 	Transform* transform = gameObject->GetComponent<Transform>();
 	transform->Translate({150, 150});
 
-	maxParticles = 1000;
+	maxParticles = 10000;
 
 	activeParticles.reserve(maxParticles);
 	inactiveParticles.reserve(maxParticles);
@@ -58,22 +58,30 @@ void ParticleSystem::Destroy() {
 
 void ParticleSystem::Update(float deltaTime) {
 	if (isEmitting == true) {
-				Timer timer;
-		for (int i = 0; i < activeParticles.size(); i++) {
-			activeParticles[i]->Update(deltaTime);
+		Timer timer;
 
-			if (activeParticles[i]->IsDead() == true) {
+		std::vector<int> deadParticles;
 
-				delete activeParticles[i];
-
-				activeParticles.erase(activeParticles.begin() + i);
-				//std::cout << "Erased particle " << i << " size: " << activeParticles.size() << std::endl;
-
+		std::vector<Particle*>::iterator it;
+		int counter = 0;
+		for (it = activeParticles.begin(); it != activeParticles.end(); ++it) {
+			Particle* p = *it;
+			p->Update(deltaTime);
+			if (p->IsDead() == true) {
+				/*if (counter == 0) {
+					std::cout << "Time to remove stuff" << std::endl;
+				}*/
+				inactiveParticles.push_back(p);
+				it = activeParticles.erase(activeParticles.begin() + counter);
+				if (it == activeParticles.end()) {
+					break;
+				}
 			}
-
+			counter++;
 		}
 
 		if (activeParticles.empty() == true) {
+			std::cout << "It's empty now" << std::endl;
 			isEmitting = false;
 		}
 
@@ -89,14 +97,11 @@ void ParticleSystem::Update(float deltaTime) {
 }
 
 void ParticleSystem::Emit() {
-	//Timer timer;
-
 	Vector2 thisPosition = gameObject->GetComponent<Transform>()->Position();
 
 	Vector2 position;
 	Vector2 velocity;
 	float lifeTime;
-	//Sprite sprite = sprite;
 
 	for (int i = 0; i < data.Amount; i++) {
 		if (activeParticles.size() >= maxParticles) {
@@ -111,12 +116,18 @@ void ParticleSystem::Emit() {
 
 		float lifeTime = Mathf::RandomFloat(data.MinLifeTime, data.MaxLifeTime);
 
-		Particle* particle = new Particle(position, velocity, lifeTime);
+		Particle* particle;
+		if (inactiveParticles.size() > 0) {
+			particle = inactiveParticles[0];
+			inactiveParticles.erase(inactiveParticles.begin());
+			particle->SetData(position, velocity, lifeTime);
+		}
+		else {
+			particle = new Particle(position, velocity, lifeTime);
+		}
 
-		//activeParticles.emplace_back(position, velocity, lifeTime);
 		activeParticles.push_back(particle);
 	}
-	std::cout << "Created particles " << activeParticles.size() << std::endl;
 	isEmitting = true;
 }
 
@@ -124,11 +135,7 @@ void ParticleSystem::SetParticleData(ParticleData data) {
 	this->data = data.Data;
 	emissionIntervall = data.EmissionIntervall;
 	repeat = data.Repeat;
-	//sprite = data.Sprite;
-
 	SetEmissionTime();
-
-	//Emit();
 }
 
 void ParticleSystem::SetEmissionTime() {
@@ -140,10 +147,10 @@ void ParticleSystem::Draw(SDL_Renderer* renderer) {
 	if (isEmitting == true) {
 		SDL_Rect& source = sprite.Rect;
 		SDL_Rect destination;
+
 		for (int i = 0; i < activeParticles.size(); i++) {
 			Particle& p = *activeParticles[i];
 			destination = {(int)p.position.X, (int)p.position.Y, source.w, source.h};
-			//std::cout <<"position for " << i << " " << p.position.ToString() << std::endl;
 			SDL_RenderCopyEx(renderer, sprite.Texture, &source, &destination, 0, nullptr, SDL_FLIP_NONE);
 		}
 	}
