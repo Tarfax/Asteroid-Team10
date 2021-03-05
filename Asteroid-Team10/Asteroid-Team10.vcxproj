@@ -199,6 +199,7 @@
     <ClInclude Include="src\Structs\Sprite.h" />
     <ClInclude Include="src\Structs\Vector2.h" />
     <ClInclude Include="src\TextureCoordinator.h" />
+    <ClInclude Include="src\Utilities\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

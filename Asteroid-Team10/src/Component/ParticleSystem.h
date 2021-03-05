@@ -36,12 +36,16 @@ private:
 	float emissionIntervall;
 
 	bool repeat;
+
+	int maxParticles;
+
 	bool isEmitting;
 	Sprite sprite;
 
 	EmitData data;
-	//std::map<Sprite, std::vector<Particle>> particles;
-	std::vector<Particle> particles;
+	//std::map<Sprite, std::vector<Particle>> activeParticles;
+	std::vector<Particle*> activeParticles;
+	std::vector<Particle*> inactiveParticles;
 
 	
 };

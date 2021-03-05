@@ -30,7 +30,13 @@ private: // object pool stuff
 	bool IsActive();
 
 public:
-
 	static GameObject* GetFromPool();
 	void SetActive(bool comeUpWithName);
+
+	GameObject* asteroid1;
+	GameObject* asteroid2;
+	GameObject* asteroid3;
+	GameObject* asteroid4;
+	GameObject* asteroid5;
+	GameObject* asteroid6;
 };

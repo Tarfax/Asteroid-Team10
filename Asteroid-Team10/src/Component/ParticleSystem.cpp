@@ -1,6 +1,7 @@
 #include "ParticleSystem.h"
 #include "Objects/GameObject.h"
 #include "Math/Mathf.h"
+#include <Utilities/Timer.h>
 
 GameObject* ParticleSystem::GetInstance() {
 	GameObject* gameObject = nullptr;
@@ -12,24 +13,23 @@ GameObject* ParticleSystem::GetInstance() {
 
 	ParticleData particleData;
 	particleData.EmissionIntervall = 2;
-	particleData.Repeat = false;
-	particleData.Sprite.SetTexture("Assets/Sprites/particle.png");
+	particleData.Repeat = true;
 
 	EmitData emitData;
-	emitData.Amount = 20;
+	emitData.Amount = 10000;
 
 	emitData.MinLifeTime = 1;
-	emitData.MaxLifeTime = 3;
+	emitData.MaxLifeTime = 1;
 
-	emitData.MinVelocity.X = Mathf::RandomFloat(-100, 100);
-	emitData.MinVelocity.Y = Mathf::RandomFloat(-100, 100);
-	emitData.MaxVelocity.X = Mathf::RandomFloat(-200, 200);
-	emitData.MaxVelocity.Y = Mathf::RandomFloat(-200, 200);
+	emitData.MinVelocity.X = -100;
+	emitData.MinVelocity.Y = -100;
+	emitData.MaxVelocity.X = 200;
+	emitData.MaxVelocity.Y = 200;
 
-	emitData.MinPositionOffset.X = Mathf::RandomFloat(-0.1f, 0.1f);
-	emitData.MinPositionOffset.Y = Mathf::RandomFloat(-0.1f, 0.1f);
-	emitData.MaxPositionOffset.X = Mathf::RandomFloat(-2, 2);
-	emitData.MaxPositionOffset.Y = Mathf::RandomFloat(-2, 2);
+	emitData.MinPositionOffset.X = -0.1f;
+	emitData.MinPositionOffset.Y = -0.1f;
+	emitData.MaxPositionOffset.X = 2;
+	emitData.MaxPositionOffset.Y = 2;
 
 	particleData.Data = emitData;
 
@@ -46,7 +46,10 @@ void ParticleSystem::Init() {
 	Transform* transform = gameObject->GetComponent<Transform>();
 	transform->Translate({150, 150});
 
-	particles.reserve(999);
+	maxParticles = 1000;
+
+	activeParticles.reserve(maxParticles);
+	inactiveParticles.reserve(maxParticles);
 }
 
 void ParticleSystem::Destroy() {
@@ -55,32 +58,39 @@ void ParticleSystem::Destroy() {
 
 void ParticleSystem::Update(float deltaTime) {
 	if (isEmitting == true) {
-		for (int i = 0; i < particles.size(); i++) {
-			particles[i].Update(deltaTime);
+				Timer timer;
+		for (int i = 0; i < activeParticles.size(); i++) {
+			activeParticles[i]->Update(deltaTime);
 
-			if (particles[i].IsDead() == true) {
-				particles.erase(particles.begin() + i);
-				std::cout << "Erased particle " << i << " size: " << particles.size() << std::endl;
+			if (activeParticles[i]->IsDead() == true) {
+
+				delete activeParticles[i];
+
+				activeParticles.erase(activeParticles.begin() + i);
+				//std::cout << "Erased particle " << i << " size: " << activeParticles.size() << std::endl;
 
 			}
 
 		}
 
-		if (particles.empty() == true) {
+		if (activeParticles.empty() == true) {
 			isEmitting = false;
 		}
 
 	}
 
-	/*timer += deltaTime;
-	if (timer > time) {
-		if (repeat == true) {
+	if (/*isEmitting == false && */repeat == true) {
+		timer -= deltaTime;
+		if (timer < 0.0f) {
+			Emit();
 			SetEmissionTime();
 		}
-	}*/
+	}
 }
 
 void ParticleSystem::Emit() {
+	//Timer timer;
+
 	Vector2 thisPosition = gameObject->GetComponent<Transform>()->Position();
 
 	Vector2 position;
@@ -89,6 +99,9 @@ void ParticleSystem::Emit() {
 	//Sprite sprite = sprite;
 
 	for (int i = 0; i < data.Amount; i++) {
+		if (activeParticles.size() >= maxParticles) {
+			break;
+		}
 
 		position.X = thisPosition.X + (Mathf::RandomFloat(data.MinPositionOffset.X, data.MaxPositionOffset.X));
 		position.Y = thisPosition.Y + (Mathf::RandomFloat(data.MinPositionOffset.Y, data.MaxPositionOffset.Y));
@@ -96,15 +109,14 @@ void ParticleSystem::Emit() {
 		velocity.X = Mathf::RandomFloat(data.MinVelocity.X, data.MaxVelocity.X);
 		velocity.Y = Mathf::RandomFloat(data.MinVelocity.Y, data.MaxVelocity.Y);
 
-		std::cout << "Velocity: " << velocity.ToString() << std::endl;
-
 		float lifeTime = Mathf::RandomFloat(data.MinLifeTime, data.MaxLifeTime);
 
-		particles.emplace_back(position, velocity, lifeTime, sprite);
+		Particle* particle = new Particle(position, velocity, lifeTime);
 
-
+		//activeParticles.emplace_back(position, velocity, lifeTime);
+		activeParticles.push_back(particle);
 	}
-	std::cout << "Created particles " << particles.size() << std::endl;
+	std::cout << "Created particles " << activeParticles.size() << std::endl;
 	isEmitting = true;
 }
 
@@ -112,10 +124,11 @@ void ParticleSystem::SetParticleData(ParticleData data) {
 	this->data = data.Data;
 	emissionIntervall = data.EmissionIntervall;
 	repeat = data.Repeat;
-	sprite = data.Sprite;
+	//sprite = data.Sprite;
+
 	SetEmissionTime();
 
-	Emit();
+	//Emit();
 }
 
 void ParticleSystem::SetEmissionTime() {
@@ -127,8 +140,8 @@ void ParticleSystem::Draw(SDL_Renderer* renderer) {
 	if (isEmitting == true) {
 		SDL_Rect& source = sprite.Rect;
 		SDL_Rect destination;
-		for (int i = 0; i < particles.size(); i++) {
-			Particle& p = particles[i];
+		for (int i = 0; i < activeParticles.size(); i++) {
+			Particle& p = *activeParticles[i];
 			destination = {(int)p.position.X, (int)p.position.Y, source.w, source.h};
 			//std::cout <<"position for " << i << " " << p.position.ToString() << std::endl;
 			SDL_RenderCopyEx(renderer, sprite.Texture, &source, &destination, 0, nullptr, SDL_FLIP_NONE);

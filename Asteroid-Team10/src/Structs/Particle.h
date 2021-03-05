@@ -17,7 +17,6 @@ struct EmitData {
 };
 
 struct ParticleData {
-	Sprite	Sprite;
 	bool	Repeat;
 	float	EmissionIntervall;
 	EmitData Data;
@@ -25,20 +24,17 @@ struct ParticleData {
 
 struct Particle {
 
-	Particle(Vector2 position, Vector2 velocity, float lifeTime, Sprite sprite)
-	: position(position), velocity(velocity), lifeTime(lifeTime), sprite(sprite)
+	Particle(Vector2 position, Vector2 velocity, float lifeTime)
+	: position(position), velocity(velocity), lifeTime(lifeTime)
 	{ 
-		std::cout << "Created with vel: " << velocity.ToString() << std::endl;
 	}
 	Particle(const Particle& other) {
-		std::cout << "Copy copy!" << lifeTime << std::endl;
 		this->position = other.position;
 		this->velocity = other.velocity;
 		this->lifeTime = other.lifeTime;
-		this->sprite = other.sprite;
 	}
 
-	~Particle() { std::cout << "Particle died " << lifeTime << std::endl; }
+	//~Particle() { std::cout << "Particle died " << lifeTime << std::endl; }
 
 	void Draw();
 	void Update(float deltaTime);
@@ -47,7 +43,5 @@ struct Particle {
 	Vector2 position;
 	Vector2 velocity;
 	float lifeTime;
-
-	Sprite sprite;
 
 };
