@@ -34,7 +34,7 @@ Projectile::~Projectile() {
 
 void Projectile::Init() {
 	speed = 450;
-	transform->Scale() * 0.2f;
+	transform->Scale() *= 0.2f;
 }
 
 void Projectile::SetDirection(Vector2 direction) {

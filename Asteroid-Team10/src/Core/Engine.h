@@ -12,6 +12,7 @@
 #include "ObjectPool.h"
 
 
+#include <Component/ParticleSystem.h>
 
 
 const int SCREEN_WIDTH {640};
@@ -52,9 +53,10 @@ private:
 
 	Input* input;
 	GameObject* gameObject;
-	ObjectPool* astPool;
 
 	Time* time;
+
+	ParticleSystem* particleSystem;
 
 	bool isRunning;
 };

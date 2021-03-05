@@ -31,6 +31,17 @@ public:
 		return randomValue;
 	}
 
+	inline static float RandomFloat(float min, float max) {
+		if (randomInit == false) {
+			randomEngine.seed(std::random_device()());
+			randomInit = true;
+		}
+
+		float randomValue = (float)distribution(randomEngine) / (float)std::numeric_limits<uint32_t>::max();
+		randomValue = (max - min) * (randomValue ) + min;
+		return randomValue;
+	}
+
 private:
 	static bool randomInit;
 

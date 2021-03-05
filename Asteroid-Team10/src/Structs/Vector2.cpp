@@ -59,7 +59,7 @@ Vector2 Vector2::Normalized() {
 /// <returns></returns>
 float Vector2::Magnitude()
 {
-	return sqrt((X * X) + (Y *Y));
+	return sqrt((X * X) + (Y * Y));
 }
 
 float Vector2::Distance(const Vector2& v1, const Vector2& v2)
@@ -77,7 +77,7 @@ float Vector2::Direction(const Vector2& v1, const Vector2& v2) {
 	return atan(diff.Y / diff.X) * 180.0f / PI;
 }
 
- float Vector2::DotProduct(const Vector2& v1, const Vector2& v2) {
+float Vector2::DotProduct(const Vector2& v1, const Vector2& v2) {
 	return v1.X * v2.X + v1.Y * v2.Y;
 }
 
@@ -101,22 +101,22 @@ Vector2& Vector2::operator/=(const Vector2& vec)
 	return this->Divide(vec);
 }
 
-Vector2& operator+(Vector2& v1, const Vector2& v2)
+Vector2 operator+(Vector2& v1, const Vector2& v2)
 {
-	return v1.Add(v2);
+	return Vector2(v1.X + v2.X, v1.Y + v2.Y);
 }
 
-Vector2& operator-(Vector2& v1, const Vector2& v2)
+Vector2 operator-(Vector2& v1, const Vector2& v2)
 {
-	return v1.Subtract(v2);
+	return  Vector2(v1.X - v2.X, v1.Y - v2.Y);
 }
 
-Vector2& operator*(Vector2& v1, const Vector2& v2)
+Vector2 operator*(Vector2& v1, const Vector2& v2)
 {
-	return v1.Multiply(v2);
+	return  Vector2(v1.X * v2.X, v1.Y * v2.Y);
 }
 
-Vector2& operator/(Vector2& v1, const Vector2& v2)
+Vector2 operator/(Vector2& v1, const Vector2& v2)
 {
-	return v1.Divide(v2);
+	return  Vector2(v1.X / v2.X, v1.Y / v2.Y);
 }

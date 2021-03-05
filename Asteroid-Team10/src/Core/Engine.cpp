@@ -45,15 +45,7 @@ bool Engine::Init() {
 
 	SetupEventSystem();
 
-	astPool = new ObjectPool();
-
-	astPool->Init<Asteroid>(5);
-
-	astPool->PrintPools();
-
-	GameObject* ast1 = astPool->GetFromPool();
-
-	astPool->PrintPools();
+	particleSystem = ParticleSystem::GetInstance()->GetComponent<ParticleSystem>();
 
 	return true;
 }
@@ -81,6 +73,8 @@ void Engine::Run() {
 
 void Engine::Update() {
 	GameObject::DoUpdate(time->GetDeltaTime());
+
+	//particleSystem->Update(time->GetDeltaTime());
 }
 
 void Engine::Render() {
@@ -90,6 +84,7 @@ void Engine::Render() {
 	// Renderer::RenderYourShit();
 
 	GameObject::DoDraw(renderer);
+	particleSystem->Draw(renderer);
 
 	//Background color
 	SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
