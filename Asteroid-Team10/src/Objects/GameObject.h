@@ -20,6 +20,7 @@ public:
 
 	virtual void Draw(SDL_Renderer* renderer) override;
 
+	void SetActive(bool beActive);
 
 	void Destroy();
 
@@ -65,6 +66,7 @@ private:
 
 	static int nextId;
 	static std::map<int, GameObject*> gameObjects;
+	static std::map<int, GameObject*> gameObjectsInactive;
 	static std::map<int, GameObject*> gameObjectsToDestroy;
 
 };

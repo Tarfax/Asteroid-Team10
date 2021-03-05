@@ -2,6 +2,7 @@
 
 int GameObject::nextId = 0;
 std::map<int, GameObject*> GameObject::gameObjects;
+std::map<int, GameObject*> GameObject::gameObjectsInactive;
 std::map<int, GameObject*> GameObject::gameObjectsToDestroy;
 
 GameObject::GameObject() : id(nextId++) {
@@ -25,6 +26,24 @@ void GameObject::Update(float deltaTime) {
 void GameObject::Draw(SDL_Renderer* renderer) {
 	spriteRenderer->Draw(renderer, transform);
 	collider->Draw(renderer, transform);
+}
+
+void GameObject::SetActive(bool beActive) {
+	std::map<int, GameObject*>::iterator it;
+	if (beActive) {
+		if (gameObjectsInactive.count(id) == 1) {
+			it = gameObjectsInactive.find(id);
+			gameObjects.insert(*it);
+			gameObjectsInactive.erase(it);
+		}
+	}
+	else {
+		if (gameObjects.count(id) == 1) {
+			it = gameObjects.find(id);
+			gameObjectsInactive.insert(*it);
+			gameObjects.erase(it);
+		}
+	}
 }
 
 void GameObject::Destroy() {
