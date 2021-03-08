@@ -156,6 +156,7 @@
     <ClCompile Include="src\Component\Core\SpriteRenderer.cpp" />
     <ClCompile Include="src\Component\Core\Transform.cpp" />
     <ClCompile Include="src\Core\Engine.cpp" />
+    <ClCompile Include="src\Core\GameState.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
     <ClCompile Include="src\FactorySystem\PredefinedObject.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="src\Component\Core\SpriteRenderer.h" />
     <ClInclude Include="src\Component\Core\Transform.h" />
     <ClInclude Include="src\Core\Engine.h" />
+    <ClInclude Include="src\Core\GameState.h" />
     <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Time.h" />
     <ClInclude Include="src\Enums\Layer.h" />
@@ -192,8 +194,11 @@
     <ClInclude Include="src\EventSystem\Event.h" />
     <ClInclude Include="src\EventSystem\EventSystem.h" />
     <ClInclude Include="src\EventSystem\KeyEvent.h" />
+    <ClInclude Include="src\EventSystem\ObjectEvent.h" />
     <ClInclude Include="src\FactorySystem\Factory.h" />
     <ClInclude Include="src\FactorySystem\FactoryObject.h" />
+    <ClInclude Include="src\FactorySystem\ObjectDefinitions.h" />
+    <ClInclude Include="src\FactorySystem\Predef.h" />
     <ClInclude Include="src\FactorySystem\PredefinedObject.h" />
     <ClInclude Include="src\Math\Mathf.h" />
     <ClInclude Include="src\ObjectPool.h" />

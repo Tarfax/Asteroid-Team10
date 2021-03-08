@@ -7,7 +7,9 @@
 #include <iostream>
 #include <Structs/Vector2.h>
 #include <Math/Mathf.h>
-#include <FactorySystem/PredefinedObject.h>
+
+#include <FactorySystem/Predef.h>
+#include <FactorySystem/Factory.h>
 
 void* Engine::emptyPointer;
 
@@ -37,15 +39,18 @@ bool Engine::Init() {
 
 	time = new Time();
 	input = Input::Init();
+
 	TextureCoordinator::Init(renderer);
+	PredefinedObject::Init();
+	gameState = new GameState();
+
 	SetupEventSystem();
 
-	PredefinedObject::Init();
 
 	//gameObject = PlayerController::GetInstance();
 	gameObject = Factory::GetInstance<PlayerController>(Predef::Player);
 
-	//Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl1);
+	Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl1);
 
 	//particleSystem = ParticleSystem::GetInstance()->GetComponent<ParticleSystem>();
 

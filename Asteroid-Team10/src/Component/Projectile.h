@@ -4,12 +4,10 @@
 #include "Component/Core/Transform.h"
 #include "Component/PositionWrapper.h"
 #include "Objects/GameObject.h"
+#include "FactorySystem/FactoryObject.h"
 
-class Projectile : public Behaviour { 
-
+class Projectile : public Behaviour, public FactoryObject { 
 public:
-	static GameObject* GetInstance();
-
 	Projectile(GameObject* gameObject): Behaviour(gameObject) { }
 	
 	~Projectile();
@@ -17,11 +15,13 @@ public:
 	void Update(float deltaTime) override;
 	void Destroy() override;
 
+
 	void SetDirection(Vector2 direction);
+
+	void SetData(ObjectData* data) override;
 
 private:
 	Vector2 direction;
 	float speed;
-	float lifeTime = 0.75f;
-	std::string textureId = "Assets/Sprites/projectile.png";
+	float lifeTime;
 };

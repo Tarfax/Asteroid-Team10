@@ -1,44 +1,17 @@
 #pragma once
-#include <Structs/Sprite.h>
-#include <vector>
-#include <Component/Core/IComponent.h>
-#include <Objects/GameObject.h>
-#include <TextureCoordinator.h>
-
-enum class Predef {
-	Player,
-	Projectile,
-	Asteroid_Lvl1,
-	Asteroid_Lvl2,
-	Asteroid_Lvl3,
-};
-
-class ObjectData {
-public:
-	ObjectData() {}
-	std::vector<std::string> TextureIds;
-	Predef def;
-};
-
-class AsteroidData: public ObjectData {
-public:
-	AsteroidData() {}
-
-	float Speed;
-	float RotationSpeed;
-};
-
-class PlayerData: public ObjectData {
-public:
-	PlayerData() : ObjectData() {}
-
-	float Speed;
-	float RotationSpeed;
-};
-
-
+#include <FactorySystem/ObjectDefinitions.h>
+#include <map>
+#include <iostream> 
 class PredefinedObject {
 public:
+
+	static void Init() {
+		pdAsteroid1();
+		pdAsteroid2();
+		pdPlayer();
+		pdProjectile();
+	}
+
 	static void AddPredefData(Predef def, ObjectData* data) {
 		predefData[def] = data;
 	}
@@ -47,14 +20,10 @@ public:
 		return predefData[def];
 	}
 
-	static void Init() {
-		pdAsteroid1();
-		pdPlayer();
-	}
-
-	PredefinedObject() { }
-
+	
 private:
+	PredefinedObject();
+
 	static void pdAsteroid1() {
 		Predef pre = Predef::Asteroid_Lvl1;
 		AsteroidData* data = new AsteroidData();
@@ -62,13 +31,26 @@ private:
 		data->RotationSpeed = 50.0f;
 		data->Speed = 40.0f;
 		data->def = pre;
+		data->Scale = 1.0f;
+
+		AddPredefData(pre, data);
+	}
+
+	static void pdAsteroid2() {
+		Predef pre = Predef::Asteroid_Lvl1;
+		AsteroidData* data = new AsteroidData();
+		data->TextureIds.push_back("Assets/Sprites/asteroid_1.png");
+		data->RotationSpeed = 50.0f;
+		data->Speed = 40.0f;
+		data->def = pre;
+		data->Scale = 0.66f;
 
 		AddPredefData(pre, data);
 	}
 
 	static void pdPlayer() {
 		Predef pre = Predef::Player;
-		AsteroidData* data = new AsteroidData();
+		PlayerData* data = new PlayerData();
 		data->TextureIds.push_back("Assets/Sprites/ship.png");
 		data->RotationSpeed = 140.0f;
 		data->Speed = 250.0f;
@@ -77,8 +59,19 @@ private:
 		AddPredefData(pre, data);
 	}
 
-	static std::map<Predef, ObjectData*> predefData;
+	static void pdProjectile() {
+		Predef pre = Predef::Projectile;
+		ProjectileData* data = new ProjectileData();
+		data->TextureIds.push_back("Assets/Sprites/projectile.png");
+		data->Speed = 450.0f;
+		data->LifeTime = 0.75f;
+		data->def = pre;
+		data->Scale = 0.2f;
 
+		AddPredefData(pre, data);
+	}
+
+	static std::map<Predef, ObjectData*> predefData;
 
 };
 

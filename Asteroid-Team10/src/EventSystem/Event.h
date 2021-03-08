@@ -5,14 +5,17 @@
 enum class EventType {
 	None = 0,
 	KeyPressed, KeyReleased,
-	WindowClose
+	WindowClose,
+	ObjectDestroyed,
+	ObjectSpawned
 };
 
 enum EventCategory {
 	None = 0,
 	EventCategoryInput = 1,
 	EventCategoryKeyboard = 2,
-	EventCategoryEngine = 3
+	EventCategoryEngine = 3,
+	EventCategoryGameObject = 4
 };
 
 #define EventClassType(type) static EventType GetStaticType() { return EventType::##type;} \

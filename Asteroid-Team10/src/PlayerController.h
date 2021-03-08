@@ -34,8 +34,6 @@ private:
 	bool OnKeyPressedEvent(KeyPressedEvent& e);
 	void HandleInput(float deltaTime);
 
-	std::string textureId = "Assets/Sprites/ship.png";
-
 	Transform* transform;
 	static PlayerController* playerController;
 

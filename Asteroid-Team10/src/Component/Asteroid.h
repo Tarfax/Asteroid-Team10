@@ -1,25 +1,45 @@
 #pragma once
 #include "Component/Behaviour/Behaviour.h"
 #include <unordered_map>
+#include <vector>
 #include <FactorySystem/FactoryObject.h>
+#include <FactorySystem/Factory.h>
+#include <functional>
+#include <EventSystem/Event.h>
 
-class Asteroid : public Behaviour, public FactoryObject {
+class Asteroid: public Behaviour, public FactoryObject {
+	using EventCallbackFunc = std::function<void(Event&)>;
+
 public:
-	Asteroid(GameObject* gameObject) : Behaviour(gameObject) {}
+	Asteroid(GameObject* gameObject): Behaviour(gameObject) {}
 
 	void Init() override;
 	void Update(float deltaTime) override;
 	void Destroy() override;
-
-	static GameObject* GetInstance();
 
 	void SetData(ObjectData* data) override;
 private:
 
 	float speed { };
 	float rotationSpeed { };
-	std::string textureID{"Assets/Sprites/asteroid_1.png"};
-	Vector2 direction{};
+	Vector2 direction { };
+
+public: //Event System
+	static void AddCallback(const EventCallbackFunc& callback);
+	static void RemoveCallback(const EventCallbackFunc& callback);
+
+private: //Event System
+
+	struct CallbackData {
+		CallbackData() { }
+		CallbackData(EventCallbackFunc callback): EventCallback(callback) { }
+
+		EventCallbackFunc EventCallback;
+	};
+
+	static std::vector<CallbackData> callbacks;
+
+
 
 private: // object pool stuff
 

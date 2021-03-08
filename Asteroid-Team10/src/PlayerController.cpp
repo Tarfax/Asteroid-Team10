@@ -7,33 +7,10 @@
 #include <Component/Core/BoxCollider2D.h>
 #include <Component/Core/SpriteRenderer.h>
 #include "Structs/Sprite.h"
+#include "FactorySystem/Factory.h"
+#include "FactorySystem/ObjectDefinitions.h"
 
 PlayerController* PlayerController::playerController = nullptr;
-
-//GameObject* PlayerController::GetInstance() {
-//	GameObject* gameObject = nullptr;
-//
-//	if (playerController == nullptr) {
-//		gameObject = new GameObject();
-//		gameObject->OnInit();
-//
-//		playerController = gameObject->AddComponent<PlayerController>();
-//		SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
-//		Sprite sprite;
-//		sprite.SetTexture(playerController->textureId);
-//		spriteRenderer->SetSprite(sprite);
-//
-//		PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
-//		positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
-//
-//		BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
-//		collider->SetBounds(spriteRenderer->GetRect());
-//		collider->SetLayer(Layer::lPlayer);
-//		collider->SetCollideWithLayer(Layer::lNothing);
-//
-//	}
-//	return gameObject;
-//}
 
 void PlayerController::Init() {
 	if (playerController == nullptr) {
@@ -47,6 +24,9 @@ void PlayerController::Init() {
 		momentumAcceleration = 1;
 		transform = gameObject->GetComponent<Transform>();
 
+		SpriteRenderer* renderer = gameObject->AddComponent<SpriteRenderer>();
+		PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
+
 		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_W);
 		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_A);
 		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_S);
@@ -57,14 +37,14 @@ void PlayerController::Init() {
 
 
 void PlayerController::SetData(ObjectData* data) {
-	//PlayerData* playerData = dynamic_cast<PlayerData*>(data);
-	//speed = playerData->Speed;
-	//rotationSpeed = playerData->RotationSpeed;
+	PlayerData* playerData = dynamic_cast<PlayerData*>(data);
+	speed = playerData->Speed;
+	rotationSpeed = playerData->RotationSpeed;
 
-	SpriteRenderer* renderer = gameObject->AddComponent<SpriteRenderer>();
+	SpriteRenderer* renderer = gameObject->GetComponent<SpriteRenderer>();
 	renderer->SetSprite(Sprite::CreateSprite(data->TextureIds[0]));
 
-	PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
+	PositionWrapper* positionWrapper = gameObject->GetComponent<PositionWrapper>();
 	positionWrapper->SetTexDimensions(renderer->GetRect());
 
 	BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
@@ -141,10 +121,9 @@ void PlayerController::HandleInput(float deltaTime) {
 
 
 void PlayerController::Fire() {
-	std::cout << "Fire!" << std::endl;
+	GameObject* gameObject = Factory::GetInstance<Projectile>(Predef::Projectile);
 
-	GameObject* gameObject = Projectile::GetInstance();
-	Transform* transform = gameObject->GetComponent<Transform>();
+	Transform* projectileTransform = gameObject->GetComponent<Transform>();
 
 	Vector2 position = this->transform->Position();
 	float rotation = this->transform->Rotation();
@@ -158,9 +137,9 @@ void PlayerController::Fire() {
 	position.X += (width / 2 * x) + width / 2;
 	position.Y += (height / 2 * y) + height / 2;
 
-	transform->Position() = position;
+	projectileTransform->Position() = position;
 
-	Projectile* projectile = gameObject->AddComponent<Projectile>();
+	Projectile* projectile = gameObject->GetComponent<Projectile>();
 	projectile->SetDirection(this->transform->forward);
 }
 

@@ -25,8 +25,6 @@ void Input::Listen(float deltaTime) {
 				KeyUp();
 				break;
 			case SDL_QUIT:
-				//hasQuitBeenCalled = true;
-
 				EngineCloseEvent event { };
 				FireEvent(event);
 				break;

@@ -11,9 +11,10 @@
 #include <EventSystem/EngineEvent.h>
 #include "ObjectPool.h"
 
-
+#include <Core/GameState.h>
 #include <Component/ParticleSystem.h>
 #include <Component/Core/Renderer.h>
+
 
 
 const int SCREEN_WIDTH {640};
@@ -52,8 +53,10 @@ private:
 	SDL_Surface* screenSurface;
 	SDL_Surface* image;
 
+	GameState* gameState;
 	Input* input;
 	GameObject* gameObject;
+
 
 	Time* time;
 

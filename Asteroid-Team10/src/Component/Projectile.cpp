@@ -4,36 +4,30 @@
 #include <Component/Core/BoxCollider2D.h>
 #include <Component/Core/SpriteRenderer.h>
 
-GameObject* Projectile::GetInstance() {
-	GameObject* gameObject = nullptr;
-
-	gameObject = new GameObject();
-	//gameObject->OnInit();
-
-
-	return gameObject;
-}
-
-Projectile::~Projectile() {
-	//std::cout << "DESTRUCTION: ~Projectile()" << std::endl;
-}
+Projectile::~Projectile() { }
 
 void Projectile::Init() {
+	gameObject->AddComponent<SpriteRenderer>();
+	gameObject->AddComponent<PositionWrapper>();
+}
 
-	SpriteRenderer* spriteRenderer = gameObject->AddComponent<SpriteRenderer>();
+void Projectile::SetData(ObjectData* data) {
+	ProjectileData* projectileData = dynamic_cast<ProjectileData*>(data);
+	speed = projectileData->Speed;
+	lifeTime = projectileData->LifeTime;
 
-	spriteRenderer->SetSprite(Sprite::CreateSprite(textureId));
+	SpriteRenderer* renderer = gameObject->GetComponent<SpriteRenderer>();
+	renderer->SetSprite(Sprite::CreateSprite(data->TextureIds[0]));
 
-	PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
-	positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
+	PositionWrapper* positionWrapper = gameObject->GetComponent<PositionWrapper>();
+	positionWrapper->SetTexDimensions(renderer->GetRect());
 
 	BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
-	collider->SetBounds(spriteRenderer->GetRect());
+	collider->SetBounds(renderer->GetRect());
 	collider->SetLayer(Layer::lProjectile);
 	collider->SetCollideWithLayer(Layer::lAsteroid);
 
-	speed = 450;
-	transform->Scale() *= 0.2f;
+	transform->Scale() *= projectileData->Scale;
 }
 
 void Projectile::SetDirection(Vector2 direction) {
@@ -41,7 +35,6 @@ void Projectile::SetDirection(Vector2 direction) {
 }
 
 void Projectile::Update(float deltaTime) {
-
 	transform->Translate(Vector2((speed * deltaTime) * direction.X, (speed * deltaTime) * direction.Y));
 
 	lifeTime -= deltaTime;
