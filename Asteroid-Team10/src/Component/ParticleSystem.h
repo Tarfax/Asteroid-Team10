@@ -5,25 +5,28 @@
 #include <vector>
 #include <map>
 
-#include <Component/Core/IComponent.h>
+#include <Component/Core/Renderer.h>
 #include <Structs/Vector2.h>
 
+#include <FactorySystem/FactoryObject.h>
 
 
-
-class ParticleSystem : public IComponent{
+class ParticleSystem : public Renderer , public FactoryObject {
 
 public:
 	static GameObject* GetInstance();
 
-	ParticleSystem(GameObject* gameObject): IComponent(gameObject) {}
+	ParticleSystem(GameObject* gameObject): Renderer(gameObject) {}
 
 	void Init() override;
 	void Destroy() override;
 	void Update(float deltaTime) override;
-	void Draw(SDL_Renderer* renderer);
+	void OnDraw(SDL_Renderer* renderer) override;
+
+	void SetData(ObjectData* data) override;
 
 	void SetParticleData(ParticleData data);
+
 
 private:
 	void SetEmissionTime();
@@ -33,6 +36,7 @@ private:
 	float timer;
 
 	float emissionIntervall;
+	bool startOnActivation;
 
 	bool repeat;
 

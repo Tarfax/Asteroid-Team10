@@ -1,5 +1,6 @@
 #include "GameState.h"
 #include "Component/Asteroid.h"
+#include "Component/ParticleSystem.h"
 
 #define CreateFunctionCallback(x, y) std::bind(&x, y, std::placeholders::_1)
 
@@ -43,14 +44,15 @@ void GameState::Level01() {
 
 bool GameState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 	asteroidsInPlay--;
+	BoxCollider2D* collider = e.gameObject->GetComponent<BoxCollider2D>();
 
 	if (e.Level == 1) {
-		BoxCollider2D* collider = e.gameObject->GetComponent<BoxCollider2D>();
 		for (int i = 0; i < 2; i++) {
 			GameObject* gameObject = Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl2);
 			Transform* transform = gameObject->GetComponent<Transform>();
 			transform->Position() = collider->GetOrigin();
 			asteroidsInPlay++;
+
 		}
 	}
 	else if (e.Level == 2) {
@@ -67,5 +69,9 @@ bool GameState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 	if (asteroidsInPlay == 0) {
 		std::cout << "YOU OWN!!! CHOO CHOO!!" << std::endl;
 	}
+
+	GameObject* gameObject = Factory::GetInstance<ParticleSystem>(Predef::AsteroidExplosion);
+	gameObject->GetComponent<Transform>()->Position() = collider->GetOrigin();
+
 	return false;
 }

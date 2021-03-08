@@ -17,8 +17,9 @@ struct EmitData {
 };
 
 struct ParticleData {
-	bool	Repeat;
-	float	EmissionIntervall;
+	bool	 Repeat;
+	bool     StartOnActivation;
+	float	 EmissionIntervall;
 	EmitData Data;
 };
 

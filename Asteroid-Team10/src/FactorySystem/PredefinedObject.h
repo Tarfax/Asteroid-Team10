@@ -11,6 +11,7 @@ public:
 		pdAsteroid3();
 		pdPlayer();
 		pdProjectile();
+		pdAsteroidExplosion();
 	}
 
 	static void AddPredefData(Predef def, ObjectData* data) {
@@ -20,7 +21,6 @@ public:
 	static ObjectData* GetPredef(Predef def) {
 		return predefData[def];
 	}
-
 	
 private:
 	PredefinedObject();
@@ -89,6 +89,34 @@ private:
 		data->LifeTime = 0.75f;
 		data->def = pre;
 		data->Scale = 0.2f;
+
+		AddPredefData(pre, data);
+	}  
+
+	static void pdAsteroidExplosion() {
+		Predef pre = Predef::AsteroidExplosion;
+		AsteroidExplosionData* data = new AsteroidExplosionData();
+		data->def = pre;
+		data->TextureIds.push_back("Assets/Sprites/asteroidExplosion.png");
+		
+		data->MinLifeTime = 1;
+		data->MaxLifeTime = 3;
+
+		data->EmissionIntervall = 0;
+		data->Repeat = false;
+		data->StartOnActivation = true;
+
+		data->Amount = 100;
+
+		data->MinVelocityX = -200;
+		data->MinVelocityY = -200;
+		data->MaxVelocityX = 200;
+		data->MaxVelocityY = 200;
+
+		data->MinPositionOffsetX = -2;
+		data->MinPositionOffsetY = -2;
+		data->MaxPositionOffsetX = 2;
+		data->MaxPositionOffsetY = 2;
 
 		AddPredefData(pre, data);
 	}

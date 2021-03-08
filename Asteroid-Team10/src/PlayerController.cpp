@@ -61,33 +61,22 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 	static int counter = 0;
 	counter++;
 	if (e.GetKeyCode() == SDL_SCANCODE_W) {
-		//std::cout << "W was pressed\n";
 		targetSpeed = speed;
 
 		momentum.X = IncrementTowards(momentum.X, transform->forward.X, momentumAcceleration, e.GetDeltaTime());
 		momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, momentumAcceleration, e.GetDeltaTime());
 
-		/*momentum.X = transform->forward.X;
-		momentum.Y = transform->forward.Y;*/
+		//momentum.X = transform->forward.X;
+		//momentum.Y = transform->forward.Y;
 		//currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, e.GetDeltaTime());
 	}
 
 	if (e.GetKeyCode() == SDL_SCANCODE_A) {
 		transform->Rotation() -= (double)(rotationSpeed * e.GetDeltaTime());
-		//std::cout << "A was pressed " << counter << " deltaTime: " << e.GetDeltaTime() << "\n";
 	}
-
-	//if (e.GetKeyCode() == SDL_SCANCODE_S) {
-	//	//std::cout << "S was pressed\n";
-	//	targetSpeed = -speed;
-
-	//	momentum.X = IncrementTowards(momentum.X, transform->forward.X, momentumAcceleration, e.GetDeltaTime());
-	//	momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, momentumAcceleration, e.GetDeltaTime());
-	//}
 
 	if (e.GetKeyCode() == SDL_SCANCODE_D) {
 		transform->Rotation() += (double)(rotationSpeed * e.GetDeltaTime());
-		//std::cout << "D was pressed " << counter << "\n";
 	}
 
 	if (e.GetKeyCode() == SDL_SCANCODE_SPACE) {
@@ -103,9 +92,9 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 void PlayerController::Update(float deltaTime) {
 
 	currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, deltaTime);
-	//targetSpeed = currentSpeed * 0.99995f;
-	momentum.X *= 0.9999f;
-	momentum.Y *= 0.9999f;
+	targetSpeed = currentSpeed * 0.99995f;
+	//momentum.X *= 0.9999f;
+	//momentum.Y *= 0.9999f;
 
 	fireRateTimer -= deltaTime;
 
@@ -113,7 +102,6 @@ void PlayerController::Update(float deltaTime) {
 
 
 	transform->Translate(Vector2((currentSpeed * deltaTime) * momentum.X, (currentSpeed * deltaTime) * momentum.Y));
-
 }
 
 

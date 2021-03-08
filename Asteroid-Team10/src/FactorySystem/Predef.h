@@ -6,4 +6,5 @@ enum class Predef {
 	Asteroid_Lvl1,
 	Asteroid_Lvl2,
 	Asteroid_Lvl3,
+	AsteroidExplosion,
 }; 

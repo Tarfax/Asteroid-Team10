@@ -4,7 +4,7 @@
 #include <Utilities/Timer.h>
 
 GameObject* ParticleSystem::GetInstance() {
-	GameObject* gameObject = nullptr;
+	/*GameObject* gameObject = nullptr;
 
 	gameObject = new GameObject();
 	gameObject->OnInit();
@@ -33,20 +33,21 @@ GameObject* ParticleSystem::GetInstance() {
 
 	particleData.Data = emitData;
 
-	ps->SetParticleData(particleData);
+	ps->SetParticleData(particleData);*/
 
 	//SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
 	//spriteRenderer->SetSprite(ps->sprite);
 
-	return gameObject;
+	//return gameObject;
+	return nullptr;
 }
 
 void ParticleSystem::Init() {
-	sprite = Sprite::CreateSprite("Assets/Sprites/particle.png");
-	Transform* transform = gameObject->GetComponent<Transform>();
-	transform->Translate({150, 150});
+	//sprite = Sprite::CreateSprite("Assets/Sprites/particle.png");
+	/*transform->Translate({150, 150});*/
+	//Transform* transform = gameObject->GetComponent<Transform>();
 
-	maxParticles = 100;
+	maxParticles = 500;
 
 	activeParticles.reserve(maxParticles);
 	inactiveParticles.reserve(maxParticles);
@@ -62,6 +63,37 @@ void ParticleSystem::Destroy() {
 	}
 }
 
+void ParticleSystem::SetData(ObjectData* data) {
+	AsteroidExplosionData* explosionData = dynamic_cast<AsteroidExplosionData*>(data);
+	sprite = Sprite::CreateSprite(data->TextureIds[0]);
+
+	ParticleData particleData;
+	particleData.EmissionIntervall = explosionData->EmissionIntervall;
+	particleData.Repeat = explosionData->Repeat;
+	particleData.StartOnActivation = explosionData->StartOnActivation;
+
+	EmitData emitData;
+	emitData.Amount = explosionData->Amount;
+
+	emitData.MinLifeTime = explosionData->MinLifeTime;
+	emitData.MaxLifeTime = explosionData->MaxLifeTime;
+
+	emitData.MinVelocity.X = explosionData->MinVelocityX;
+	emitData.MinVelocity.Y = explosionData->MinVelocityY;
+	emitData.MaxVelocity.X = explosionData->MaxVelocityX;
+	emitData.MaxVelocity.Y = explosionData->MaxVelocityX;
+
+	emitData.MinPositionOffset.X = explosionData->MinPositionOffsetX;
+	emitData.MinPositionOffset.Y = explosionData->MinPositionOffsetY;
+	emitData.MaxPositionOffset.X = explosionData->MaxPositionOffsetX;
+	emitData.MaxPositionOffset.Y = explosionData->MaxPositionOffsetY;
+
+	particleData.Data = emitData;
+
+	SetParticleData(particleData);
+}
+
+
 void ParticleSystem::Update(float deltaTime) {
 	if (isEmitting == true) {
 		std::vector<int> deadParticles;
@@ -69,6 +101,7 @@ void ParticleSystem::Update(float deltaTime) {
 		std::vector<Particle*>::iterator it;
 		int counter = 0;
 		for (it = activeParticles.begin(); it != activeParticles.end(); ++it) {
+
 			Particle* p = *it;
 			p->Update(deltaTime);
 			if (p->IsDead() == true) {
@@ -82,7 +115,7 @@ void ParticleSystem::Update(float deltaTime) {
 		}
 
 		if (activeParticles.empty() == true) {
-			std::cout << "It's empty now" << std::endl;
+			//std::cout << "It's empty now" << std::endl;
 			isEmitting = false;
 		}
 
@@ -95,10 +128,16 @@ void ParticleSystem::Update(float deltaTime) {
 			SetEmissionTime();
 		}
 	}
+
+	if (startOnActivation == true) {
+		Emit();
+		startOnActivation = false;
+	}
 }
 
 void ParticleSystem::Emit() {
-	Vector2 thisPosition = gameObject->GetComponent<Transform>()->Position();
+
+	Vector2 thisPosition = transform->Position();
 
 	Vector2 position;
 	Vector2 velocity;
@@ -136,7 +175,9 @@ void ParticleSystem::SetParticleData(ParticleData data) {
 	this->data = data.Data;
 	emissionIntervall = data.EmissionIntervall;
 	repeat = data.Repeat;
+	startOnActivation = data.StartOnActivation;
 	SetEmissionTime();
+
 }
 
 void ParticleSystem::SetEmissionTime() {
@@ -144,7 +185,7 @@ void ParticleSystem::SetEmissionTime() {
 	timer = time;
 }
 
-void ParticleSystem::Draw(SDL_Renderer* renderer) {
+void ParticleSystem::OnDraw(SDL_Renderer* renderer) {
 	if (isEmitting == true) {
 		SDL_Rect& source = sprite->Rect;
 		SDL_Rect destination;
@@ -156,3 +197,4 @@ void ParticleSystem::Draw(SDL_Renderer* renderer) {
 		}
 	}
 }
+
