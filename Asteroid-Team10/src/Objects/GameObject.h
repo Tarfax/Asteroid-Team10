@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 #include <Component/Core/SpriteRenderer.h>
 #include <Component/Core/BoxCollider2D.h>
 
@@ -68,5 +69,7 @@ private:
 	static std::map<int, GameObject*> gameObjects;
 	static std::map<int, GameObject*> gameObjectsInactive;
 	static std::map<int, GameObject*> gameObjectsToDestroy;
+	static std::set<int> gameObjectsToActivate;
+	static std::set<int> gameObjectsToInactivate;
 
 };

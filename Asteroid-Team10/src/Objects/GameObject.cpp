@@ -4,6 +4,8 @@ int GameObject::nextId = 0;
 std::map<int, GameObject*> GameObject::gameObjects;
 std::map<int, GameObject*> GameObject::gameObjectsInactive;
 std::map<int, GameObject*> GameObject::gameObjectsToDestroy;
+std::set<int> GameObject::gameObjectsToActivate;
+std::set<int> GameObject::gameObjectsToInactivate;
 
 GameObject::GameObject() : id(nextId++) {
 	//id = nextId++;
@@ -29,19 +31,14 @@ void GameObject::Draw(SDL_Renderer* renderer) {
 }
 
 void GameObject::SetActive(bool beActive) {
-	std::map<int, GameObject*>::iterator it;
 	if (beActive) {
 		if (gameObjectsInactive.count(id) == 1) {
-			it = gameObjectsInactive.find(id);
-			gameObjects.insert(*it);
-			gameObjectsInactive.erase(it);
+			gameObjectsToActivate.emplace(id);
 		}
 	}
 	else {
 		if (gameObjects.count(id) == 1) {
-			it = gameObjects.find(id);
-			gameObjectsInactive.insert(*it);
-			gameObjects.erase(it);
+			gameObjectsToInactivate.emplace(id);
 		}
 	}
 }
@@ -82,5 +79,17 @@ void GameObject::CleanUp() {
 	}
 	gameObjectsToDestroy.clear();
 
+	for (int id : gameObjectsToInactivate) {
+		it = gameObjects.find(id);
+		gameObjectsInactive.emplace(*it);
+		gameObjects.erase(it);
+	}
+	gameObjectsToInactivate.clear();
 
+	for (int id : gameObjectsToActivate) {
+		it = gameObjectsInactive.find(id);
+		gameObjects.insert(*it);
+		gameObjectsInactive.erase(it);
+	}
+	gameObjectsToActivate.clear();
 }

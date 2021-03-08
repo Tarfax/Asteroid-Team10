@@ -18,25 +18,4 @@ private:
 	float rotationSpeed{};
 	std::string textureID{"Assets/Sprites/asteroid_1.png"};
 	Vector2 direction{};
-
-private: // object pool stuff
-
-	static std::unordered_map<int, GameObject*> activeObjects;
-	static std::unordered_map<int, GameObject*> inactiveObjects;
-	GameObject* myGameObject;
-	int myID;
-
-	void AddToPool();
-	bool IsActive();
-
-public:
-	static GameObject* GetFromPool();
-	void SetActive(bool comeUpWithName);
-
-	GameObject* asteroid1;
-	GameObject* asteroid2;
-	GameObject* asteroid3;
-	GameObject* asteroid4;
-	GameObject* asteroid5;
-	GameObject* asteroid6;
 };
