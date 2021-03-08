@@ -51,7 +51,4 @@ void Projectile::Update(float deltaTime) {
 	}
 }
 
-void Projectile::Destroy() {
-	std::cout << "Projectile is about to be dead" << std::endl;
-	std::cout << "Scale: " << transform->Scale().ToString() << std::endl;
-}
+void Projectile::Destroy() { }

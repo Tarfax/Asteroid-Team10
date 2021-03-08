@@ -100,7 +100,7 @@ void Input::FireEvent(Event& event) {
 
 bool Input::GetKeyDown(SDL_Scancode key) {
 	if (instance->keyStates[key] == 1) {
-		std::cout << key << " was pressed " << instance->keyStateFrameCount[key] << std::endl;
+		//std::cout << key << " was pressed " << instance->keyStateFrameCount[key] << std::endl;
 
 		if (instance->keyWasCounted == false) {
 			instance->keyStateFrameCount[key]++;

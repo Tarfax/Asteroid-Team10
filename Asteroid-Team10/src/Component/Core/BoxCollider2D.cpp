@@ -22,7 +22,6 @@ void BoxCollider2D::Init() {
 
 void BoxCollider2D::Update(float deltaTime) {
 	if (Input::GetKeyDown(SDL_SCANCODE_B) == true) {
-		std::cout << "B\n";
 		renderCollider = !renderCollider;
 	}
 
