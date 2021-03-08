@@ -2,15 +2,19 @@
 #include <string>
 #include <SDL.h>
 #include <Structs/Vector2.h>
+#include <Structs/Sprite.h>
 #include <map>
+#include <vector>
 
 class TextureCoordinator {
 
 public: 
 	static void Init(SDL_Renderer* renderer);
-	static SDL_Texture* LoadTexture(std::string textureId, Vector2& sizeOut);
+	static Sprite* GetSpriteFromId(std::string textureId);
+	static void Delete(Sprite* texture);
 
 private:
+	static Sprite* LoadTexture(std::string textureId);
 
 	static TextureCoordinator* instance;
 	static TextureCoordinator* GetInstance() {
@@ -18,7 +22,9 @@ private:
 	}
 
 	SDL_Renderer* renderer;
-	std::map<std::string, SDL_Texture*> textures;
-	std::map<std::string, Vector2> textureSize;
-};
 
+	std::map<std::string, int> spritesRefcount;
+	std::map<std::string, Sprite*> sprites;
+	std::map<std::string, SDL_Texture*> textures;
+
+};

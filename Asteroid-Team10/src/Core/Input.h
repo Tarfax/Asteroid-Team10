@@ -65,6 +65,7 @@ private:
 
 	static Input* instance;
 	float deltaTime;
+	bool keyWasCounted;
 
 	SDL_Event e { };
 

@@ -2,7 +2,6 @@
 
 #include "Component/Core/IComponent.h"
 #include "Component/Core/Transform.h"
-//#include "Structs/Vector2.h"
 #include <SDL.h>
 #include <map>
 
@@ -31,7 +30,6 @@ public:
 	void SetBounds(int x, int y, int h, int w);
 	void SetBounds(SDL_Rect rect);
 
-	void Set(int x, int y, Vector2 scale);
 	void SetLayer(Layer layer);
 	void SetCollideWithLayer(Layer layer);
 
@@ -40,6 +38,8 @@ public:
 	bool IsColliding(SDL_Rect testAgainst, Layer collideWithLayer);
 
 private:
+	Transform* transform;
+
 	SDL_Rect bounds;
 	SDL_Rect originalBounds;
 

@@ -7,7 +7,7 @@ GameObject* ParticleSystem::GetInstance() {
 	GameObject* gameObject = nullptr;
 
 	gameObject = new GameObject();
-	gameObject->Init();
+	gameObject->OnInit();
 
 	ParticleSystem* ps = gameObject->AddComponent<ParticleSystem>();
 
@@ -35,14 +35,14 @@ GameObject* ParticleSystem::GetInstance() {
 
 	ps->SetParticleData(particleData);
 
-	SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
-	spriteRenderer->SetSprite(ps->sprite);
+	//SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
+	//spriteRenderer->SetSprite(ps->sprite);
 
 	return gameObject;
 }
 
 void ParticleSystem::Init() {
-	sprite.SetTexture("Assets/Sprites/particle.png");
+	sprite = Sprite::CreateSprite("Assets/Sprites/particle.png");
 	Transform* transform = gameObject->GetComponent<Transform>();
 	transform->Translate({150, 150});
 
@@ -53,7 +53,13 @@ void ParticleSystem::Init() {
 }
 
 void ParticleSystem::Destroy() {
+	for (int i = 0; i < activeParticles.size(); i++) {
+		delete activeParticles[i];
+	}
 
+	for (int i = 0; i < inactiveParticles.size(); i++) {
+		delete inactiveParticles[i];
+	}
 }
 
 void ParticleSystem::Update(float deltaTime) {
@@ -140,13 +146,13 @@ void ParticleSystem::SetEmissionTime() {
 
 void ParticleSystem::Draw(SDL_Renderer* renderer) {
 	if (isEmitting == true) {
-		SDL_Rect& source = sprite.Rect;
+		SDL_Rect& source = sprite->Rect;
 		SDL_Rect destination;
-
+		SDL_Texture* texture = sprite->Texture;
 		for (int i = 0; i < activeParticles.size(); i++) {
 			Particle& p = *activeParticles[i];
 			destination = {(int)p.position.X, (int)p.position.Y, source.w, source.h};
-			SDL_RenderCopyEx(renderer, sprite.Texture, &source, &destination, 0, nullptr, SDL_FLIP_NONE);
+			SDL_RenderCopyEx(renderer, texture, &source, &destination, 0, nullptr, SDL_FLIP_NONE);
 		}
 	}
 }

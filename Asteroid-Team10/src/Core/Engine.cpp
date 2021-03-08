@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "FactorySystem/Factory.h"
 #include "PlayerController.h"
 #include "TextureCoordinator.h"
 #include "Component/Asteroid.h"
@@ -6,6 +7,7 @@
 #include <iostream>
 #include <Structs/Vector2.h>
 #include <Math/Mathf.h>
+#include <FactorySystem/PredefinedObject.h>
 
 void* Engine::emptyPointer;
 
@@ -34,22 +36,18 @@ bool Engine::Init() {
 	screenSurface = SDL_GetWindowSurface(window);
 
 	time = new Time();
-
 	input = Input::Init();
-
 	TextureCoordinator::Init(renderer);
-
-	gameObject = PlayerController::CreateInstance();
-
-	PlayerController* pc = gameObject->GetComponent<PlayerController>();
-
 	SetupEventSystem();
 
-	particleSystem = ParticleSystem::GetInstance()->GetComponent<ParticleSystem>();
+	PredefinedObject::Init();
 
-	//for (int i = 0; i < 1; i++) {
-	//	Asteroid::GetInstance();
-	//}
+	//gameObject = PlayerController::GetInstance();
+	gameObject = Factory::GetInstance<PlayerController>(Predef::Player);
+
+	//Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl1);
+
+	//particleSystem = ParticleSystem::GetInstance()->GetComponent<ParticleSystem>();
 
 	return true;
 }
@@ -58,42 +56,40 @@ void Engine::Run() {
 	isRunning = true;
 	while (isRunning == true) {
 		time->StartTick();
+
 		input->Listen(time->GetDeltaTime());
-		//input->HandleInput();
+
+		GameObject::Init();
 
 		Update();
 		Render();
 
 		GameObject::CleanUp();
 
-		input->Reset();
 		time->EndTick();
-
-		//if (input->hasQuitBeenCalled == true) {
-		//	isRunning = false;
-		//}
 	}
 	Quit();
 }
 
 void Engine::Update() {
-	GameObject::DoUpdate(time->GetDeltaTime());
+	GameObject::Update(time->GetDeltaTime());
 
-	//particleSystem->Update(time->GetDeltaTime());
+	//particleSystem->OnUpdate(time->GetDeltaTime());
 }
 
 void Engine::Render() {
+	//Clear the display
 	SDL_RenderClear(renderer);
 
-	// TODO: Get what's supposed to be rendering
-	// Renderer::RenderYourShit();
-
-	GameObject::DoDraw(renderer);
-	particleSystem->Draw(renderer);
+	//Render all the objects
+	Renderer::Draw(renderer);
+	GameObject::Draw(renderer);
+	//particleSystem->Draw(renderer);
 
 	//Background color
 	SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
 
+	//Render to screen
 	SDL_RenderPresent(renderer);
 }
 

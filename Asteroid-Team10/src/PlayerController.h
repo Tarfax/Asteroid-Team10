@@ -1,32 +1,38 @@
 #pragma once
 
 #include "Component/Core/IComponent.h"
+#include "FactorySystem/FactoryObject.h"
 #include "Component/Core/Transform.h"
 #include <Objects/GameObject.h>
 #include <Action.h>
 #include <EventSystem/Event.h>
 #include <EventSystem/KeyEvent.h>
 
-class PlayerController: public IComponent {
+class PlayerController: public IComponent, public FactoryObject {
 
 public:
-	PlayerController(GameObject* gameObject) : IComponent(gameObject) { }
-		
-	static GameObject* CreateInstance();
+	PlayerController(GameObject* gameObject): IComponent(gameObject) { }
+	~PlayerController() { 
+		std::cout << " player controller detele? " << std::endl;
+		delete playerController; }
+
+	//GameObject* GetInstance();
+
+
+	void Init()					 override;
+	void Update(float deltaTime) override;
+	void Destroy()				 override;
+
+	void SetData(ObjectData* data) override;
+private:
 
 	float IncrementTowards(float currentSpeed, float targetSpeed, float acceleration, float deltaTime);
 
-	void Init();
-	void Update(float deltaTime);
-	void HandleInput(float deltaTime);
 	void Fire();
-	void Destroy();
-
-private:
-	~PlayerController() { delete playerController; }
 
 	void OnEvent(Event& event);
 	bool OnKeyPressedEvent(KeyPressedEvent& e);
+	void HandleInput(float deltaTime);
 
 	std::string textureId = "Assets/Sprites/ship.png";
 

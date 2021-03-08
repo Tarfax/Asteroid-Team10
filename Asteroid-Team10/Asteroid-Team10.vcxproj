@@ -149,6 +149,7 @@
     <ClCompile Include="src\Component\Asteroid.cpp" />
     <ClCompile Include="src\Component\Behaviour\Behaviour.cpp" />
     <ClCompile Include="src\Component\Core\BoxCollider2D.cpp" />
+    <ClCompile Include="src\Component\Core\Renderer.cpp" />
     <ClCompile Include="src\Component\ParticleSystem.cpp" />
     <ClCompile Include="src\Component\PositionWrapper.cpp" />
     <ClCompile Include="src\Component\Projectile.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="src\Core\Engine.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
+    <ClCompile Include="src\FactorySystem\PredefinedObject.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Math\Mathf.cpp" />
     <ClCompile Include="src\Objects\GameObject.cpp" />
@@ -176,6 +178,7 @@
     <ClInclude Include="src\Component\Behaviour\Behaviour.h" />
     <ClInclude Include="src\Component\Core\BoxCollider2D.h" />
     <ClInclude Include="src\Component\Core\IComponent.h" />
+    <ClInclude Include="src\Component\Core\Renderer.h" />
     <ClInclude Include="src\Component\ParticleSystem.h" />
     <ClInclude Include="src\Component\PositionWrapper.h" />
     <ClInclude Include="src\Component\Projectile.h" />
@@ -189,6 +192,9 @@
     <ClInclude Include="src\EventSystem\Event.h" />
     <ClInclude Include="src\EventSystem\EventSystem.h" />
     <ClInclude Include="src\EventSystem\KeyEvent.h" />
+    <ClInclude Include="src\FactorySystem\Factory.h" />
+    <ClInclude Include="src\FactorySystem\FactoryObject.h" />
+    <ClInclude Include="src\FactorySystem\PredefinedObject.h" />
     <ClInclude Include="src\Math\Mathf.h" />
     <ClInclude Include="src\ObjectPool.h" />
     <ClInclude Include="src\Objects\GameObject.h" />

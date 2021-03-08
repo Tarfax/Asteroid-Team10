@@ -39,7 +39,7 @@ private:
 	int maxParticles;
 
 	bool isEmitting;
-	Sprite sprite;
+	Sprite* sprite;
 
 	EmitData data;
 	//std::map<Sprite, std::vector<Particle>> activeParticles;

@@ -13,6 +13,7 @@
 
 
 #include <Component/ParticleSystem.h>
+#include <Component/Core/Renderer.h>
 
 
 const int SCREEN_WIDTH {640};

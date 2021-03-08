@@ -2,20 +2,15 @@
 #include <TextureCoordinator.h>
 #include <iostream>
 
-Sprite::Sprite() { }
+Sprite* Sprite::CreateSprite(std::string textureId) {
+	return TextureCoordinator::GetSpriteFromId(textureId);
+}
 
-void Sprite::SetTexture(const std::string textureId) {
-	TextureId = textureId;
-	Flip = SDL_FLIP_NONE;
-	Texture = TextureCoordinator::LoadTexture(TextureId, Size);
-
-	Rect = {0, 0, (int)Size.X, (int)Size.Y};
-
+Sprite::Sprite(SDL_Texture* texture, Vector2 size, std::string textureId)
+	: TextureId(textureId), Texture(texture), Size(size), Flip(SDL_FLIP_NONE), Rect({0, 0, (int)size.X, (int)size.Y}) {
 }
 
 void Sprite::Destroy() {
-	//SDL_DestroyTexture(Texture);
-	Texture = nullptr;
+	TextureCoordinator::Delete(this);
+	//Texture = nullptr;
 }
-
-

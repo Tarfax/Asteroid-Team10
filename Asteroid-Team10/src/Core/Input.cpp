@@ -12,6 +12,7 @@ Input* Input::Init() {
 
 void Input::Listen(float deltaTime) {
 	this->deltaTime = deltaTime;
+	Reset();
 
 	while (SDL_PollEvent(&e) == true) {
 		// switch to allow further implementation of inputs.
@@ -63,6 +64,7 @@ void Input::SendKeyCallbacks() {
 			}
 
 			keyStateFrameCount[key]++;
+			keyWasCounted = true;
 			//std::cout << "key " << key << " was pressed\n ";
 		}
 	}
@@ -98,12 +100,16 @@ void Input::FireEvent(Event& event) {
 
 bool Input::GetKeyDown(SDL_Scancode key) {
 	if (instance->keyStates[key] == 1) {
-		if (instance->keyStateFrameCount[key] > 0) {
+		std::cout << key << " was pressed " << instance->keyStateFrameCount[key] << std::endl;
+
+		if (instance->keyWasCounted == false) {
 			instance->keyStateFrameCount[key]++;
+		}
+
+		if (instance->keyStateFrameCount[key] > 1) {
 			return false;
 		}
-		//std::cout << key << " was pressed" << std::endl;
-		instance->keyStateFrameCount[key]++;
+
 		return true;
 	}
 	return false;

@@ -7,29 +7,35 @@ bool BoxCollider2D::renderCollider;
 std::map<int, BoxCollider2D*> BoxCollider2D::colliders;
 int BoxCollider2D::nextId;
 
-BoxCollider2D::BoxCollider2D(GameObject* gameObject): IComponent(gameObject) {
-	id = nextId++;
+BoxCollider2D::BoxCollider2D(GameObject* gameObject)
+	: IComponent(gameObject),
+	id(nextId++), bounds({0, 0, 0, 0}), layer(lNothing), collideWithlayer(lNothing),
+	originalBounds({0, 0, 0, 0})
+{
 	colliders[id] = this;
-	//layer = Layer::Asteroid | Layer::Player;
 }
 
-void BoxCollider2D::Init() { }
+void BoxCollider2D::Init() {
+	transform = gameObject->GetComponent<Transform>();
+	//transform = gameObject->GetComponent<Transform>();
+}
 
 void BoxCollider2D::Update(float deltaTime) {
-	static int colissions = 0;
 	if (Input::GetKeyDown(SDL_SCANCODE_B) == true) {
+		std::cout << "B\n";
 		renderCollider = !renderCollider;
 	}
 
 	std::map<int, BoxCollider2D*>::iterator it;
-    	for (it = colliders.begin(); it != colliders.end(); it++) {
+	for (it = colliders.begin(); it != colliders.end(); it++) {
 		if (it->second != this && it->second->IsColliding(this->bounds, collideWithlayer)) {
 			int i = it->second->id;
-			colissions++;
-			std::cout << id <<" collided with " << i << "\n";
-			GameObject::DoDestroy(gameObject);
+			//std::cout << id << " collided with " << i << "\n";
+			GameObject::Destroy(gameObject);
 		}
 	}
+
+	bounds = {(int)transform->X(), (int)transform->Y(), (int)(originalBounds.w * transform->Scale().X), (int)(originalBounds.h * transform->Scale().Y)};
 }
 
 void BoxCollider2D::Destroy() {
@@ -49,10 +55,6 @@ void BoxCollider2D::SetBounds(int x, int y, int h, int w) {
 
 void BoxCollider2D::SetBounds(SDL_Rect rect) {
 	this->originalBounds = rect;
-}
-
-void BoxCollider2D::Set(int x, int y, Vector2 scale) {
-	bounds = {x, y, (int)(originalBounds.w * scale.X), (int)(originalBounds.h * scale.Y)};
 }
 
 void BoxCollider2D::SetLayer(Layer layer) {

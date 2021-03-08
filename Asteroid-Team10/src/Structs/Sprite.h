@@ -3,27 +3,20 @@
 #include <string>
 #include <SDL.h>
 #include <Structs/Vector2.h>
-#include <iostream>
 
 struct Sprite {
 
 public:
-	Sprite();
-	//~Sprite() { std::cout << "deleting sprite" << std::endl; }
-	void SetTexture(const std::string textureId);
+	static Sprite* CreateSprite(std::string textureId);
 
+	Sprite(SDL_Texture* texture, Vector2 size, std::string textureId);
 	void Destroy();
 
-	const SDL_Rect& GetRect() { return Rect; }
-
 public:
-	std::string      TextureId;
+	const std::string TextureId;
 	SDL_Texture* Texture;
-	Vector2		     Size;
-
+	Vector2	Size;
 	SDL_RendererFlip Flip;
-
 	SDL_Rect Rect;
 
-private: 
 };

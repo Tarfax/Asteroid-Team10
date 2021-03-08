@@ -2,28 +2,14 @@
 #include "Math/Mathf.h"
 #include "Structs/Sprite.h"
 #include <Component/Core/BoxCollider2D.h>
+#include <Component/Core/SpriteRenderer.h>
 
 GameObject* Projectile::GetInstance() {
 	GameObject* gameObject = nullptr;
 
 	gameObject = new GameObject();
-	gameObject->Init();
+	//gameObject->OnInit();
 
-	Projectile* projectile = gameObject->AddComponent<Projectile>();
-
-	SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
-
-	Sprite sprite;
-	sprite.SetTexture(projectile->textureId);
-	spriteRenderer->SetSprite(sprite);
-
-	PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
-	positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
-
-	BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
-	collider->SetBounds(spriteRenderer->GetRect());
-	collider->SetLayer(Layer::lProjectile);
-	collider->SetCollideWithLayer(Layer::lAsteroid);
 
 	return gameObject;
 }
@@ -33,6 +19,19 @@ Projectile::~Projectile() {
 }
 
 void Projectile::Init() {
+
+	SpriteRenderer* spriteRenderer = gameObject->AddComponent<SpriteRenderer>();
+
+	spriteRenderer->SetSprite(Sprite::CreateSprite(textureId));
+
+	PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
+	positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
+
+	BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
+	collider->SetBounds(spriteRenderer->GetRect());
+	collider->SetLayer(Layer::lProjectile);
+	collider->SetCollideWithLayer(Layer::lAsteroid);
+
 	speed = 450;
 	transform->Scale() *= 0.2f;
 }
@@ -47,11 +46,12 @@ void Projectile::Update(float deltaTime) {
 
 	lifeTime -= deltaTime;
 	if (lifeTime < 0.0f) {
-		GameObject::DoDestroy(gameObject);
+		GameObject::Destroy(gameObject);
 		lifeTime = 10000;
 	}
 }
 
 void Projectile::Destroy() {
-	//std::cout << "Projectile is about to be dead" << std::endl;
+	std::cout << "Projectile is about to be dead" << std::endl;
+	std::cout << "Scale: " << transform->Scale().ToString() << std::endl;
 }

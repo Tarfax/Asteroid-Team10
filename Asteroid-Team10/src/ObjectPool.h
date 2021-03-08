@@ -1,8 +1,9 @@
 #pragma once
-#include "Component/Asteroid.h"
-#include <set>
 
-template <typename T, typename = std::enable_if_t<std::is_base_of<Behaviour, T>::value>>
+#include <set>
+class FactoryObject;
+
+template <typename T, typename = std::enable_if_t<std::is_base_of<FactoryObject, T>::value>>
 class ObjectPool {
 public:
 	ObjectPool(const int poolSize) { Init(poolSize); }

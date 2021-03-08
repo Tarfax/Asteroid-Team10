@@ -6,30 +6,31 @@
 #include <vector>
 #include <map>
 #include <set>
-#include <Component/Core/SpriteRenderer.h>
+#include <Component/Core/Renderer.h>
 #include <Component/Core/BoxCollider2D.h>
 
 //#include <Component/Transform.h>
-
+class Renderer;
 class GameObject: public IObject {
 
 public:
 	GameObject();
-	virtual void Init();
-	virtual void Start() override {}
-	virtual void Update(float deltaTime) override;
+	void OnInit();
+	void OnStart() override {}
+	void OnUpdate(float deltaTime) override;
+	void OnDraw(SDL_Renderer* renderer) override;
+	void OnDestroy() override;
 
-	virtual void Draw(SDL_Renderer* renderer) override;
 
 	void SetActive(bool beActive);
 
-	void Destroy();
 
 public: //Static
 
-	static void DoUpdate(float deltaTime);
-	static void DoDraw(SDL_Renderer* renderer);
-	static void DoDestroy(GameObject* gameObject);
+	static void Init();
+	static void Update(float deltaTime);
+	static void Draw(SDL_Renderer* renderer);
+	static void Destroy(GameObject* gameObject);
 	static void CleanUp();
 
 
@@ -59,7 +60,7 @@ public: //Components
 	const int id;
 private:
 
-	SpriteRenderer* spriteRenderer;
+	Renderer* renderer;
 	BoxCollider2D* collider;
 	Transform* transform;
 
@@ -69,7 +70,10 @@ private:
 	static std::map<int, GameObject*> gameObjects;
 	static std::map<int, GameObject*> gameObjectsInactive;
 	static std::map<int, GameObject*> gameObjectsToDestroy;
+
 	static std::set<int> gameObjectsToActivate;
 	static std::set<int> gameObjectsToInactivate;
+
+	static std::map<int, GameObject*> gameObjectsToInit;
 
 };

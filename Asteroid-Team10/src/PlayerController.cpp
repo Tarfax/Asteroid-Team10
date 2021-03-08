@@ -5,48 +5,72 @@
 #include <Component/PositionWrapper.h>
 #include <Component/Projectile.h>
 #include <Component/Core/BoxCollider2D.h>
+#include <Component/Core/SpriteRenderer.h>
 #include "Structs/Sprite.h"
 
 PlayerController* PlayerController::playerController = nullptr;
 
-GameObject* PlayerController::CreateInstance() {
-	GameObject* gameObject = nullptr;
-
-	if (playerController == nullptr) {
-		gameObject = new GameObject();
-		gameObject->Init();
-
-		playerController = gameObject->AddComponent<PlayerController>();
-		SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
-		Sprite sprite;
-		sprite.SetTexture(playerController->textureId);
-		spriteRenderer->SetSprite(sprite);
-
-		PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
-		positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
-
-		BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
-		collider->SetBounds(spriteRenderer->GetRect());
-		collider->SetLayer(Layer::lPlayer);
-		collider->SetCollideWithLayer(Layer::lNothing);
-
-	}
-	return gameObject;
-}
+//GameObject* PlayerController::GetInstance() {
+//	GameObject* gameObject = nullptr;
+//
+//	if (playerController == nullptr) {
+//		gameObject = new GameObject();
+//		gameObject->OnInit();
+//
+//		playerController = gameObject->AddComponent<PlayerController>();
+//		SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
+//		Sprite sprite;
+//		sprite.SetTexture(playerController->textureId);
+//		spriteRenderer->SetSprite(sprite);
+//
+//		PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
+//		positionWrapper->SetTexDimensions(spriteRenderer->GetRect());
+//
+//		BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
+//		collider->SetBounds(spriteRenderer->GetRect());
+//		collider->SetLayer(Layer::lPlayer);
+//		collider->SetCollideWithLayer(Layer::lNothing);
+//
+//	}
+//	return gameObject;
+//}
 
 void PlayerController::Init() {
-	targetSpeed = speed;
-	acceleration = 100.0f;
-	rotationSpeed = 120.0f;
-	fireRate = 0.14f;
-	momentumAcceleration = 1;
-	transform = gameObject->GetComponent<Transform>();
+	if (playerController == nullptr) {
+		playerController = this;
 
-	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_W);
-	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_A);
-	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_S);
-	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_D);
-	Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
+		rotationSpeed = 120.0f;
+		targetSpeed = speed;
+
+		acceleration = 100.0f;
+		fireRate = 0.14f;
+		momentumAcceleration = 1;
+		transform = gameObject->GetComponent<Transform>();
+
+		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_W);
+		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_A);
+		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_S);
+		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_D);
+		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
+	}
+}
+
+
+void PlayerController::SetData(ObjectData* data) {
+	//PlayerData* playerData = dynamic_cast<PlayerData*>(data);
+	//speed = playerData->Speed;
+	//rotationSpeed = playerData->RotationSpeed;
+
+	SpriteRenderer* renderer = gameObject->AddComponent<SpriteRenderer>();
+	renderer->SetSprite(Sprite::CreateSprite(data->TextureIds[0]));
+
+	PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
+	positionWrapper->SetTexDimensions(renderer->GetRect());
+
+	BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
+	collider->SetBounds(renderer->GetRect());
+	collider->SetLayer(Layer::lPlayer);
+	collider->SetCollideWithLayer(Layer::lNothing);
 }
 
 void PlayerController::OnEvent(Event& e) {
@@ -108,6 +132,7 @@ void PlayerController::Update(float deltaTime) {
 
 }
 
+
 void PlayerController::HandleInput(float deltaTime) {
 	if (Input::GetKeyDown(SDL_SCANCODE_H)) {
 		transform->Scale().X -= 1 * deltaTime;
@@ -116,6 +141,8 @@ void PlayerController::HandleInput(float deltaTime) {
 
 
 void PlayerController::Fire() {
+	std::cout << "Fire!" << std::endl;
+
 	GameObject* gameObject = Projectile::GetInstance();
 	Transform* transform = gameObject->GetComponent<Transform>();
 
@@ -133,7 +160,7 @@ void PlayerController::Fire() {
 
 	transform->Position() = position;
 
-	Projectile* projectile = gameObject->GetComponent<Projectile>();
+	Projectile* projectile = gameObject->AddComponent<Projectile>();
 	projectile->SetDirection(this->transform->forward);
 }
 

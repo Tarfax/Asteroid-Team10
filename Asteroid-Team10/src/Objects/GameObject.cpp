@@ -4,30 +4,31 @@ int GameObject::nextId = 0;
 std::map<int, GameObject*> GameObject::gameObjects;
 std::map<int, GameObject*> GameObject::gameObjectsInactive;
 std::map<int, GameObject*> GameObject::gameObjectsToDestroy;
+
 std::set<int> GameObject::gameObjectsToActivate;
 std::set<int> GameObject::gameObjectsToInactivate;
+std::map<int, GameObject*> GameObject::gameObjectsToInit;
 
-GameObject::GameObject() : id(nextId++) {
-	//id = nextId++;
-	gameObjects[id] = this;
+GameObject::GameObject(): id(nextId++) {
 	transform = AddComponent<Transform>();
-	spriteRenderer = AddComponent<SpriteRenderer>();
 	collider = AddComponent<BoxCollider2D>();;
+	gameObjectsToInit[id] = this;
 }
 
-void GameObject::Init() { }
+void GameObject::OnInit() {
+	gameObjects[id] = this;
+}
 
-void GameObject::Update(float deltaTime) {
+void GameObject::OnUpdate(float deltaTime) {
 	for (IComponent* c : components) {
 		c->Update(deltaTime);
 	}
-
-	collider->Set(transform->X(), transform->Y(), transform->Scale());
 }
 
-void GameObject::Draw(SDL_Renderer* renderer) {
-	spriteRenderer->Draw(renderer, transform);
-	collider->Draw(renderer, transform);
+void GameObject::OnDraw(SDL_Renderer* renderer) {
+	if (collider != nullptr) {
+		collider->Draw(renderer, transform);
+	}
 }
 
 void GameObject::SetActive(bool beActive) {
@@ -43,7 +44,7 @@ void GameObject::SetActive(bool beActive) {
 	}
 }
 
-void GameObject::Destroy() {
+void GameObject::OnDestroy() {
 	for (IComponent* component : components) {
 		component->Destroy();
 		delete component;
@@ -51,29 +52,39 @@ void GameObject::Destroy() {
 	components.clear();
 }
 
+
 //Static stuff
-void GameObject::DoUpdate(float deltaTime) {
+void GameObject::Init() {
+	std::map<int, GameObject*>::iterator it;
+	for (it = gameObjectsToInit.begin(); it != gameObjectsToInit.end(); it++) {
+		it->second->OnInit();
+	}
+	gameObjectsToInit.clear();
+}
+
+
+void GameObject::Update(float deltaTime) {
 	std::map<int, GameObject*>::iterator it;
 	for (it = gameObjects.begin(); it != gameObjects.end(); it++) {
-		it->second->Update(deltaTime);
+		it->second->OnUpdate(deltaTime);
 	}
 }
 
-void GameObject::DoDraw(SDL_Renderer* renderer) {
+void GameObject::Draw(SDL_Renderer* renderer) {
 	std::map<int, GameObject*>::iterator it;
 	for (it = gameObjects.begin(); it != gameObjects.end(); it++) {
-		it->second->Draw(renderer);
+		it->second->OnDraw(renderer);
 	}
 }
 
-void GameObject::DoDestroy(GameObject* gameObject) {
+void GameObject::Destroy(GameObject* gameObject) {
 	gameObjectsToDestroy[gameObject->id] = gameObject;
 }
 
 void GameObject::CleanUp() {
 	std::map<int, GameObject*>::iterator it;
 	for (it = gameObjectsToDestroy.begin(); it != gameObjectsToDestroy.end(); it++) {
-		it->second->Destroy();
+		it->second->OnDestroy();
 		gameObjects.erase(it->second->id);
 		delete it->second;
 	}
@@ -92,4 +103,5 @@ void GameObject::CleanUp() {
 		gameObjectsInactive.erase(it);
 	}
 	gameObjectsToActivate.clear();
+
 }

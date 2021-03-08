@@ -6,22 +6,22 @@
 #include <Structs/Vector2.h>
 #include <Structs/Sprite.h>
 
-#include <Component/Core/IComponent.h>
+#include <Component/Core/Renderer.h>
 #include <Component/Core/Transform.h>
 
 
 
-class SpriteRenderer: public IComponent {
+class SpriteRenderer: public Renderer {
 
 public:
-	SpriteRenderer(GameObject* gameObject) : IComponent(gameObject) { }
+	SpriteRenderer(GameObject* gameObject) : Renderer(gameObject) { }
 	void Init();
 	void Update(float deltaTime);
 	void Destroy();
 
-	void SetSprite(Sprite sprite);
+	void SetSprite(Sprite* sprite);
 
-	void Draw(SDL_Renderer* renderer, Transform* transform);
+	void OnDraw(SDL_Renderer* renderer);
 
 	SDL_Rect GetRect();
 
@@ -30,7 +30,7 @@ private:
 	/*Vector2 textureSize;
 	std::string textureId;
 	SDL_Texture* texture;*/
-	Sprite sprite;
+	Sprite* sprite;
 
 	//Methods
 private:
