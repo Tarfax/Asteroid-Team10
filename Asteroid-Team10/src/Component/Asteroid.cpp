@@ -6,15 +6,17 @@
 #include <Structs/Sprite.h>
 #include <FactorySystem/PredefinedObject.h>
 
+std::unordered_map<int, GameObject*> Asteroid::activeObjects;
+std::unordered_map<int, GameObject*> Asteroid::inactiveObjects;
+
 GameObject* Asteroid::GetInstance()
 {
 	GameObject* gameObject = nullptr;
 
 	gameObject = new GameObject();
 
-	Asteroid* asteroid = gameObject->AddComponent<Asteroid>();
+	//Asteroid* asteroid = gameObject->AddComponent<Asteroid>();
 
-	asteroid->AddToPool();
 
 	return gameObject;
 }
@@ -34,18 +36,12 @@ void Asteroid::SetData(ObjectData* data) {
 	collider->SetLayer(Layer::lAsteroid);
 	collider->SetCollideWithLayer(Layer::lProjectile);
 
-}
-
-void Asteroid::Init() {
-
+	AddToPool();
 }
 
 void Asteroid::Init() {
 	myGameObject = gameObject;
 	myID = gameObject->id;
-
-
-
 
 	speed = Mathf::RandomFloat() * 100.0f;
 	rotationSpeed = Mathf::RandomFloat() * 100.0f;
