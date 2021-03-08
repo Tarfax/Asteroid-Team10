@@ -16,12 +16,8 @@ void PlayerController::Init() {
 	if (playerController == nullptr) {
 		playerController = this;
 
-		rotationSpeed = 120.0f;
 		targetSpeed = speed;
 
-		acceleration = 100.0f;
-		fireRate = 0.14f;
-		momentumAcceleration = 1;
 		transform = gameObject->GetComponent<Transform>();
 
 		SpriteRenderer* renderer = gameObject->AddComponent<SpriteRenderer>();
@@ -40,6 +36,9 @@ void PlayerController::SetData(ObjectData* data) {
 	PlayerData* playerData = dynamic_cast<PlayerData*>(data);
 	speed = playerData->Speed;
 	rotationSpeed = playerData->RotationSpeed;
+	acceleration = playerData->Acceleration;
+	fireRate = playerData->FireRate;
+	momentumAcceleration = playerData->MomentumAcceleration;
 
 	SpriteRenderer* renderer = gameObject->GetComponent<SpriteRenderer>();
 	renderer->SetSprite(Sprite::CreateSprite(data->TextureIds[0]));
@@ -67,6 +66,9 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 
 		momentum.X = IncrementTowards(momentum.X, transform->forward.X, momentumAcceleration, e.GetDeltaTime());
 		momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, momentumAcceleration, e.GetDeltaTime());
+
+		/*momentum.X = transform->forward.X;
+		momentum.Y = transform->forward.Y;*/
 		//currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, e.GetDeltaTime());
 	}
 
@@ -75,13 +77,13 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 		//std::cout << "A was pressed " << counter << " deltaTime: " << e.GetDeltaTime() << "\n";
 	}
 
-	if (e.GetKeyCode() == SDL_SCANCODE_S) {
-		//std::cout << "S was pressed\n";
-		targetSpeed = -speed;
+	//if (e.GetKeyCode() == SDL_SCANCODE_S) {
+	//	//std::cout << "S was pressed\n";
+	//	targetSpeed = -speed;
 
-		momentum.X = IncrementTowards(momentum.X, transform->forward.X, momentumAcceleration, e.GetDeltaTime());
-		momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, momentumAcceleration, e.GetDeltaTime());
-	}
+	//	momentum.X = IncrementTowards(momentum.X, transform->forward.X, momentumAcceleration, e.GetDeltaTime());
+	//	momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, momentumAcceleration, e.GetDeltaTime());
+	//}
 
 	if (e.GetKeyCode() == SDL_SCANCODE_D) {
 		transform->Rotation() += (double)(rotationSpeed * e.GetDeltaTime());
@@ -101,7 +103,9 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 void PlayerController::Update(float deltaTime) {
 
 	currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, deltaTime);
-	targetSpeed = currentSpeed * 0.9999f;
+	//targetSpeed = currentSpeed * 0.99995f;
+	momentum.X *= 0.9999f;
+	momentum.Y *= 0.9999f;
 
 	fireRateTimer -= deltaTime;
 

@@ -23,6 +23,7 @@ private:
 	float speed { };
 	float rotationSpeed { };
 	Vector2 direction { };
+	int level;
 
 public: //Event System
 	static void AddCallback(const EventCallbackFunc& callback);

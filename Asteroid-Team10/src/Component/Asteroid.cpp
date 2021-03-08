@@ -20,16 +20,18 @@ void Asteroid::Init() {
 	myGameObject = gameObject;
 	myID = gameObject->id;
 
-	speed = Mathf::RandomFloat() * 100.0f;
-	rotationSpeed = Mathf::RandomFloat() * 100.0f;
-	direction.X = Mathf::RandomFloat(-1, 1);
-	direction.Y = Mathf::RandomFloat(-1, 1);
-	direction.Normalize();
+	//speed = Mathf::RandomFloat() * 100.0f;
+
 }
 
 void Asteroid::SetData(ObjectData* data) {
 	AsteroidData* asteroidData = dynamic_cast<AsteroidData*>(data);
 	transform->Scale() = asteroidData->Scale;
+
+	speed = Mathf::RandomFloat(asteroidData->MinSpeed, asteroidData->MaxSpeed);
+
+
+	level = asteroidData->Level;
 
 	SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
 	spriteRenderer->SetSprite(Sprite::CreateSprite(data->TextureIds[0]));
@@ -41,6 +43,13 @@ void Asteroid::SetData(ObjectData* data) {
 	collider->SetBounds(spriteRenderer->GetRect());
 	collider->SetLayer(Layer::lAsteroid);
 	collider->SetCollideWithLayer(Layer::lProjectile);
+
+	rotationSpeed = Mathf::RandomFloat() * 10.0f;
+	direction.X = Mathf::RandomFloat(-1, 1);
+	direction.Y = Mathf::RandomFloat(-1, 1);
+	direction.Normalize();
+
+	transform->Rotation() = Mathf::RandomFloat(0,360);
 
 	AddToPool();
 }
@@ -64,8 +73,8 @@ void Asteroid::Update(float deltaTime)
 	transform->Rotation() += (double)rotationSpeed * (double)deltaTime;
 }
 
-void Asteroid::Destroy() { 
-	ObjectDestroyedEvent event { gameObject };
+void Asteroid::Destroy() {
+	AsteroidDestroyedEvent event = {gameObject, level};
 	for (int i = 0; i < callbacks.size(); i++) {
 		CallbackData data = callbacks[i];
 		data.EventCallback(event);

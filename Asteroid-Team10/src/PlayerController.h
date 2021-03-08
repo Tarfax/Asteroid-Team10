@@ -24,6 +24,8 @@ public:
 	void Destroy()				 override;
 
 	void SetData(ObjectData* data) override;
+
+	static PlayerController* playerController;
 private:
 
 	float IncrementTowards(float currentSpeed, float targetSpeed, float acceleration, float deltaTime);
@@ -35,7 +37,6 @@ private:
 	void HandleInput(float deltaTime);
 
 	Transform* transform;
-	static PlayerController* playerController;
 
 	float speed = 250;
 	float targetSpeed;

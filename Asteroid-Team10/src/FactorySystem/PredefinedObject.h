@@ -8,6 +8,7 @@ public:
 	static void Init() {
 		pdAsteroid1();
 		pdAsteroid2();
+		pdAsteroid3();
 		pdPlayer();
 		pdProjectile();
 	}
@@ -27,23 +28,41 @@ private:
 	static void pdAsteroid1() {
 		Predef pre = Predef::Asteroid_Lvl1;
 		AsteroidData* data = new AsteroidData();
-		data->TextureIds.push_back("Assets/Sprites/asteroid_1.png");
+		data->TextureIds.push_back("Assets/Sprites/asteroid_lvl01_1.png");
 		data->RotationSpeed = 50.0f;
-		data->Speed = 40.0f;
+		data->MinSpeed = 50.0f;
+		data->MaxSpeed = 70.0f;
 		data->def = pre;
 		data->Scale = 1.0f;
+		data->Level = 1;
 
 		AddPredefData(pre, data);
 	}
 
 	static void pdAsteroid2() {
-		Predef pre = Predef::Asteroid_Lvl1;
+		Predef pre = Predef::Asteroid_Lvl2;
 		AsteroidData* data = new AsteroidData();
-		data->TextureIds.push_back("Assets/Sprites/asteroid_1.png");
-		data->RotationSpeed = 50.0f;
-		data->Speed = 40.0f;
+		data->TextureIds.push_back("Assets/Sprites/asteroid_lvl02_1.png");
+		data->RotationSpeed = 33.0f;
+		data->MinSpeed = 70.0f;
+		data->MaxSpeed = 110.0f;
 		data->def = pre;
-		data->Scale = 0.66f;
+		data->Scale = 1.0f;
+		data->Level = 2;
+
+		AddPredefData(pre, data);
+	}
+
+	static void pdAsteroid3() {
+		Predef pre = Predef::Asteroid_Lvl3;
+		AsteroidData* data = new AsteroidData();
+		data->TextureIds.push_back("Assets/Sprites/asteroid_lvl03_1.png");
+		data->RotationSpeed = 25.0f;
+		data->MinSpeed = 70.0f;
+		data->MaxSpeed = 140.0f;
+		data->def = pre;
+		data->Scale = 1.0f;
+		data->Level = 3;
 
 		AddPredefData(pre, data);
 	}
@@ -52,8 +71,11 @@ private:
 		Predef pre = Predef::Player;
 		PlayerData* data = new PlayerData();
 		data->TextureIds.push_back("Assets/Sprites/ship.png");
-		data->RotationSpeed = 140.0f;
+		data->RotationSpeed = 270.0f;
 		data->Speed = 250.0f;
+		data->Acceleration = 250.0f;
+		data->FireRate = 0.17f;
+		data->MomentumAcceleration = 0.4f;
 		data->def = pre;
 
 		AddPredefData(pre, data);

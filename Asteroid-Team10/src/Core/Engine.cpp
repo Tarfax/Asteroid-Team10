@@ -42,15 +42,17 @@ bool Engine::Init() {
 
 	TextureCoordinator::Init(renderer);
 	PredefinedObject::Init();
+
 	gameState = new GameState();
+	gameState->Init();
 
 	SetupEventSystem();
 
 
 	//gameObject = PlayerController::GetInstance();
-	gameObject = Factory::GetInstance<PlayerController>(Predef::Player);
+	
 
-	Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl1);
+	//Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl1);
 
 	//particleSystem = ParticleSystem::GetInstance()->GetComponent<ParticleSystem>();
 
@@ -59,6 +61,7 @@ bool Engine::Init() {
 
 void Engine::Run() {
 	isRunning = true;
+
 	while (isRunning == true) {
 		time->StartTick();
 

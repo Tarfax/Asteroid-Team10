@@ -47,8 +47,12 @@ void GameObject::SetActive(bool beActive) {
 void GameObject::OnDestroy() {
 	for (IComponent* component : components) {
 		component->Destroy();
+	}
+
+	for (IComponent* component : components) {
 		delete component;
 	}
+	
 	components.clear();
 }
 

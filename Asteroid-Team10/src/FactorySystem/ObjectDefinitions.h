@@ -17,8 +17,10 @@ public:
 	AsteroidData() { }
 
 	float Scale;
-	float Speed;
+	float MinSpeed;
+	float MaxSpeed;
 	float RotationSpeed;
+	int Level;
 };
 
 struct PlayerData: public ObjectData {
@@ -27,6 +29,9 @@ public:
 
 	float Speed;
 	float RotationSpeed;
+	float Acceleration;
+	float FireRate;
+	float MomentumAcceleration;
 };
 
 struct ProjectileData: public ObjectData {

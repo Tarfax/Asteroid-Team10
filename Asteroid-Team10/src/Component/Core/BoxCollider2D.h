@@ -16,7 +16,7 @@ inline Layer operator|(Layer a, Layer b) {
 	return static_cast<Layer>(static_cast<int>(a) | static_cast<int>(b));
 }
 
-class BoxCollider2D : public IComponent {
+class BoxCollider2D: public IComponent {
 
 public:
 	BoxCollider2D(GameObject* gameObject);
@@ -32,6 +32,8 @@ public:
 
 	void SetLayer(Layer layer);
 	void SetCollideWithLayer(Layer layer);
+
+	inline Vector2 GetOrigin() { return Vector2 {(float)bounds.x + (bounds.w / 2), (float)bounds.y + (bounds.h / 2)}; }
 
 	inline SDL_Rect GetBounds() const { return bounds; }
 

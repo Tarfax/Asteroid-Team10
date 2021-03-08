@@ -29,8 +29,10 @@ private:
 
 class AsteroidDestroyedEvent: public ObjectDestroyedEvent {
 public:
-	AsteroidDestroyedEvent(GameObject* gameObject)
-		: ObjectDestroyedEvent(gameObject)
+	int Level;
+
+	AsteroidDestroyedEvent(GameObject* gameObject, int level)
+		: ObjectDestroyedEvent(gameObject), Level(level)
 	{
 	}
 
@@ -40,10 +42,10 @@ public:
 		return ss.str();
 	}
 
+
 	EventClassType(ObjectDestroyed)
 
 private:
-	int level;
 	
 	//Other stuff
 	int sound;
