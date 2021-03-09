@@ -16,7 +16,7 @@ class ParticleSystem : public Renderer , public FactoryObject {
 public:
 	static GameObject* GetInstance();
 
-	ParticleSystem(GameObject* gameObject): Renderer(gameObject) {}
+	ParticleSystem(GameObject* gameObject): Renderer(gameObject) { gameObject->name = "ParticleSystem"; }
 
 	void Init() override;
 	void Destroy() override;

@@ -36,6 +36,7 @@ public:
 	inline Vector2 GetOrigin() { return Vector2 {(float)bounds.x + (bounds.w / 2), (float)bounds.y + (bounds.h / 2)}; }
 
 	inline SDL_Rect GetBounds() const { return bounds; }
+	inline void ResetBounds() { bounds = {(int)transform->X(), (int)transform->Y(), (int)(originalBounds.w * transform->Scale().X), (int)(originalBounds.h * transform->Scale().Y)}; }
 
 	bool IsColliding(SDL_Rect testAgainst, Layer collideWithLayer);
 

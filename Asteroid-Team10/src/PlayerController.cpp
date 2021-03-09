@@ -9,6 +9,7 @@
 #include "Structs/Sprite.h"
 #include "FactorySystem/Factory.h"
 #include "FactorySystem/ObjectDefinitions.h"
+#include "SoundSystem/SoundCoordinator.h"
 
 PlayerController* PlayerController::playerController = nullptr;
 
@@ -130,9 +131,11 @@ void PlayerController::Fire() {
 	position.Y += (height / 2 * y) + height / 2;
 
 	projectileTransform->Position() = position;
-
+	gameObject->GetComponent<BoxCollider2D>()->ResetBounds();
 	Projectile* projectile = gameObject->GetComponent<Projectile>();
 	projectile->SetDirection(this->transform->forward);
+
+	SoundCoordinator::PlayEffect("Assets/SoundFx/fire3.wav");
 }
 
 

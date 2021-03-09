@@ -1,6 +1,7 @@
 #include "GameState.h"
 #include "Component/Asteroid.h"
 #include "Component/ParticleSystem.h"
+#include "SoundSystem/SoundCoordinator.h"
 
 #define CreateFunctionCallback(x, y) std::bind(&x, y, std::placeholders::_1)
 
@@ -72,6 +73,6 @@ bool GameState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 
 	GameObject* gameObject = Factory::GetInstance<ParticleSystem>(Predef::AsteroidExplosion);
 	gameObject->GetComponent<Transform>()->Position() = collider->GetOrigin();
-
+	SoundCoordinator::PlayEffect("Assets/SoundFx/explosion.wav");
 	return false;
 }

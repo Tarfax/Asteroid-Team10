@@ -8,13 +8,12 @@
 
 class Projectile : public Behaviour, public FactoryObject { 
 public:
-	Projectile(GameObject* gameObject): Behaviour(gameObject) { }
+	Projectile(GameObject* gameObject): Behaviour(gameObject) { gameObject->name = "Projectile"; }
 	
 	~Projectile();
 	void Init() override;
 	void Update(float deltaTime) override;
 	void Destroy() override;
-
 
 	void SetDirection(Vector2 direction);
 

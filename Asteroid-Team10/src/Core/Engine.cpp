@@ -2,6 +2,7 @@
 #include "FactorySystem/Factory.h"
 #include "PlayerController.h"
 #include "TextureCoordinator.h"
+#include "SoundSystem/SoundCoordinator.h"
 #include "Component/Asteroid.h"
 #include <string>
 #include <iostream>
@@ -11,7 +12,6 @@
 #include <FactorySystem/Predef.h>
 #include <FactorySystem/Factory.h>
 
-void* Engine::emptyPointer;
 
 Engine::Engine() { }
 
@@ -48,7 +48,9 @@ bool Engine::Init() {
 
 	SetupEventSystem();
 
-
+	SoundCoordinator::Init();
+	SoundCoordinator::LoadEffect("Assets/SoundFx/fire3.wav");
+	SoundCoordinator::LoadEffect("Assets/SoundFx/explosion.wav");
 	//gameObject = PlayerController::GetInstance();
 	
 

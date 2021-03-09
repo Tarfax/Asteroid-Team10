@@ -11,7 +11,7 @@ class Asteroid: public Behaviour, public FactoryObject {
 	using EventCallbackFunc = std::function<void(Event&)>;
 
 public:
-	Asteroid(GameObject* gameObject): Behaviour(gameObject) {}
+	Asteroid(GameObject* gameObject): Behaviour(gameObject) { gameObject->name = "Asteroid"; }
 
 	void Init() override;
 	void Update(float deltaTime) override;

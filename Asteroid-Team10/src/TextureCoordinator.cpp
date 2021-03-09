@@ -5,16 +5,13 @@
 
 TextureCoordinator* TextureCoordinator::instance = nullptr;
 
+TextureCoordinator::TextureCoordinator () { }
+
 void TextureCoordinator::Init(SDL_Renderer* renderer) {
 	GetInstance()->renderer = renderer;
 }
 
 Sprite* TextureCoordinator::LoadTexture(std::string textureId) {
-	/*if (GetInstance()->textures.count(textureId) == 1) {
-		sizeOut.X = GetInstance()->textureSize[textureId].X;
-		sizeOut.Y = GetInstance()->textureSize[textureId].Y;
-		return GetInstance()->textures[textureId];
-	}*/
 
 	SDL_Surface* surface = IMG_Load(textureId.c_str());
 	if (surface == nullptr) {

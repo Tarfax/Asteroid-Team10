@@ -21,6 +21,8 @@ void BoxCollider2D::Init() {
 }
 
 void BoxCollider2D::Update(float deltaTime) {
+	bounds = {(int)transform->X(), (int)transform->Y(), (int)(originalBounds.w * transform->Scale().X), (int)(originalBounds.h * transform->Scale().Y)};
+
 	if (Input::GetKeyDown(SDL_SCANCODE_B) == true) {
 		renderCollider = !renderCollider;
 	}
@@ -29,12 +31,11 @@ void BoxCollider2D::Update(float deltaTime) {
 	for (it = colliders.begin(); it != colliders.end(); it++) {
 		if (it->second != this && it->second->IsColliding(this->bounds, collideWithlayer)) {
 			int i = it->second->id;
-			std::cout << id << " collided with " << i << "\n";
+			std::cout << gameObject->ToString() << " collided with " << it->second->gameObject->ToString() << "\n";
 			GameObject::Destroy(gameObject);
 		}
 	}
 
-	bounds = {(int)transform->X(), (int)transform->Y(), (int)(originalBounds.w * transform->Scale().X), (int)(originalBounds.h * transform->Scale().Y)};
 }
 
 void BoxCollider2D::Destroy() {
@@ -65,7 +66,7 @@ void BoxCollider2D::SetCollideWithLayer(Layer layer) {
 }
 
 bool BoxCollider2D::IsColliding(SDL_Rect other, Layer collideWithLayer) {
-	if (layer != collideWithLayer) {
+	if (layer != collideWithLayer || collideWithLayer == Layer::lNothing) {
 		return false;
 	}
 

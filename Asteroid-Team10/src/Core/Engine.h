@@ -21,8 +21,6 @@ const int SCREEN_WIDTH {640};
 const int SCREEN_HEIGHT {480};
 
 class Engine {
-	static void* emptyPointer;
-
 public:
 	Engine();
 	
@@ -31,8 +29,6 @@ public:
 	void Run();
 
 	void Quit();
-
-	static void* GetEmptyPointer() { return emptyPointer; }
 
 private:
 	void Update();

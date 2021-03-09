@@ -55,8 +55,9 @@ public: //Components
 		return nullptr;
 	}
 
+	inline std::string ToString() { return name + " " + std::to_string(id); }
 
-
+	std::string name;
 	const int id;
 private:
 

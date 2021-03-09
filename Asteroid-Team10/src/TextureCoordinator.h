@@ -14,12 +14,13 @@ public:
 	static void Delete(Sprite* texture);
 
 private:
-	static Sprite* LoadTexture(std::string textureId);
-
+	TextureCoordinator();
 	static TextureCoordinator* instance;
 	static TextureCoordinator* GetInstance() {
 		return instance = (instance != nullptr) ? instance : new TextureCoordinator();
 	}
+
+	static Sprite* LoadTexture(std::string textureId);
 
 	SDL_Renderer* renderer;
 

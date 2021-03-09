@@ -11,10 +11,11 @@
 class PlayerController: public IComponent, public FactoryObject {
 
 public:
-	PlayerController(GameObject* gameObject): IComponent(gameObject) { }
+	PlayerController(GameObject* gameObject): IComponent(gameObject) { gameObject->name = "Player Controller"; }
 	~PlayerController() { 
 		std::cout << " player controller detele? " << std::endl;
-		delete playerController; }
+		//delete playerController; 
+	}
 
 	//GameObject* GetInstance();
 
