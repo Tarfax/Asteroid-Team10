@@ -70,6 +70,13 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 		//momentum.X = transform->forward.X;
 		//momentum.Y = transform->forward.Y;
 		//currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, e.GetDeltaTime());
+		float time = 0.03f;
+		static float timer;
+		timer -= e.GetDeltaTime();
+		if (timer <= 0) {
+			SoundCoordinator::PlayEffect("Assets/SoundFx/engine.wav");
+			timer = time;
+		}
 	}
 
 	if (e.GetKeyCode() == SDL_SCANCODE_A) {
@@ -135,7 +142,7 @@ void PlayerController::Fire() {
 	Projectile* projectile = gameObject->GetComponent<Projectile>();
 	projectile->SetDirection(this->transform->forward);
 
-	SoundCoordinator::PlayEffect("Assets/SoundFx/fire3.wav");
+	SoundCoordinator::PlayEffect("Assets/SoundFx/fire4.wav");
 }
 
 

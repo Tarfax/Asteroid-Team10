@@ -49,8 +49,9 @@ bool Engine::Init() {
 	SetupEventSystem();
 
 	SoundCoordinator::Init();
-	SoundCoordinator::LoadEffect("Assets/SoundFx/fire3.wav");
+	SoundCoordinator::LoadEffect("Assets/SoundFx/fire4.wav");
 	SoundCoordinator::LoadEffect("Assets/SoundFx/explosion.wav");
+	SoundCoordinator::LoadEffect("Assets/SoundFx/engine.wav");
 	//gameObject = PlayerController::GetInstance();
 	
 
