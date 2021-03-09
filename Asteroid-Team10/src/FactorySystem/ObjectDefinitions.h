@@ -68,3 +68,17 @@ public:
 	float MaxPositionOffsetY = 2;
 
 };
+
+struct UFOData : public ObjectData {
+public:
+	UFOData() : ObjectData() { }
+
+	float Speed;
+	float PositionRangeMin;
+	float PositionRangeMax;
+	float MagnitudeRangeMin;
+	float MagnitudeRangeMax;
+	float FrequencyRangeMin;
+	float FrequencyRangeMax;
+	float ProjectileSpeed;
+};

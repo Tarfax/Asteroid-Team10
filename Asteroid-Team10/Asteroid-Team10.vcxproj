@@ -155,6 +155,7 @@
     <ClCompile Include="src\Component\Projectile.cpp" />
     <ClCompile Include="src\Component\Core\SpriteRenderer.cpp" />
     <ClCompile Include="src\Component\Core\Transform.cpp" />
+    <ClCompile Include="src\Component\UFO.cpp" />
     <ClCompile Include="src\Core\Engine.cpp" />
     <ClCompile Include="src\Core\GameState.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="src\Component\Projectile.h" />
     <ClInclude Include="src\Component\Core\SpriteRenderer.h" />
     <ClInclude Include="src\Component\Core\Transform.h" />
+    <ClInclude Include="src\Component\UFO.h" />
     <ClInclude Include="src\Core\Engine.h" />
     <ClInclude Include="src\Core\GameState.h" />
     <ClInclude Include="src\Core\Input.h" />

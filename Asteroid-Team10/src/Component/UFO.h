@@ -1,0 +1,28 @@
+#pragma once
+#include "Component/Behaviour/Behaviour.h"
+#include "FactorySystem/FactoryObject.h"
+
+class UFO : public Behaviour, public FactoryObject {
+
+public:
+	UFO(GameObject* gameObject) : Behaviour(gameObject) {}
+
+	void Init() override;
+	void Update(float deltaTime) override;
+	void Destroy() override;
+
+	void SetData(ObjectData* data) override;
+private:
+
+	Vector2 direction{ 0, 0 };
+	float speed{};
+	float position{};
+	float magnitude{};
+	float frequency{};
+	float projectileSpeed{};
+
+	void Fire();
+
+	int counter{};
+	int framesToNextShot{};
+};

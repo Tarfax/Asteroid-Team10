@@ -17,8 +17,9 @@ struct Vector2 {
 
 	Vector2& Normalize();
 	static float Distance(const Vector2& v1, const Vector2& v2);
-	static float Direction(const Vector2& v1, const Vector2& v2);
+	static Vector2 Direction(const Vector2& to, const Vector2& from);
 	static float DotProduct(const Vector2& v1, const Vector2& v2);
+	static float ToRadians(const Vector2& v1, const Vector2& v2);
 	Vector2 Normalized();
 	float Magnitude();
 

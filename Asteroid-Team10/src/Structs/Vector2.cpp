@@ -68,17 +68,27 @@ float Vector2::Distance(const Vector2& v1, const Vector2& v2)
 	return distance;
 }
 
-float Vector2::Direction(const Vector2& v1, const Vector2& v2) {
+Vector2 Vector2::Direction(const Vector2& to, const Vector2& from) {
+	Vector2 diff;
+
+	diff.X = to.X - from.X;
+	diff.Y = to.Y - from.Y;
+
+	return diff.Normalized();
+}
+
+float Vector2::DotProduct(const Vector2& v1, const Vector2& v2) {
+	return v1.X * v2.X + v1.Y * v2.Y;
+}
+
+float Vector2::ToRadians(const Vector2& v1, const Vector2& v2)
+{
 	Vector2 diff;
 
 	diff.X = ((v1.X > v2.X) ? v1.X - v2.X : v2.X - v1.X);
 	diff.Y = ((v1.Y > v2.Y) ? v1.Y - v2.Y : v2.Y - v1.Y);
 
 	return atan(diff.Y / diff.X) * 180.0f / PI;
-}
-
-float Vector2::DotProduct(const Vector2& v1, const Vector2& v2) {
-	return v1.X * v2.X + v1.Y * v2.Y;
 }
 
 Vector2& Vector2::operator+=(const Vector2& vec)
