@@ -24,11 +24,11 @@ void PlayerController::Init() {
 		SpriteRenderer* renderer = gameObject->AddComponent<SpriteRenderer>();
 		PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
 
-		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_W);
-		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_A);
-		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_S);
-		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_D);
-		Input::AddInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
+		Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_W);
+		Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_A);
+		Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_S);
+		Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_D);
+		Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
 	}
 }
 
@@ -55,7 +55,7 @@ void PlayerController::SetData(ObjectData* data) {
 
 void PlayerController::OnEvent(Event& e) {
 	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<KeyPressedEvent>(CreateFunctionCallback(PlayerController::OnKeyPressedEvent, this));
+	dispatcher.Dispatch<KeyPressedEvent>(BindFunction(PlayerController::OnKeyPressedEvent, this));
 }
 
 bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
@@ -158,10 +158,10 @@ float PlayerController::IncrementTowards(float n, float target, float alpha, flo
 }
 
 void PlayerController::Destroy() {
-	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_W);
-	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_A);
-	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_S);
-	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_D);
-	Input::RemoveInputCallback(CreateFunctionCallback(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
+	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_W);
+	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_A);
+	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_S);
+	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_D);
+	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
 }
 

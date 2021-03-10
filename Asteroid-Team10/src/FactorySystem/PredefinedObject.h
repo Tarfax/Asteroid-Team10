@@ -139,6 +139,23 @@ private:
 		AddPredefData(pre, data);
 	}
 
+	static void pdMainMenu() {
+		Predef pre = Predef::MainMenu;
+		UFOData* data = new UFOData();
+		data->TextureIds.push_back("Assets/Sprites/UFO.png");
+		data->Speed = 50.0f;
+		data->PositionRangeMin = 60.0f;
+		data->PositionRangeMax = 400.0f;
+		data->MagnitudeRangeMin = 40.0f;
+		data->MagnitudeRangeMax = 60.0f;
+		data->FrequencyRangeMin = 0.02f;
+		data->FrequencyRangeMax = 0.04f;
+		data->ProjectileSpeed = 0.5f;
+		data->def = pre;
+
+		AddPredefData(pre, data);
+	}
+
 	static std::map<Predef, ObjectData*> predefData;
 };
 

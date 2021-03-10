@@ -1,13 +1,16 @@
 #include "TextureCoordinator.h"
 #include <stdio.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <iostream>
+#include <string>
 
 TextureCoordinator* TextureCoordinator::instance = nullptr;
 
-TextureCoordinator::TextureCoordinator () { }
+TextureCoordinator::TextureCoordinator() { }
 
 void TextureCoordinator::Init(SDL_Renderer* renderer) {
+	TTF_Init();
 	GetInstance()->renderer = renderer;
 }
 
@@ -19,6 +22,8 @@ Sprite* TextureCoordinator::LoadTexture(std::string textureId) {
 		return nullptr;
 	}
 
+	Vector2 size = Vector2(surface->w, surface->h);
+
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(GetInstance()->renderer, surface);
 
 	if (texture == nullptr) {
@@ -26,11 +31,10 @@ Sprite* TextureCoordinator::LoadTexture(std::string textureId) {
 		return nullptr;
 	}
 
-	Vector2 size = Vector2(surface->w, surface->h);
-
-	GetInstance()->textures[textureId] = texture;
+	SDL_FreeSurface(surface);
 
 	Sprite* sprite = new Sprite(texture, size, textureId);
+	//GetInstance()->textures[textureId] = texture;
 
 	return sprite;
 }
@@ -38,7 +42,7 @@ Sprite* TextureCoordinator::LoadTexture(std::string textureId) {
 Sprite* TextureCoordinator::GetSpriteFromId(std::string textureId) {
 
 	if (GetInstance()->sprites.count(textureId) == 1) {
-		GetInstance()->spritesRefcount[textureId]++;
+		GetInstance()->refcount[GetInstance()->sprites[textureId]]++;
 		return GetInstance()->sprites[textureId];
 	}
 
@@ -50,24 +54,61 @@ Sprite* TextureCoordinator::GetSpriteFromId(std::string textureId) {
 	}
 
 	GetInstance()->sprites[textureId] = sprite;
-	GetInstance()->spritesRefcount[textureId]++;
+	GetInstance()->refcount[sprite]++;
 
 	return sprite;
 }
 
-void TextureCoordinator::Delete(Sprite* texture) {
+Sprite* TextureCoordinator::GetSpriteFromText(std::string text, std::string fontId, SDL_Color color, int size) {
+	int hashCode = HashCode(text, fontId, size, color);
+	if (GetInstance()->fonts.count(hashCode) == 1) {
+		GetInstance()->refcount[GetInstance()->fonts[hashCode]]++;
+		std::cout << "TextureCoordinator::GetText reuse of "  << fontId << std::endl;
 
-	if (GetInstance()->sprites.count(texture->TextureId) == 1) {
-		GetInstance()->spritesRefcount[texture->TextureId]--;
-		if (GetInstance()->spritesRefcount[texture->TextureId] <= 0) {
-
-			//SDL_DestroyTexture(texture->Texture);
-
-			//GetInstance()->sprites.erase(texture->TextureId);
-			//GetInstance()->textures.erase(texture->TextureId);
-
-			//delete texture;
-		}
+		return GetInstance()->fonts[hashCode];
 	}
 
+	TTF_Font* font = TTF_OpenFont(fontId.c_str(), size);
+	SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(GetInstance()->renderer, surface);
+
+	Sprite* sprite = new Sprite(texture, Vector2(surface->w, surface->h), fontId);
+	sprite->IsText = true;
+	GetInstance()->fonts[hashCode] = sprite;
+	GetInstance()->fontHash[sprite] = hashCode;
+
+	TTF_CloseFont(font);
+	SDL_FreeSurface(surface);
+
+	GetInstance()->refcount[sprite]++;
+
+	std::cout << "TextureCoordinator::GetText creation of " << fontId << std::endl;
+	return sprite;
+}
+
+void TextureCoordinator::Delete(Sprite* sprite) {
+
+	if (GetInstance()->refcount.count(sprite) == 1) {
+		//std::cout << "TextureCoordinator::Delete called on: " << sprite->TextureId << " and count was " << GetInstance()->refcount[sprite] << std::endl;
+		GetInstance()->refcount[sprite]--;
+	}
+
+}
+
+
+//Just a simple hash to store this specific text
+//I know it can give same result if r g b are switched around. Not an issue for this small game though
+int TextureCoordinator::HashCode(const std::string& msg, const std::string& id, int size, SDL_Color color) {
+	int hash = 0;
+
+	for (size_t i = 0; i < msg.size(); ++i) {
+		hash = hash * 31 + static_cast<int>(msg[i]);
+	}
+
+	for (size_t i = 0; i < id.size(); ++i) {
+		hash = hash * 31 + static_cast<int>(id[i]);
+	}
+
+	hash = hash + size + color.r + color.g + color.b + color.a;
+	return hash;
 }

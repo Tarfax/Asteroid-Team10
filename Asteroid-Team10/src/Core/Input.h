@@ -10,7 +10,7 @@
 /// </summary>
 /// <param name="x">The function</param>
 /// <param name="y">The instance of the class</param>
-#define CreateFunctionCallback(x, y) std::bind(&x, y, std::placeholders::_1)
+#define BindFunction(x, y) std::bind(&x, y, std::placeholders::_1)
 
 class Input {
 	using EventCallbackFunc = std::function<void(Event&)>;
@@ -54,7 +54,7 @@ public:
 		for (int i = 0; i < instance->inputCallbacks[keyCode].size(); i++) {
 			CallbackData cd = instance->inputCallbacks[keyCode][i];
 			if (cd.EventCallback.target_type().hash_code() == callback.target_type().hash_code()) {
-				//std::cout << "callback found" << std::endl;
+				//std::cout << "onEnterPressed found" << std::endl;
 				instance->inputCallbacks[keyCode].erase(instance->inputCallbacks[keyCode].begin() + i);
 				return;
 			}

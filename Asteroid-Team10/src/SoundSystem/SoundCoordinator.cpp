@@ -39,6 +39,9 @@ void SoundCoordinator::PlayEffect(std::string id) {
 }
 
 void SoundCoordinator::iPlayEffect(std::string id) {
+	if (effectMap.count(id) != 1) {
+		LoadEffect(id);
+	}
 	if (Mix_PlayChannel(-1, effectMap[id], 0) == -1) {
 		std::cout << Mix_GetError() << ": " << id << std::endl;
 	}

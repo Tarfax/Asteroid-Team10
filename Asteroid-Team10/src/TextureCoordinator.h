@@ -11,6 +11,7 @@ class TextureCoordinator {
 public: 
 	static void Init(SDL_Renderer* renderer);
 	static Sprite* GetSpriteFromId(std::string textureId);
+	static Sprite* GetSpriteFromText(std::string text, std::string fontId, SDL_Color color, int size);
 	static void Delete(Sprite* texture);
 
 private:
@@ -24,8 +25,13 @@ private:
 
 	SDL_Renderer* renderer;
 
-	std::map<std::string, int> spritesRefcount;
 	std::map<std::string, Sprite*> sprites;
-	std::map<std::string, SDL_Texture*> textures;
+
+	std::map<int, Sprite*> fonts;
+	std::map<Sprite*, int> fontHash;
+	
+	std::map<Sprite*, int> refcount;
+
+	static int HashCode(const std::string& msg, const std::string& id, int size, SDL_Color color);
 
 };

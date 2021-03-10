@@ -82,3 +82,10 @@ public:
 	float FrequencyRangeMax;
 	float ProjectileSpeed;
 };
+
+struct MainMenuData: public ObjectData {
+public:
+	MainMenuData(): ObjectData() { }
+	
+	
+};

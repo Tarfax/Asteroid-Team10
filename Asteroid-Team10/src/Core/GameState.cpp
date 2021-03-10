@@ -3,25 +3,45 @@
 #include "Component/ParticleSystem.h"
 #include "SoundSystem/SoundCoordinator.h"
 
-#define CreateFunctionCallback(x, y) std::bind(&x, y, std::placeholders::_1)
+#define BindFunction(x, y) std::bind(&x, y, std::placeholders::_1)
 
 const int SCREEN_WIDTH {640};
 const int SCREEN_HEIGHT {480};
 
 GameState::GameState() {
-	Asteroid::AddCallback(CreateFunctionCallback(GameState::OnEvent, this));
-	GameObject* gameObject = Factory::GetInstance<PlayerController>(Predef::Player);
-	playerTransform = gameObject->GetComponent<Transform>();
+	Asteroid::AddCallback(BindFunction(GameState::OnEvent, this));
 }
 
 void GameState::Init() {
-	Level01();
-	playerTransform->Position() = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	timer = time;
+	CreateMainMenu();
+
+	//Level01();
+	
 }
 
-void GameState::OnEvent(Event& e) {
-	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<AsteroidDestroyedEvent>(CreateFunctionCallback(GameState::OnAsteroidDestroyed, this));
+void GameState::CreateMainMenu() {
+	mainMenu = new MainMenu();
+	mainMenu->Init();
+	mainMenu->AddCallback(BindFunction(GameState::OnEvent, this));
+}
+
+
+void GameState::Update(float deltaTime) {
+	if (callFunctionNextFrame == true) {
+		callback(nullptr);
+		callback = nullptr;
+		callFunctionNextFrame = false;
+	}
+
+	//if (mainMenu == nullptr) {
+	//	timer -= deltaTime;
+	//}
+
+	//if (mainMenu == nullptr && timer <= 0) {
+	//	CreateMainMenu();
+	//	timer = 0.25f;
+	//}
 }
 
 
@@ -42,6 +62,9 @@ void GameState::Level01() {
 	}
 
 }
+
+
+
 
 bool GameState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 	asteroidsInPlay--;
@@ -66,7 +89,7 @@ bool GameState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 		}
 	}
 
-	std::cout << "Asteroids left " << asteroidsInPlay << std::endl;
+	//std::cout << "Asteroids left " << asteroidsInPlay << std::endl;
 	if (asteroidsInPlay == 0) {
 		std::cout << "YOU OWN!!! CHOO CHOO!!" << std::endl;
 	}
@@ -76,3 +99,44 @@ bool GameState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 	SoundCoordinator::PlayEffect("Assets/SoundFx/explosion.wav");
 	return false;
 }
+
+/* ---  EVENTS --- */
+
+void GameState::OnEvent(Event& e) {
+	EventDispatcher dispatcher(e);
+	dispatcher.Dispatch<AsteroidDestroyedEvent>(BindFunction(GameState::OnAsteroidDestroyed, this));
+	dispatcher.Dispatch<MenuQuitGameEvent>(BindFunction(GameState::OnMenuQuitGameEvent, this));
+	dispatcher.Dispatch<MenuStartGameEvent>(BindFunction(GameState::OnMenuStartGameEvent, this));
+}
+
+bool GameState::OnMenuQuitGameEvent(MenuQuitGameEvent& e) {
+	callback = BindFunction(GameState::QuitGame, this);
+	callFunctionNextFrame = true;
+	return true;
+}
+
+bool GameState::OnMenuStartGameEvent(MenuStartGameEvent& e) {
+	callback = BindFunction(GameState::StartGame, this);
+	callFunctionNextFrame = true;
+	return true;
+}
+
+void GameState::QuitGame(void*) {
+	DestroyMainMenu();
+}
+
+void GameState::StartGame(void*) {
+	DestroyMainMenu();
+	GameObject* gameObject = Factory::GetInstance<PlayerController>(Predef::Player);
+	playerTransform = gameObject->GetComponent<Transform>();
+	playerTransform->Position() = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	Level01();
+}
+
+void GameState::DestroyMainMenu() {
+	mainMenu->Destroy();
+	delete mainMenu;
+	mainMenu = nullptr;
+}
+
+

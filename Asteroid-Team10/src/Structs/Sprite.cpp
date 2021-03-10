@@ -12,5 +12,4 @@ Sprite::Sprite(SDL_Texture* texture, Vector2 size, std::string textureId)
 
 void Sprite::Destroy() {
 	TextureCoordinator::Delete(this);
-	//Texture = nullptr;
 }

@@ -73,6 +73,7 @@ void Engine::Run() {
 		GameObject::Init();
 
 		Update();
+		gameState->Update(time->GetDeltaTime());
 		Render();
 
 		GameObject::CleanUp();
@@ -121,15 +122,15 @@ void Engine::Quit() {
 }
 
 void Engine::SetupEventSystem() {
-	//input->RemoveCallback(CreateFunctionCallback(Engine::OnEvent, this), SDL_SCANCODE_F);
-	input->AddCallback(CreateFunctionCallback(Engine::OnEvent, this));
+	//input->RemoveCallback(BindFunction(Engine::OnEvent, this), SDL_SCANCODE_F);
+	input->AddCallback(BindFunction(Engine::OnEvent, this));
 	
 }
 
 
 void Engine::OnEvent(Event& e) {
 	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<EngineCloseEvent>(CreateFunctionCallback(Engine::OnWindowClose, this));
+	dispatcher.Dispatch<EngineCloseEvent>(BindFunction(Engine::OnWindowClose, this));
 }
 
 bool Engine::OnWindowClose(EngineCloseEvent& e) {

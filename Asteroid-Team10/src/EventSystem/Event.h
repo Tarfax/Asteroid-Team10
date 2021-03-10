@@ -6,8 +6,8 @@ enum class EventType {
 	None = 0,
 	KeyPressed, KeyReleased,
 	WindowClose,
-	ObjectDestroyed,
-	ObjectSpawned
+	ObjectDestroyed, ObjectSpawned,
+	MenuStartGame, MenuCredits, MenuSettings, MenuHighScore, MenuQuitGame,
 };
 
 enum EventCategory {
@@ -15,7 +15,8 @@ enum EventCategory {
 	EventCategoryInput = 1,
 	EventCategoryKeyboard = 2,
 	EventCategoryEngine = 3,
-	EventCategoryGameObject = 4
+	EventCategoryGameObject = 4,
+	EventCategoryMenu = 5,
 };
 
 #define EventClassType(type) static EventType GetStaticType() { return EventType::##type;} \

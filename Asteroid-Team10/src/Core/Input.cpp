@@ -145,7 +145,7 @@ void Input::RemoveCallback(const EventCallbackFunc& callback) {
 	for (int i = 0; i < callbacks.size(); i++) {
 		CallbackData cd = callbacks[i];
 		if (cd.EventCallback.target_type().hash_code() == callback.target_type().hash_code()) {
-			//std::cout << "callback found" << std::endl;
+			//std::cout << "onEnterPressed found" << std::endl;
 			callbacks.erase(callbacks.begin() + i);
 			return;
 		}
@@ -154,15 +154,15 @@ void Input::RemoveCallback(const EventCallbackFunc& callback) {
 
 /* --Can't get this to work? */
 
-//void Input::AddInputCallback(const EventCallbackFunc& callback, SDL_Scancode keyCode) {
-//	instance->inputCallbacks[keyCode].emplace_back(callback);
+//void Input::AddInputCallback(const EventCallbackFunc& onEnterPressed, SDL_Scancode keyCode) {
+//	instance->inputCallbacks[keyCode].emplace_back(onEnterPressed);
 //}
 //
-//void Input::RemoveInputCallback(const EventCallbackFunc& callback, SDL_Scancode keyCode) {
+//void Input::RemoveInputCallback(const EventCallbackFunc& onEnterPressed, SDL_Scancode keyCode) {
 //	for (int i = 0; i < instance->inputCallbacks[keyCode].size(); i++) {
 //		CallbackData cd = instance->inputCallbacks[keyCode][i];
-//		if (cd.EventCallback.target_type().hash_code() == callback.target_type().hash_code()) {
-//			//std::cout << "callback found" << std::endl;
+//		if (cd.EventCallback.target_type().hash_code() == onEnterPressed.target_type().hash_code()) {
+//			//std::cout << "onEnterPressed found" << std::endl;
 //			instance->inputCallbacks[keyCode].erase(instance->inputCallbacks[keyCode].begin() + i);
 //			return;
 //		}
