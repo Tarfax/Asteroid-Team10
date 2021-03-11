@@ -14,7 +14,7 @@ class MainMenuState : public GameState {
 public:
 	MainMenuState() {}
 	~MainMenuState() {
-		std::cout << "deleted main menu" << std::endl;
+		//std::cout << "deleted main menu" << std::endl;
 	}
 
 	std::string ToString() { 

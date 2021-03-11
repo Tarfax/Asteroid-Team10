@@ -25,6 +25,14 @@ void Canvas::AddUIElement(UIElement* element) {
 	elements.push_back(element);
 }
 
+void Canvas::RemoveUIElement(UIElement* element) {
+	for (int i = 0; i < elements.size(); i++) 	{
+		if (elements[i] == element) {
+			elements.erase(elements.begin() + i);
+		}
+	}
+}
+
 
 void Canvas::OnDraw(SDL_Renderer* renderer) {
 
@@ -33,7 +41,11 @@ void Canvas::OnDraw(SDL_Renderer* renderer) {
 		SDL_Texture* texture = element.GetSprite()->Texture;
 		SDL_Rect& source = element.GetSprite()->Rect;
 		SDL_Rect destination = element.GetPosition();
-		SDL_RenderCopyEx(renderer, texture, &source, &destination, 0, nullptr, SDL_FLIP_NONE);
+		double rotation = element.GetRotation();
+		Vector2 scale = element.GetScale();
+		destination.w *= scale.X;
+		destination.h *= scale.Y;
+		SDL_RenderCopyEx(renderer, texture, &source, &destination, rotation, nullptr, SDL_FLIP_NONE);
 	}
 
 }

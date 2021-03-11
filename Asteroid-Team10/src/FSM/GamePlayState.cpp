@@ -3,9 +3,40 @@
 #include "FactorySystem/Factory.h"
 #include "SoundSystem/SoundCoordinator.h"
 #include "PlayerController.h"
+#include <string>
 
 void GamePlayState::OnEnter() {
 	Asteroid::AddCallback(BindFunction(GamePlayState::OnEvent, this));
+
+	GameObject* canvasGO = new GameObject();
+	canvas = canvasGO->AddComponent<Canvas>();
+
+	scoreText = UIFactory::CreateText("00", {255, 255, 255, 255}, 50);
+	scoreText->SetPosition(scoreTextPosition);
+
+	canvas->AddUIElement(scoreText);
+
+	Image* life1 = new Image("Assets/Sprites/ship.png");
+	Image* life2 = new Image("Assets/Sprites/ship.png");
+	Image* life3 = new Image("Assets/Sprites/ship.png");
+
+	life1->Init();
+	life2->Init();
+	life3->Init();
+
+	lifeImages.push_back(life1);
+	lifeImages.push_back(life2);
+	lifeImages.push_back(life3);
+
+	for (int i = 0; i < 3; i++) 	{
+		lifeImages[i]->SetPosition(lifeImagesPosition + Vector2(22 * i, 0));
+		lifeImages[i]->SetRotation(-90);
+		lifeImages[i]->SetScale(0.85f);
+	}
+
+	canvas->AddUIElement(life1);
+	canvas->AddUIElement(life2);
+	canvas->AddUIElement(life3);
 
 	CreatePlayer();
 	CreateLevel(currentLevel++);
@@ -18,6 +49,7 @@ void GamePlayState::OnUpdate(float deltaTime) {
 
 void GamePlayState::OnExit() {
 	GameObject::Destroy(playerTransform->gameObject);
+	GameObject::Destroy(canvas->gameObject);
 }
 
 void GamePlayState::OnEvent(Event& e) {
@@ -46,7 +78,8 @@ bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 		}
 
 		//Add score
-
+		
+		SetScore(20);
 	}
 	else if (e.Level == 2) {
 		BoxCollider2D* collider = e.gameObject->GetComponent<BoxCollider2D>();
@@ -58,11 +91,11 @@ bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 		}
 		
 		//Add score
-
+		SetScore(100);
 	}
 	else {
-		
 		//Add score
+		SetScore(100);
 	}
 
 	//std::cout << "Asteroids left " << asteroidsInPlay << std::endl;
@@ -75,6 +108,16 @@ bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 	gameObject->GetComponent<Transform>()->Position() = collider->GetOrigin();
 	SoundCoordinator::PlayEffect("Assets/SoundFx/explosion.wav");
 	return false;
+}
+
+void GamePlayState::SetScore(int score) {
+	this->score += score;
+	canvas->RemoveUIElement(scoreText);
+	scoreText->Destroy();
+	delete scoreText;
+	scoreText = UIFactory::CreateText(std::to_string(this->score), {255, 255, 255, 255}, 50);
+	scoreText->SetPosition(scoreTextPosition);
+	canvas->AddUIElement(scoreText);
 }
 
 void GamePlayState::CreateLevel(int level) {

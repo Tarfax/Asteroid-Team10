@@ -27,8 +27,8 @@ struct Particle {
 
 	Particle(Vector2 position, Vector2 velocity, float lifeTime)
 	: position(position), velocity(velocity), lifeTime(lifeTime)
-	{ 
-	}
+	{ }
+
 	Particle(const Particle& other) {
 		this->position = other.position;
 		this->velocity = other.velocity;

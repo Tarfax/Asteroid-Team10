@@ -30,7 +30,7 @@ void BoxCollider2D::Update(float deltaTime) {
 	for (it = colliders.begin(); it != colliders.end(); it++) {
 		if (it->second != this && it->second->IsColliding(this->bounds, collideWithlayer)) {
 			int i = it->second->id;
-			std::cout << gameObject->ToString() << " collided with " << it->second->gameObject->ToString() << "\n";
+			//std::cout << gameObject->ToString() << " collided with " << it->second->gameObject->ToString() << "\n";
 			GameObject::Destroy(gameObject);
 		}
 	}

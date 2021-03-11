@@ -63,7 +63,7 @@ Sprite* TextureCoordinator::GetSpriteFromText(std::string text, std::string font
 	int hashCode = HashCode(text, fontId, size, color);
 	if (GetInstance()->fonts.count(hashCode) == 1) {
 		GetInstance()->refcount[GetInstance()->fonts[hashCode]]++;
-		std::cout << "TextureCoordinator::GetText reuse of "  << fontId << std::endl;
+		//std::cout << "TextureCoordinator::GetText reuse of "  << fontId << std::endl;
 
 		return GetInstance()->fonts[hashCode];
 	}
@@ -82,7 +82,7 @@ Sprite* TextureCoordinator::GetSpriteFromText(std::string text, std::string font
 
 	GetInstance()->refcount[sprite]++;
 
-	std::cout << "TextureCoordinator::GetText creation of " << fontId << std::endl;
+	//std::cout << "TextureCoordinator::GetText creation of " << fontId << std::endl;
 	return sprite;
 }
 

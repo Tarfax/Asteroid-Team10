@@ -14,6 +14,7 @@ public:
 	void Destroy() override;
 
 	void AddUIElement(UIElement* element);
+	void RemoveUIElement(UIElement* element);
 
 private:
 	std::vector<UIElement*> elements;
