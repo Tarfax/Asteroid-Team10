@@ -34,7 +34,7 @@ void BoxCollider2D::Update(float deltaTime) {
 			//std::cout << gameObject->ToString() << " collided with " << it->second->gameObject->ToString() << "\n";
 			//GameObject::Destroy(gameObject);
 			gameObject->SetActive(false);
-			gameObject->GetComponent<Transform>()->Position() = { 400,400 };
+			//gameObject->GetComponent<Transform>()->Position() = { 400,400 };
 		}
 	}
 

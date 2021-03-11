@@ -42,21 +42,4 @@ private: //Event System
 	};
 
 	static std::vector<CallbackData> callbacks;
-
-
-
-//private: // object pool stuff
-//
-//	static std::unordered_map<int, GameObject*> activeObjects;
-//	static std::unordered_map<int, GameObject*> inactiveObjects;
-//
-//	GameObject* myGameObject;
-//	int myID;
-//
-//	void AddToPool();
-//	bool IsActive();
-//
-//public:
-//	static GameObject* GetFromPool();
-//	void SetActive(bool activeState);
 };
