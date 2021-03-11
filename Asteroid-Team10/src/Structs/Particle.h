@@ -35,7 +35,7 @@ struct Particle {
 		this->lifeTime = other.lifeTime;
 	}
 
-	~Particle() { std::cout << "Particle died " << lifeTime << std::endl; }
+	//~Particle() { std::cout << "Particle died " << lifeTime << std::endl; }
 
 	void Draw();
 	void Update(float deltaTime);

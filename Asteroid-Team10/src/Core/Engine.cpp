@@ -42,16 +42,16 @@ bool Engine::Init() {
 
 	TextureCoordinator::Init(renderer);
 	PredefinedObject::Init();
+	SoundCoordinator::Init();
 
-	gameState = new GameState();
-	gameState->Init();
+	gameInstance = new GameInstance();
+	gameInstance->Init();
 
 	SetupEventSystem();
 
-	SoundCoordinator::Init();
-	SoundCoordinator::LoadEffect("Assets/SoundFx/fire4.wav");
-	SoundCoordinator::LoadEffect("Assets/SoundFx/explosion.wav");
-	SoundCoordinator::LoadEffect("Assets/SoundFx/engine.wav");
+	//SoundCoordinator::LoadEffect("Assets/SoundFx/fire4.wav");
+	//SoundCoordinator::LoadEffect("Assets/SoundFx/explosion.wav");
+	//SoundCoordinator::LoadEffect("Assets/SoundFx/engine.wav");
 	//gameObject = PlayerController::GetInstance();
 	
 
@@ -73,7 +73,7 @@ void Engine::Run() {
 		GameObject::Init();
 
 		Update();
-		gameState->Update(time->GetDeltaTime());
+		gameInstance->Update(time->GetDeltaTime());
 		Render();
 
 		GameObject::CleanUp();

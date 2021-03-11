@@ -149,7 +149,12 @@
     <ClCompile Include="src\Component\Asteroid.cpp" />
     <ClCompile Include="src\Component\Behaviour\Behaviour.cpp" />
     <ClCompile Include="src\Component\Core\Canvas.cpp" />
-    <ClCompile Include="src\UI\MainMenu.cpp" />
+    <ClCompile Include="src\FSM\CreditsState.cpp" />
+    <ClCompile Include="src\FSM\GamePlayState.cpp" />
+    <ClCompile Include="src\FSM\HighScoreState.cpp" />
+    <ClCompile Include="src\FSM\MainMenuState.cpp" />
+    <ClCompile Include="src\FSM\QuitGameState.cpp" />
+    <ClCompile Include="src\FSM\SettingsState.cpp" />
     <ClCompile Include="src\UI\Button.cpp" />
     <ClCompile Include="src\Component\Core\BoxCollider2D.cpp" />
     <ClCompile Include="src\Component\Core\Renderer.cpp" />
@@ -160,7 +165,7 @@
     <ClCompile Include="src\Component\Core\Transform.cpp" />
     <ClCompile Include="src\Component\UFO.cpp" />
     <ClCompile Include="src\Core\Engine.cpp" />
-    <ClCompile Include="src\Core\GameState.cpp" />
+    <ClCompile Include="src\Core\GameInstance.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
     <ClCompile Include="src\FactorySystem\PredefinedObject.cpp" />
@@ -177,15 +182,23 @@
     <ClCompile Include="src\Structs\Sprite.cpp" />
     <ClCompile Include="src\Structs\Vector2.cpp" />
     <ClCompile Include="src\TextureCoordinator.cpp" />
+    <ClCompile Include="src\FSM\PauseMenu.cpp" />
     <ClCompile Include="src\UI\Text.cpp" />
+    <ClCompile Include="src\UI\UIFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Action.h" />
     <ClInclude Include="src\Component\Asteroid.h" />
     <ClInclude Include="src\Component\Behaviour\Behaviour.h" />
     <ClInclude Include="src\Component\Core\Canvas.h" />
-    <ClInclude Include="src\UI\MainMenu.h" />
+    <ClInclude Include="src\FSM\CreditsState.h" />
+    <ClInclude Include="src\FSM\GamePlayState.h" />
+    <ClInclude Include="src\FSM\GameState.h" />
+    <ClInclude Include="src\FSM\HighScoreState.h" />
+    <ClInclude Include="src\FSM\MainMenuState.h" />
     <ClInclude Include="src\EventSystem\MenuEvent.h" />
+    <ClInclude Include="src\FSM\QuitGameState.h" />
+    <ClInclude Include="src\FSM\SettingsState.h" />
     <ClInclude Include="src\UI\Button.h" />
     <ClInclude Include="src\Component\Core\BoxCollider2D.h" />
     <ClInclude Include="src\Component\Core\IComponent.h" />
@@ -197,7 +210,7 @@
     <ClInclude Include="src\Component\Core\Transform.h" />
     <ClInclude Include="src\Component\UFO.h" />
     <ClInclude Include="src\Core\Engine.h" />
-    <ClInclude Include="src\Core\GameState.h" />
+    <ClInclude Include="src\Core\GameInstance.h" />
     <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Time.h" />
     <ClInclude Include="src\Enums\Layer.h" />
@@ -223,8 +236,10 @@
     <ClInclude Include="src\Structs\Vector2.h" />
     <ClInclude Include="src\TextureCoordinator.h" />
     <ClInclude Include="src\UI\Image.h" />
+    <ClInclude Include="src\FSM\PauseMenu.h" />
     <ClInclude Include="src\UI\Text.h" />
     <ClInclude Include="src\UI\UIElement.h" />
+    <ClInclude Include="src\UI\UIFactory.h" />
     <ClInclude Include="src\Utilities\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

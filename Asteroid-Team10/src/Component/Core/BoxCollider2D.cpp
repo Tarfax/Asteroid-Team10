@@ -21,7 +21,6 @@ void BoxCollider2D::Init() {
 }
 
 void BoxCollider2D::Update(float deltaTime) {
-	bounds = {(int)transform->X(), (int)transform->Y(), (int)(originalBounds.w * transform->Scale().X), (int)(originalBounds.h * transform->Scale().Y)};
 
 	if (Input::GetKeyDown(SDL_SCANCODE_B) == true) {
 		renderCollider = !renderCollider;
@@ -36,6 +35,7 @@ void BoxCollider2D::Update(float deltaTime) {
 		}
 	}
 
+	bounds = {(int)transform->X(), (int)transform->Y(), (int)(originalBounds.w * transform->Scale().X), (int)(originalBounds.h * transform->Scale().Y)};
 }
 
 void BoxCollider2D::Destroy() {

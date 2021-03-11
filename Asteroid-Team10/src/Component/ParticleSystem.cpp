@@ -95,6 +95,12 @@ void ParticleSystem::SetData(ObjectData* data) {
 
 
 void ParticleSystem::Update(float deltaTime) {
+
+	if (startOnActivation == true) {
+		Emit();
+		startOnActivation = false;
+	}
+
 	if (isEmitting == true) {
 		std::vector<int> deadParticles;
 
@@ -120,6 +126,9 @@ void ParticleSystem::Update(float deltaTime) {
 		}
 
 	}
+	else if (isEmitting == false && repeat == false) {
+		GameObject::Destroy(gameObject);
+	}
 
 	if (repeat == true) {
 		timer -= deltaTime;
@@ -127,11 +136,6 @@ void ParticleSystem::Update(float deltaTime) {
 			Emit();
 			SetEmissionTime();
 		}
-	}
-
-	if (startOnActivation == true) {
-		Emit();
-		startOnActivation = false;
 	}
 }
 

@@ -1,27 +1,18 @@
 #pragma once
-
-#include <Component/Core/SpriteRenderer.h>
-#include <FactorySystem/FactoryObject.h>
-#include <Component/Behaviour/Behaviour.h>
-#include <Component/Core/Canvas.h>
 #include <UI/Button.h>
 #include <UI/Image.h>
 #include <UI/Text.h>
-#include <Core/Input.h>
 #include <EventSystem/MenuEvent.h>
+#include <Component/Core/Canvas.h>
+#include <Core/Input.h>
 
-class MainMenu {
-	using ButtonCallback = std::function<void(void*)>;
+class PauseMenu {
 	using EventCallbackFunc = std::function<void(Event&)>;
 
 public:
-	MainMenu() { }
-	~MainMenu() {
-		std::cout << "Main menu gone" << std::endl;
-	}
-	void Init()	;
-	void Update(float deltaTime) ;
-	void Destroy() ;
+	void Init();
+	void Update(float deltaTime);
+	void Destroy();
 
 	/// <summary>
 	/// Warning: Same function can be added several times.
@@ -34,18 +25,11 @@ public:
 	void RemoveCallback(const EventCallbackFunc& callback);
 
 private:
-	Button* CreateButton(std::string normal, std::string selected, Vector2 position, Text* text, ButtonCallback cb);
-	Text* CreateText(std::string msg, SDL_Color color, int size);
-
 	void OnEvent(Event& event);
 	bool OnKeyPressedEvent(KeyPressedEvent& e);
 
-	void StartGame(void*);
-	void Settings(void*);
-	void Credits(void*);
-	void HighScore(void*);
-	void QuitGame(void*);
-
+	void ResumeGame(void*);
+	void MainMenuState(void*);
 	void FireEvent(Event& event);
 
 	struct CallbackData {
@@ -55,7 +39,7 @@ private:
 		EventCallbackFunc EventCallback;
 	};
 
-	CallbackData menuButtonPressed;
+	CallbackData onChangeState;
 
 	int currentSelectedElement = 0;
 
@@ -63,8 +47,5 @@ private:
 	std::vector<Text*> texts;
 	Image* selectionImage;
 
-	SpriteRenderer* renderer;
 	Canvas* canvas;
-
-
 };

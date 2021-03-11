@@ -8,5 +8,5 @@ enum class Predef {
 	Asteroid_Lvl3,
 	AsteroidExplosion,
 	UFO,
-	MainMenu,
+	MainMenuState,
 }; 

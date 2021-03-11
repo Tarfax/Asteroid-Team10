@@ -3,22 +3,22 @@
 #include <sstream>
 //#include <UI/MainMenu.h>
 
-class MainMenu;
+class GameInstance;
 
 class MenuEvent: public Event {
 public:
-	MainMenu* mainMenu;
+	GameInstance* mainMenu;
 
 	EventClassCategory(EventCategoryMenu)
 protected:
-	MenuEvent(MainMenu* mainMenu)
+	MenuEvent(GameInstance* mainMenu)
 		: mainMenu(mainMenu) { }
 
 };
 
 class MenuStartGameEvent: public MenuEvent {
 public:
-	MenuStartGameEvent(MainMenu* mainMenu)
+	MenuStartGameEvent(GameInstance* mainMenu)
 		: MenuEvent(mainMenu)
 	{ }
 
@@ -34,7 +34,7 @@ public:
 
 class MenuSettingsEvent: public MenuEvent {
 public:
-	MenuSettingsEvent(MainMenu* mainMenu)
+	MenuSettingsEvent(GameInstance* mainMenu)
 		: MenuEvent(mainMenu)
 	{ }
 
@@ -49,7 +49,7 @@ public:
 
 class MenuCreditsEvent: public MenuEvent {
 public:
-	MenuCreditsEvent(MainMenu* mainMenu)
+	MenuCreditsEvent(GameInstance* mainMenu)
 		: MenuEvent(mainMenu)
 	{ }
 
@@ -64,7 +64,7 @@ public:
 
 class MenuHighScoreEvent: public MenuEvent {
 public:
-	MenuHighScoreEvent(MainMenu* mainMenu)
+	MenuHighScoreEvent(GameInstance* mainMenu)
 		: MenuEvent(mainMenu)
 	{ }
 
@@ -80,7 +80,7 @@ public:
 
 class MenuQuitGameEvent: public MenuEvent {
 public:
-	MenuQuitGameEvent(MainMenu* mainMenu)
+	MenuQuitGameEvent(GameInstance* mainMenu)
 		: MenuEvent(mainMenu)
 	{ }
 
@@ -91,4 +91,34 @@ public:
 	}
 
 	EventClassType(MenuQuitGame)
+};
+
+class MenuResumeGameEvent: public MenuEvent {
+public:
+	MenuResumeGameEvent(GameInstance* mainMenu)
+		: MenuEvent(mainMenu)
+	{ }
+
+	std::string ToString() const override {
+		std::stringstream ss;
+		ss << "MenuResumeGameEvent was pressed";
+		return ss.str();
+	}
+
+	EventClassType(MenuResumeGame)
+};
+
+class MenuMainMenuEvent: public MenuEvent {
+public:
+	MenuMainMenuEvent(GameInstance* mainMenu)
+		: MenuEvent(mainMenu)
+	{ }
+
+	std::string ToString() const override {
+		std::stringstream ss;
+		ss << "MenuMainMenuEvent was pressed";
+		return ss.str();
+	}
+
+	EventClassType(MenuMainMenu)
 };

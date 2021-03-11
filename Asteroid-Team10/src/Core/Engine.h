@@ -11,11 +11,9 @@
 #include <EventSystem/EngineEvent.h>
 #include "ObjectPool.h"
 
-#include <Core/GameState.h>
+#include <Core/GameInstance.h>
 #include <Component/ParticleSystem.h>
 #include <Component/Core/Renderer.h>
-
-
 
 const int SCREEN_WIDTH {800};
 const int SCREEN_HEIGHT {600};
@@ -49,7 +47,7 @@ private:
 	SDL_Surface* screenSurface;
 	SDL_Surface* image;
 
-	GameState* gameState;
+	GameInstance* gameInstance;
 	Input* input;
 	GameObject* gameObject;
 

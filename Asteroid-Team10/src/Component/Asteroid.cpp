@@ -7,6 +7,7 @@
 #include <FactorySystem/PredefinedObject.h>
 
 #include <EventSystem/ObjectEvent.h>
+#include <Core/Input.h>
 
 
 std::unordered_map<int, GameObject*> Asteroid::activeObjects;
@@ -71,6 +72,10 @@ void Asteroid::Update(float deltaTime)
 {
 	transform->Translate(Vector2((speed * deltaTime) * direction.X, (speed * deltaTime) * direction.Y));
 	transform->Rotation() += (double)rotationSpeed * (double)deltaTime;
+
+	if (Input::GetKeyDown(SDL_SCANCODE_K)) {
+		std::cout << "Kill?" << std::endl;
+	}
 }
 
 void Asteroid::Destroy() {

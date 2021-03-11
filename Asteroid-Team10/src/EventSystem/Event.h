@@ -7,7 +7,7 @@ enum class EventType {
 	KeyPressed, KeyReleased,
 	WindowClose,
 	ObjectDestroyed, ObjectSpawned,
-	MenuStartGame, MenuCredits, MenuSettings, MenuHighScore, MenuQuitGame,
+	MenuStartGame, MenuCredits, MenuSettings, MenuHighScore, MenuQuitGame, MenuResumeGame, MenuMainMenu
 };
 
 enum EventCategory {

@@ -139,7 +139,7 @@ private:
 		AddPredefData(pre, data);
 	}
 
-	static void pdMainMenu() {
+	/*static void pdMainMenu() {
 		Predef pre = Predef::MainMenu;
 		UFOData* data = new UFOData();
 		data->TextureIds.push_back("Assets/Sprites/UFO.png");
@@ -154,7 +154,7 @@ private:
 		data->def = pre;
 
 		AddPredefData(pre, data);
-	}
+	}*/
 
 	static std::map<Predef, ObjectData*> predefData;
 };
