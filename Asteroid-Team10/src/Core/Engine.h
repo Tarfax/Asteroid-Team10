@@ -29,7 +29,6 @@ public:
 	void Quit();
 
 private:
-	void Update();
 	void Render();
 
 	void SetupEventSystem();

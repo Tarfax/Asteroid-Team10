@@ -35,5 +35,6 @@ private:
 
 	std::map<std::string, Mix_Music*> musicMap;
 	std::map<std::string, Mix_Chunk*> effectMap;
-
+	std::map<Mix_Chunk*, int> effectMapChannel;
+	int effectsLoaded = 0;
 };

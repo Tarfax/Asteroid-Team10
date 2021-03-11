@@ -42,7 +42,7 @@ void SoundCoordinator::iPlayEffect(std::string id) {
 	if (effectMap.count(id) != 1) {
 		LoadEffect(id);
 	}
-	if (Mix_PlayChannel(-1, effectMap[id], 0) == -1) {
+	if (Mix_PlayChannel(effectMapChannel[effectMap[id]], effectMap[id], 0) == -1) {
 		std::cout << Mix_GetError() << ": " << id << std::endl;
 	}
 }
@@ -54,6 +54,7 @@ void SoundCoordinator::LoadEffect(std::string id) {
 		return;
 	}
 	GetInstance()->effectMap[id] = effect;
+	GetInstance()->effectMapChannel[effect] = GetInstance()->effectsLoaded++;
 }
 
 void SoundCoordinator::Delete() {

@@ -55,7 +55,7 @@ void Input::SendKeyCallbacks() {
 			}
 
 
-			KeyPressedEvent event {key, instance->keyStateFrameCount[key], deltaTime};
+			KeyPressedEvent event {key, instance->keyStateFrameCount[key], deltaTime * timeScale};
 
 			for (int i = 0; i < it->second.size(); i++) {
 				FireEvent(event, it->second[i]);
@@ -131,6 +131,10 @@ bool Input::GetKey(SDL_Scancode key) {
 
 void Input::KeyDown() {
 	keyStates = SDL_GetKeyboardState(nullptr);
+}
+
+void Input::SetTimeScale(float scale){
+	instance->timeScale = scale;
 }
 
 void Input::KeyUp() {

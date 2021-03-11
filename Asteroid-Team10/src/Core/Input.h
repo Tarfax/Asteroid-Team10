@@ -61,10 +61,15 @@ public:
 		}
 	}
 
+	static void SetTimeScale(float scale);
+
 private:
+	void KeyUp();
+	void KeyDown();
 
 	static Input* instance;
 	float deltaTime;
+	float timeScale = 1;
 	bool keyWasCounted;
 
 	SDL_Event e { };
@@ -72,9 +77,6 @@ private:
 	const Uint8* keyStates;
 	std::unordered_map<SDL_Scancode, int> keyStateFrameCount;
 	std::unordered_map<SDL_Scancode, bool> wasKeyUp;
-
-	void KeyUp();
-	void KeyDown();
 
 private: //Event System
 

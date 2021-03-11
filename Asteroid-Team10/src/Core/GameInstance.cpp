@@ -5,6 +5,7 @@ GameInstance::GameInstance() { }
 
 void GameInstance::Init() {
 	ChangeToState<MainMenuState>();
+	timeScale = 1;
 }
 
 void GameInstance::Update(float deltaTime) {
@@ -14,6 +15,9 @@ void GameInstance::Update(float deltaTime) {
 	}
 
 	state->Update(deltaTime);
+	if (isPaused == false) {
+		GameObject::Update(deltaTime);
+	}
 }
 
 void GameInstance::Destroy() {
@@ -30,4 +34,13 @@ void GameInstance::SwitchState() {
 	state = newState;
 	state->Enter(this);
 	newState = nullptr;
+}
+
+void GameInstance::SetTimeScale(float scale) {
+	Input::SetTimeScale(scale);
+	timeScale = scale;
+}
+
+void GameInstance::SetPaused(bool paused) {
+	isPaused = paused;
 }

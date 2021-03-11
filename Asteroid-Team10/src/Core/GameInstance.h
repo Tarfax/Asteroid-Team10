@@ -1,11 +1,9 @@
 #pragma once
 #include <FSM/GameState.h>
-#include <functional>
 #include <iostream>
 
 class GameState;
 class GameInstance {
-	using CallbackNextFrame = std::function<void(void*)>;
 public:
 	GameInstance();
 	void Init();
@@ -18,11 +16,17 @@ public:
 		newState = new T();
 	}
 
+	void SetTimeScale(float scale);
+	void SetPaused(bool pauseState);
+
 private: 
 	void SwitchState();
 
 	bool switchToNewState;
 	GameState* state;
 	GameState* newState;
+
+	float timeScale = 1;
+	bool isPaused;
 };
 

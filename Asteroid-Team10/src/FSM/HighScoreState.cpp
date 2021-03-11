@@ -102,7 +102,6 @@ bool HighScoreState::OnKeyPressedEvent(KeyPressedEvent& e) {
 
 void HighScoreState::MainMenu(void*) {
 	SoundCoordinator::PlayEffect("Assets/SoundFx/menuEnter2.wav");
-	MenuMainMenuEvent e(NULL);
 	gameInstance->ChangeToState<MainMenuState>();
 }
 

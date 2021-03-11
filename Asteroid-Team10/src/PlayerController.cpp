@@ -14,22 +14,20 @@
 PlayerController* PlayerController::playerController = nullptr;
 
 void PlayerController::Init() {
-	if (playerController == nullptr) {
-		playerController = this;
+	playerController = this;
 
-		targetSpeed = speed;
+	targetSpeed = speed;
 
-		transform = gameObject->GetComponent<Transform>();
+	transform = gameObject->GetComponent<Transform>();
 
-		SpriteRenderer* renderer = gameObject->AddComponent<SpriteRenderer>();
-		PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
+	SpriteRenderer* renderer = gameObject->AddComponent<SpriteRenderer>();
+	PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
 
-		Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_W);
-		Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_A);
-		Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_S);
-		Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_D);
-		Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
-	}
+	Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_W);
+	Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_A);
+	Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_S);
+	Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_D);
+	Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
 }
 
 
@@ -59,8 +57,6 @@ void PlayerController::OnEvent(Event& e) {
 }
 
 bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
-	static int counter = 0;
-	counter++;
 	if (e.GetKeyCode() == SDL_SCANCODE_W) {
 		targetSpeed = speed;
 
@@ -70,7 +66,7 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 		//momentum.X = transform->forward.X;
 		//momentum.Y = transform->forward.Y;
 		//currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, e.GetDeltaTime());
-		float time = 0.03f;
+		float time = 0.04f;
 		static float timer;
 		timer -= e.GetDeltaTime();
 		if (timer <= 0) {
@@ -89,8 +85,10 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 
 	if (e.GetKeyCode() == SDL_SCANCODE_SPACE) {
 		if (fireRateTimer <= 0.0f) {
-			Fire();
-			fireRateTimer = fireRate;
+			if (e.GetDeltaTime() != 0) {
+				Fire();
+				fireRateTimer = fireRate;
+			}
 		}
 	}
 

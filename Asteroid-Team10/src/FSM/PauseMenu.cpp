@@ -6,6 +6,9 @@ void PauseMenu::Init() {
 	Input::AddInputCallback(BindFunction(PauseMenu::OnEvent, this), SDL_SCANCODE_DOWN);
 	Input::AddInputCallback(BindFunction(PauseMenu::OnEvent, this), SDL_SCANCODE_UP);
 
+	GameObject* canvasGO = new GameObject();
+	canvas = canvasGO->AddComponent<Canvas>();
+
 	Text* resumeText = UIFactory::CreateText("Resume Game", {255, 255, 255, 255}, 64);
 	Button* resumeButton = UIFactory::CreateButton("Assets/Sprites/buttonBackgroundNormal.png", "Assets/Sprites/buttonBackgroundSelected.png", Vector2(300, 235), resumeText, BindFunction(PauseMenu::ResumeGame, this));
 

@@ -77,7 +77,6 @@ void Engine::Run() {
 		GameObject::Init();
 		GameObject::Enable();
 
-		Update();
 		gameInstance->Update(time->GetDeltaTime());
 		Render();
 
@@ -87,12 +86,6 @@ void Engine::Run() {
 		time->EndTick();
 	}
 	Quit();
-}
-
-void Engine::Update() {
-	GameObject::Update(time->GetDeltaTime());
-
-	//particleSystem->OnUpdate(time->GetDeltaTime());
 }
 
 void Engine::Render() {
