@@ -14,8 +14,11 @@ public:
 	Asteroid(GameObject* gameObject): Behaviour(gameObject) { gameObject->name = "Asteroid"; }
 
 	void Init() override;
+	void OnEnable() override;
 	void Update(float deltaTime) override;
+	void OnDisable() override;
 	void Destroy() override;
+
 
 	void SetData(ObjectData* data) override;
 private:
@@ -42,18 +45,18 @@ private: //Event System
 
 
 
-private: // object pool stuff
-
-	static std::unordered_map<int, GameObject*> activeObjects;
-	static std::unordered_map<int, GameObject*> inactiveObjects;
-
-	GameObject* myGameObject;
-	int myID;
-
-	void AddToPool();
-	bool IsActive();
-
-public:
-	static GameObject* GetFromPool();
-	void SetActive(bool activeState);
+//private: // object pool stuff
+//
+//	static std::unordered_map<int, GameObject*> activeObjects;
+//	static std::unordered_map<int, GameObject*> inactiveObjects;
+//
+//	GameObject* myGameObject;
+//	int myID;
+//
+//	void AddToPool();
+//	bool IsActive();
+//
+//public:
+//	static GameObject* GetFromPool();
+//	void SetActive(bool activeState);
 };

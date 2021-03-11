@@ -7,7 +7,9 @@ public:
 	PositionWrapper(GameObject* gameObject): Behaviour(gameObject) {}
 
 	void Init();
+	void OnEnable() override {}
 	void Update(float deltaTime);
+	void OnDisable() override {}
 	void Destroy();
 	void SetTexDimensions(SDL_Rect rect);
 

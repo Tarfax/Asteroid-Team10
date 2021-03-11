@@ -8,7 +8,9 @@ public:
 	UFO(GameObject* gameObject) : Behaviour(gameObject) {}
 
 	void Init() override;
+	void OnEnable() override {}
 	void Update(float deltaTime) override;
+	void OnDisable() override {}
 	void Destroy() override;
 
 	void SetData(ObjectData* data) override;

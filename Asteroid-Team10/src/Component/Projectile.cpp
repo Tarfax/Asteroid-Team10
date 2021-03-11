@@ -11,10 +11,13 @@ void Projectile::Init() {
 	gameObject->AddComponent<PositionWrapper>();
 }
 
+void Projectile::OnEnable() { }
+
 void Projectile::SetData(ObjectData* data) {
 	ProjectileData* projectileData = dynamic_cast<ProjectileData*>(data);
 	speed = projectileData->Speed;
 	lifeTime = projectileData->LifeTime;
+	lifeTimeCounter = lifeTime;
 
 	SpriteRenderer* renderer = gameObject->GetComponent<SpriteRenderer>();
 	renderer->SetSprite(Sprite::CreateSprite(data->TextureIds[0]));
@@ -37,11 +40,14 @@ void Projectile::SetDirection(Vector2 direction) {
 void Projectile::Update(float deltaTime) {
 	transform->Translate(Vector2((speed * deltaTime) * direction.X, (speed * deltaTime) * direction.Y));
 
-	lifeTime -= deltaTime;
-	if (lifeTime < 0.0f) {
-		GameObject::Destroy(gameObject);
-		lifeTime = 10000;
+	lifeTimeCounter -= deltaTime;
+	if (lifeTimeCounter < 0.0f) {
+		//GameObject::Destroy(gameObject);
+		gameObject->SetActive(false);
+		lifeTimeCounter = lifeTime;
 	}
 }
+
+void Projectile::OnDisable() { }
 
 void Projectile::Destroy() { }

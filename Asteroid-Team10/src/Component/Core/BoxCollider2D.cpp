@@ -28,10 +28,13 @@ void BoxCollider2D::Update(float deltaTime) {
 
 	std::map<int, BoxCollider2D*>::iterator it;
 	for (it = colliders.begin(); it != colliders.end(); it++) {
-		if (it->second != this && it->second->IsColliding(this->bounds, collideWithlayer)) {
+		if (it->second != this && it->second->IsColliding(this->bounds, collideWithlayer) && 
+			it->second->gameObject->IsActive()) {
 			int i = it->second->id;
 			//std::cout << gameObject->ToString() << " collided with " << it->second->gameObject->ToString() << "\n";
-			GameObject::Destroy(gameObject);
+			//GameObject::Destroy(gameObject);
+			gameObject->SetActive(false);
+			gameObject->GetComponent<Transform>()->Position() = { 400,400 };
 		}
 	}
 

@@ -16,6 +16,7 @@ public:
 		T* component = gameObject->AddComponent<T>();
 		component->SetData(PredefinedObject::GetPredef(type));
 
+		GameObject::Init();
 		return gameObject;
 	}
 

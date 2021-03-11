@@ -44,6 +44,10 @@ bool Engine::Init() {
 	PredefinedObject::Init();
 	SoundCoordinator::Init();
 
+	//objectPool = ObjectPool::GetInstance();
+	//objectPool->Init();
+	ObjectPool::Init();
+
 	gameInstance = new GameInstance();
 	gameInstance->Init();
 
@@ -54,7 +58,7 @@ bool Engine::Init() {
 	//SoundCoordinator::LoadEffect("Assets/SoundFx/engine.wav");
 	//gameObject = PlayerController::GetInstance();
 	
-
+	//objectPool->SetPoolSize(ProjectilePool, 30);
 	//Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl1);
 
 	//particleSystem = ParticleSystem::GetInstance()->GetComponent<ParticleSystem>();
@@ -71,11 +75,13 @@ void Engine::Run() {
 		input->Listen(time->GetDeltaTime());
 
 		GameObject::Init();
+		GameObject::Enable();
 
 		Update();
 		gameInstance->Update(time->GetDeltaTime());
 		Render();
 
+		GameObject::Disable();
 		GameObject::CleanUp();
 
 		time->EndTick();

@@ -19,9 +19,11 @@ public:
 	ParticleSystem(GameObject* gameObject): Renderer(gameObject) { gameObject->name = "ParticleSystem"; }
 
 	void Init() override;
-	void Destroy() override;
+	void OnEnable() override {}
 	void Update(float deltaTime) override;
 	void OnDraw(SDL_Renderer* renderer) override;
+	void OnDisable() override {}
+	void Destroy() override;
 
 	void SetData(ObjectData* data) override;
 

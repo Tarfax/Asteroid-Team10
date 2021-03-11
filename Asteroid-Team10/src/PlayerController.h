@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component/Core/IComponent.h"
+#include "ObjectPool.h"
 #include "FactorySystem/FactoryObject.h"
 #include "Component/Core/Transform.h"
 #include <Objects/GameObject.h>
@@ -21,7 +22,9 @@ public:
 
 
 	void Init()					 override;
+	void OnEnable()				 override {}
 	void Update(float deltaTime) override;
+	void OnDisable()			 override {}
 	void Destroy()				 override;
 
 	void SetData(ObjectData* data) override;
@@ -51,5 +54,7 @@ private:
 
 	float fireRate;
 	float fireRateTimer;
+
+	ObjectPool* objectPool;
 };
 

@@ -61,7 +61,7 @@ void GamePlayState::CreatePlayer() {
 	GameObject* gameObject = Factory::GetInstance<PlayerController>(Predef::Player);
 	playerTransform = gameObject->GetComponent<Transform>();
 	playerTransform->Position() = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-
+	gameObject->SetActive(true);
 }
 
 bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
@@ -70,11 +70,12 @@ bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 
 	if (e.Level == 1) {
 		for (int i = 0; i < 2; i++) {
-			GameObject* gameObject = Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl2);
+			//GameObject* gameObject = Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl2);
+			GameObject* gameObject = ObjectPool::FetchObject(AsteroidLvl2Pool);
 			Transform* transform = gameObject->GetComponent<Transform>();
 			transform->Position() = collider->GetOrigin();
 			asteroidsInPlay++;
-
+			gameObject->SetActive(true);
 		}
 
 		//Add score
@@ -84,10 +85,12 @@ bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 	else if (e.Level == 2) {
 		BoxCollider2D* collider = e.gameObject->GetComponent<BoxCollider2D>();
 		for (int i = 0; i < 2; i++) {
-			GameObject* gameObject = Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl3);
+			//GameObject* gameObject = Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl3);
+			GameObject* gameObject = ObjectPool::FetchObject(AsteroidLvl3Pool);
 			Transform* transform = gameObject->GetComponent<Transform>();
 			transform->Position() = collider->GetOrigin();
 			asteroidsInPlay++;
+			gameObject->SetActive(true);
 		}
 		
 		//Add score
@@ -107,6 +110,7 @@ bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 	GameObject* gameObject = Factory::GetInstance<ParticleSystem>(Predef::AsteroidExplosion);
 	gameObject->GetComponent<Transform>()->Position() = collider->GetOrigin();
 	SoundCoordinator::PlayEffect("Assets/SoundFx/explosion.wav");
+	gameObject->SetActive(true);
 	return false;
 }
 
@@ -125,7 +129,8 @@ void GamePlayState::CreateLevel(int level) {
 	int height = SCREEN_HEIGHT / 3;
 
 	for (int i = 0; i < level + 4; i++) {
-		GameObject* gameObject = Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl1);
+		//GameObject* gameObject = Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl1);
+		GameObject* gameObject = ObjectPool::FetchObject(AsteroidLvl1Pool);
 		Transform* transform = gameObject->GetComponent<Transform>();
 		if (i % 2 == 0) {
 			transform->Position() = Vector2(32, height * (i + 1));
@@ -133,7 +138,7 @@ void GamePlayState::CreateLevel(int level) {
 		else {
 			transform->Position() = Vector2(SCREEN_WIDTH - 32, height * (i + 1));
 		}
-
+		gameObject->SetActive(true);
 		asteroidsInPlay++;
 	}
 

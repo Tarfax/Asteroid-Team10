@@ -12,7 +12,9 @@ public:
 	
 	~Projectile();
 	void Init() override;
+	void OnEnable() override;
 	void Update(float deltaTime) override;
+	void OnDisable() override;
 	void Destroy() override;
 
 	void SetDirection(Vector2 direction);
@@ -23,4 +25,5 @@ private:
 	Vector2 direction;
 	float speed;
 	float lifeTime;
+	float lifeTimeCounter;
 };

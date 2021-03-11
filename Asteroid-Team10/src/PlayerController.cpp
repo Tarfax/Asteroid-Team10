@@ -121,7 +121,8 @@ void PlayerController::HandleInput(float deltaTime) {
 
 
 void PlayerController::Fire() {
-	GameObject* gameObject = Factory::GetInstance<Projectile>(Predef::Projectile);
+	//GameObject* gameObject = Factory::GetInstance<Projectile>(Predef::Projectile);
+	GameObject* gameObject = objectPool->FetchObject(ProjectilePool);
 
 	Transform* projectileTransform = gameObject->GetComponent<Transform>();
 
@@ -143,6 +144,8 @@ void PlayerController::Fire() {
 	projectile->SetDirection(this->transform->forward);
 
 	SoundCoordinator::PlayEffect("Assets/SoundFx/fire4.wav");
+
+	gameObject->SetActive(true);
 }
 
 

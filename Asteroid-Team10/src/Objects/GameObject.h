@@ -16,20 +16,25 @@ class GameObject: public IObject {
 public:
 	GameObject();
 	void OnInit();
+	void OnEnable() override;
 	void OnStart() override {}
 	void OnUpdate(float deltaTime) override;
 	void OnDraw(SDL_Renderer* renderer) override;
+	void OnDisable() override;
 	void OnDestroy() override;
 
 
 	void SetActive(bool beActive);
+	bool IsActive();
 
 
 public: //Static
 
 	static void Init();
+	static void Enable();
 	static void Update(float deltaTime);
 	static void Draw(SDL_Renderer* renderer);
+	static void Disable();
 	static void Destroy(GameObject* gameObject);
 	static void CleanUp();
 
@@ -69,12 +74,13 @@ private:
 
 	static int nextId;
 	static std::map<int, GameObject*> gameObjects;
-	static std::map<int, GameObject*> gameObjectsInactive;
+	static std::map<int, GameObject*> gameObjectsDisabled;
 	static std::map<int, GameObject*> gameObjectsToDestroy;
 
 	static std::set<int> gameObjectsToActivate;
-	static std::set<int> gameObjectsToInactivate;
+	static std::set<int> gameObjectsToDisable;
 
 	static std::map<int, GameObject*> gameObjectsToInit;
 
+	static void ClearOut(std::map<int, GameObject*>::iterator it);
 };

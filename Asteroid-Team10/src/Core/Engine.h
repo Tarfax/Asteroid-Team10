@@ -50,6 +50,7 @@ private:
 	GameInstance* gameInstance;
 	Input* input;
 	GameObject* gameObject;
+	//ObjectPool* objectPool;
 
 
 	Time* time;

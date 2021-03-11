@@ -171,6 +171,7 @@
     <ClCompile Include="src\FactorySystem\PredefinedObject.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Math\Mathf.cpp" />
+    <ClCompile Include="src\ObjectPool.cpp" />
     <ClCompile Include="src\Objects\GameObject.cpp" />
     <ClCompile Include="src\Objects\IObject.h" />
     <ClCompile Include="src\pch.cpp">

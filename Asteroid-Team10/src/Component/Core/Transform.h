@@ -15,7 +15,9 @@ public:
 	float& Y() { return position.Y; }
 
 	void Init() override;
+	void OnEnable() override {}
 	void Update(float deltaTime) override;
+	void OnDisable() override {}
 	void Destroy() override;
 
 	void Translate(Vector2 move);

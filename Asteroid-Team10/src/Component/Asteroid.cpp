@@ -10,20 +10,21 @@
 #include <Core/Input.h>
 
 
-std::unordered_map<int, GameObject*> Asteroid::activeObjects;
-std::unordered_map<int, GameObject*> Asteroid::inactiveObjects;
+//std::unordered_map<int, GameObject*> Asteroid::activeObjects;
+//std::unordered_map<int, GameObject*> Asteroid::inactiveObjects;
 std::vector<Asteroid::CallbackData> Asteroid::callbacks;
 
 void Asteroid::Init() {
 	gameObject->AddComponent<SpriteRenderer>();
 	gameObject->AddComponent<PositionWrapper>();
 
-	myGameObject = gameObject;
-	myID = gameObject->id;
+	//myGameObject = gameObject;
+	//myID = gameObject->id;
 
 	//speed = Mathf::RandomFloat() * 100.0f;
 
 }
+
 
 void Asteroid::SetData(ObjectData* data) {
 	AsteroidData* asteroidData = dynamic_cast<AsteroidData*>(data);
@@ -52,7 +53,7 @@ void Asteroid::SetData(ObjectData* data) {
 
 	transform->Rotation() = Mathf::RandomFloat(0,360);
 
-	AddToPool();
+	//AddToPool();
 }
 
 void Asteroid::AddCallback(const EventCallbackFunc& callback) {
@@ -68,6 +69,8 @@ void Asteroid::RemoveCallback(const EventCallbackFunc& callback) {
 	}
 }
 
+void Asteroid::OnEnable() { }
+
 void Asteroid::Update(float deltaTime)
 {
 	transform->Translate(Vector2((speed * deltaTime) * direction.X, (speed * deltaTime) * direction.Y));
@@ -78,55 +81,18 @@ void Asteroid::Update(float deltaTime)
 	}
 }
 
-void Asteroid::Destroy() {
-	AsteroidDestroyedEvent event = {gameObject, level};
+void Asteroid::OnDisable() {
+	AsteroidDestroyedEvent event = { gameObject, level };
 	for (int i = 0; i < callbacks.size(); i++) {
 		CallbackData data = callbacks[i];
 		data.EventCallback(event);
 	}
 }
 
-
-void Asteroid::AddToPool()
-{
-	if (inactiveObjects.count(myID) == 0) {
-		inactiveObjects.insert(std::pair<int, GameObject*>(myID, myGameObject));
-
-		// call to GameObject to add object to inactive container
-	}
-}
-
-GameObject* Asteroid::GetFromPool() {
-	if (inactiveObjects.empty()) return nullptr;
-
-	GameObject* gameObject = inactiveObjects.begin()->second;
-
-	gameObject->GetComponent<Asteroid>()->SetActive(true);
-
-	return gameObject;
-}
-
-bool Asteroid::IsActive()
-{
-	return false;
-	//return pooledObjecets[myGameObject];
-}
-
-void Asteroid::SetActive(bool setActive)
-{
-	if (setActive) {
-
-		if (inactiveObjects.count(myID) == 1 && activeObjects.count(myID) == 0) {
-			activeObjects.insert(std::pair<int, GameObject*>(myID, myGameObject));
-			inactiveObjects.erase(myID);
-		}
-	}
-	else {
-
-		if (activeObjects.count(myID) == 1 && inactiveObjects.count(myID) == 0) {
-			inactiveObjects.insert(std::pair<int, GameObject*>(myID, myGameObject));
-			activeObjects.erase(myID);
-		}
-	}
-
+void Asteroid::Destroy() {
+	//AsteroidDestroyedEvent event = {gameObject, level};
+	//for (int i = 0; i < callbacks.size(); i++) {
+	//	CallbackData data = callbacks[i];
+	//	data.EventCallback(event);
+	//}
 }
