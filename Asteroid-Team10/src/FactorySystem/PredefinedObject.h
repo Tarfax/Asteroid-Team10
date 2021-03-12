@@ -72,15 +72,17 @@ private:
 		Predef pre = Predef::Player;
 		PlayerData* data = new PlayerData();
 		data->TextureIds.push_back("Assets/Sprites/ship.png");
+		data->MaxSpeed = 200.0f;
+		data->Acceleration = 1.0f;
+		data->AccelFalloffStart = 0.0f;
+		data->MomentumFalloff = 0.9999f;
 		data->RotationSpeed = 270.0f;
-		data->Speed = 250.0f;
-		data->Acceleration = 250.0f;
 		data->FireRate = 0.17f;
-		data->MomentumAcceleration = 0.4f;
 		data->def = pre;
 
 		AddPredefData(pre, data);
 	}
+
 
 	static void pdProjectile() {
 		Predef pre = Predef::Projectile;

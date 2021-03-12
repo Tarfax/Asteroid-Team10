@@ -27,11 +27,12 @@ struct PlayerData: public ObjectData {
 public:
 	PlayerData(): ObjectData() { }
 
-	float Speed;
-	float RotationSpeed;
+	float MaxSpeed;
 	float Acceleration;
+	float AccelFalloffStart;
+	float MomentumFalloff;
+	float RotationSpeed;
 	float FireRate;
-	float MomentumAcceleration;
 };
 
 struct ProjectileData: public ObjectData {

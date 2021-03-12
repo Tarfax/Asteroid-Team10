@@ -16,8 +16,6 @@ PlayerController* PlayerController::playerController = nullptr;
 void PlayerController::Init() {
 	playerController = this;
 
-	targetSpeed = speed;
-
 	transform = gameObject->GetComponent<Transform>();
 
 	SpriteRenderer* renderer = gameObject->AddComponent<SpriteRenderer>();
@@ -33,11 +31,12 @@ void PlayerController::Init() {
 
 void PlayerController::OnSetData(ObjectData* data) {
 	PlayerData* playerData = dynamic_cast<PlayerData*>(data);
-	speed = playerData->Speed;
-	rotationSpeed = playerData->RotationSpeed;
+	maxSpeed = playerData->MaxSpeed;
 	acceleration = playerData->Acceleration;
+	accelFalloffStart = playerData->AccelFalloffStart;
+	momentumFalloff = playerData->MomentumFalloff;
+	rotationSpeed = playerData->RotationSpeed;
 	fireRate = playerData->FireRate;
-	momentumAcceleration = playerData->MomentumAcceleration;
 
 	SpriteRenderer* renderer = gameObject->GetComponent<SpriteRenderer>();
 	renderer->SetSprite(Sprite::CreateSprite(data->TextureIds[0]));
@@ -58,14 +57,13 @@ void PlayerController::OnEvent(Event& e) {
 
 bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 	if (e.GetKeyCode() == SDL_SCANCODE_W) {
-		targetSpeed = speed;
 
-		momentum.X = IncrementTowards(momentum.X, transform->forward.X, momentumAcceleration, e.GetDeltaTime());
-		momentum.Y = IncrementTowards(momentum.Y, transform->forward.Y, momentumAcceleration, e.GetDeltaTime());
+		float accelerationFalloff = 
+			Mathf::InverseLerp(maxSpeed, accelFalloffStart, momentum.Magnitude());
 
-		//momentum.X = transform->forward.X;
-		//momentum.Y = transform->forward.Y;
-		//currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, e.GetDeltaTime());
+		Vector2 speedVector = transform->forward * acceleration;
+		momentum += speedVector * accelerationFalloff;
+
 		float time = 0.04f;
 		static float timer;
 		timer -= e.GetDeltaTime();
@@ -97,17 +95,12 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 
 void PlayerController::Update(float deltaTime) {
 
-	currentSpeed = IncrementTowards(currentSpeed, targetSpeed, acceleration, deltaTime);
-	targetSpeed = currentSpeed * 0.99995f;
-	//momentum.X *= 0.9999f;
-	//momentum.Y *= 0.9999f;
-
 	fireRateTimer -= deltaTime;
 
 	HandleInput(deltaTime);
 
-
-	transform->Translate(Vector2((currentSpeed * deltaTime) * momentum.X, (currentSpeed * deltaTime) * momentum.Y));
+	momentum *= momentumFalloff;
+	transform->Translate(momentum * deltaTime);
 }
 
 
@@ -120,7 +113,6 @@ void PlayerController::HandleInput(float deltaTime) {
 
 void PlayerController::Fire() {
 	GameObject* gameObject = Factory::Create<Projectile>(Predef::Projectile);
-	//GameObject* gameObject = objectPool->FetchObject(ProjectilePool);
 
 	Transform* projectileTransform = gameObject->GetComponent<Transform>();
 
@@ -146,18 +138,6 @@ void PlayerController::Fire() {
 	gameObject->SetActive(true);
 }
 
-
-float PlayerController::IncrementTowards(float n, float target, float alpha, float deltaTime) {
-	if (n == target) {
-		return n;
-	}
-
-	float direction = Mathf::Sign(target - n);
-	n += alpha * deltaTime * direction;
-
-	return (direction == Mathf::Sign(target - n)) ? n : target;
-}
-
 void PlayerController::Destroy() {
 	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_W);
 	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_A);
@@ -165,4 +145,3 @@ void PlayerController::Destroy() {
 	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_D);
 	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
 }
-

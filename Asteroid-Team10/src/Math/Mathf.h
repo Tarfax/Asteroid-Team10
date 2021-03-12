@@ -16,6 +16,10 @@ public:
 		return (a * (1.0f - f)) + (b * f);
 	}
 
+	inline static float InverseLerp(float a, float b, float f) {
+		return (f - a) / (b - a);
+	}
+
 	template <typename T>
 	inline static int Sign(T val) {
 		return (T(0) < val) - (val < T(0));

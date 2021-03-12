@@ -32,7 +32,7 @@ public:
 	static PlayerController* playerController;
 private:
 
-	float IncrementTowards(float currentSpeed, float targetSpeed, float acceleration, float deltaTime);
+	//float IncrementTowards(float currentSpeed, float targetSpeed, float acceleration, float deltaTime);
 
 	void Fire();
 
@@ -42,19 +42,14 @@ private:
 
 	Transform* transform;
 
-	float speed = 250;
-	float targetSpeed;
-	float currentSpeed;
-	float acceleration = 30;
+	float maxSpeed;
+	float acceleration;
+	float accelFalloffStart;
 	float rotationSpeed = 100;
-
-	bool useMomentum;
-	float momentumAcceleration;
-	Vector2 momentum;
+	
+	Vector2 momentum {0.0f, 0.0f};
+	float momentumFalloff;
 
 	float fireRate;
 	float fireRateTimer;
-
-	ObjectPool* objectPool;
 };
-
