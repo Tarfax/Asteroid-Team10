@@ -24,7 +24,7 @@ public:
 private:
 	SoundCoordinator();
 	static SoundCoordinator* instance;
-	static SoundCoordinator* GetInstance() {
+	static SoundCoordinator* Create() {
 		return instance = (instance != nullptr) ? instance : new SoundCoordinator();
 	}
 

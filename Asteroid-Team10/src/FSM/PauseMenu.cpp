@@ -40,7 +40,7 @@ void PauseMenu::Update(float deltaTime) { }
 void PauseMenu::Destroy() {
 	Input::RemoveInputCallback(BindFunction(PauseMenu::OnEvent, this), SDL_SCANCODE_DOWN);
 	Input::RemoveInputCallback(BindFunction(PauseMenu::OnEvent, this), SDL_SCANCODE_UP);
-	GameObject::Destroy(canvas->gameObject);
+	GameObject::Destroy(canvas->gameObject, Predef::Unknown);
 }
 
 void PauseMenu::AddCallback(const EventCallbackFunc& callback) {

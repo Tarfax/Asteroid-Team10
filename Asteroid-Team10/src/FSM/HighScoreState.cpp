@@ -54,7 +54,7 @@ void HighScoreState::OnUpdate(float deltaTime) { }
 void HighScoreState::OnExit() {
 	Input::RemoveInputCallback(BindFunction(HighScoreState::OnEvent, this), SDL_SCANCODE_DOWN);
 	Input::RemoveInputCallback(BindFunction(HighScoreState::OnEvent, this), SDL_SCANCODE_UP);
-	GameObject::Destroy(canvas->gameObject);
+	GameObject::Destroy(canvas->gameObject, Predef::Unknown);
 }
 
 //void HighScore::AddCallback(const EventCallbackFunc& callback) {

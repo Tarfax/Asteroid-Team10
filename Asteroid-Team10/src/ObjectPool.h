@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Component/Projectile.h"
-#include "Component/Asteroid.h"
-#include "FactorySystem/Factory.h"
+
+#include "FactorySystem/Predef.h"
+
 #include <set>
 #include <map>
 
@@ -15,7 +15,7 @@ enum PoolType {
 };
 
 class FactoryObject;
-
+class GameObject;
 class ObjectPool {
 public:
 	ObjectPool() { }
@@ -24,9 +24,11 @@ public:
 
 	static GameObject* FetchObject(PoolType pType);
 
+	
+
 	static void SetPoolSize(PoolType pType, const int poolSize);
 
-	static ObjectPool* GetInstance();
+	static ObjectPool* Create();
 
 private:
 
@@ -35,4 +37,13 @@ private:
 	//bool poolCanExtend{ false };
 
 	static GameObject* CreateObject(PoolType pType);
+
+
+public:
+	//Mike
+	static GameObject* FetchObject(Predef predef);
+	static bool PoolObject(GameObject* gameObject, Predef definition);
+
+	static std::map<Predef, std::set<int>> predefIdPool;
+	static std::map<int, GameObject*> idGameObjectPool;
 };

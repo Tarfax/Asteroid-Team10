@@ -17,10 +17,11 @@ public:
 	void OnEnable() override;
 	void Update(float deltaTime) override;
 	void OnDisable() override;
+	void FireAsteroidDestroyedEvent();
 	void Destroy() override;
 
 
-	void SetData(ObjectData* data) override;
+	void OnSetData(ObjectData* data) override;
 private:
 
 	float speed { };

@@ -16,9 +16,9 @@ class SpriteRenderer: public Renderer {
 public:
 	SpriteRenderer(GameObject* gameObject) : Renderer(gameObject) { }
 	void Init();
-	void OnEnable() override {}
+	void Enable() override {}
 	void Update(float deltaTime);
-	void OnDisable() override {}
+	void Disable() override {}
 	void Destroy();
 
 	void SetSprite(Sprite* sprite);

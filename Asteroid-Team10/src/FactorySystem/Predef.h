@@ -1,6 +1,7 @@
 #pragma once
 
 enum class Predef {
+	Unknown,
 	Player,
 	Projectile,
 	Asteroid_Lvl1,

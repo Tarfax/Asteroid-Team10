@@ -22,9 +22,9 @@ public:
 	BoxCollider2D(GameObject* gameObject);
 
 	void Init() override;
-	void OnEnable() override {}
+	void OnEnable() override;
 	void Update(float deltaTime) override;
-	void OnDisable() override {}
+	void OnDisable() override;
 	void Destroy() override;
 
 	void Draw(SDL_Renderer* renderer, Transform* transform);

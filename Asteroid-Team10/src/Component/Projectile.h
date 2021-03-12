@@ -19,7 +19,7 @@ public:
 
 	void SetDirection(Vector2 direction);
 
-	void SetData(ObjectData* data) override;
+	void OnSetData(ObjectData* data) override;
 
 private:
 	Vector2 direction;

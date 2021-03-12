@@ -21,7 +21,7 @@ struct Action {
 
 public:
 
-	/*static Action* GetInstance(T* obj, void(T::* f)()) {
+	/*static Action* Create(T* obj, void(T::* f)()) {
 		return new Action<T>(obj, f);
 	}*/
 

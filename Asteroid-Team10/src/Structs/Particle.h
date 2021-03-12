@@ -41,7 +41,7 @@ struct Particle {
 	void Update(float deltaTime);
 	bool IsDead();
 
-	void SetData(Vector2 position, Vector2 velocity, float lifeTime);
+	void OnSetData(Vector2 position, Vector2 velocity, float lifeTime);
 
 	Vector2 position;
 	Vector2 velocity;

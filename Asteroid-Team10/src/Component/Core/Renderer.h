@@ -21,12 +21,13 @@ protected:
 	Transform* transform;
 
 private:
+	void OnEnable() override;
+	void OnDisable() override;
 
-
+	virtual void Enable()= 0;
+	virtual void Disable()= 0;
 	virtual void Init() = 0;
-	virtual void OnEnable() = 0;
 	virtual void Update(float deltaTime) = 0;
-	virtual void OnDisable() = 0;
 	virtual void Destroy() = 0;
 
 

@@ -13,7 +13,7 @@ public:
 	void OnDisable() override {}
 	void Destroy() override;
 
-	void SetData(ObjectData* data) override;
+	void OnSetData(ObjectData* data) override;
 private:
 
 	Vector2 direction{ 0, 0 };

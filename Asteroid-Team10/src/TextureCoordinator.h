@@ -17,7 +17,7 @@ public:
 private:
 	TextureCoordinator();
 	static TextureCoordinator* instance;
-	static TextureCoordinator* GetInstance() {
+	static TextureCoordinator* Create() {
 		return instance = (instance != nullptr) ? instance : new TextureCoordinator();
 	}
 

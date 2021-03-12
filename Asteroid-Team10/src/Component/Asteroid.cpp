@@ -26,7 +26,7 @@ void Asteroid::Init() {
 }
 
 
-void Asteroid::SetData(ObjectData* data) {
+void Asteroid::OnSetData(ObjectData* data) {
 	AsteroidData* asteroidData = dynamic_cast<AsteroidData*>(data);
 	transform->Scale() = asteroidData->Scale;
 
@@ -82,17 +82,17 @@ void Asteroid::Update(float deltaTime)
 }
 
 void Asteroid::OnDisable() {
-	AsteroidDestroyedEvent event = { gameObject, level };
+	FireAsteroidDestroyedEvent();
+}
+
+void Asteroid::Destroy() {
+	FireAsteroidDestroyedEvent();
+}
+
+void Asteroid::FireAsteroidDestroyedEvent() {
+	AsteroidDestroyedEvent event = {gameObject, level};
 	for (int i = 0; i < callbacks.size(); i++) {
 		CallbackData data = callbacks[i];
 		data.EventCallback(event);
 	}
-}
-
-void Asteroid::Destroy() {
-	//AsteroidDestroyedEvent event = {gameObject, level};
-	//for (int i = 0; i < callbacks.size(); i++) {
-	//	CallbackData data = callbacks[i];
-	//	data.EventCallback(event);
-	//}
 }

@@ -70,7 +70,7 @@ void MainMenuState::OnUpdate(float deltaTime) {
 void MainMenuState::OnExit() {
 	Input::RemoveInputCallback(BindFunction(MainMenuState::OnEvent, this), SDL_SCANCODE_DOWN);
 	Input::RemoveInputCallback(BindFunction(MainMenuState::OnEvent, this), SDL_SCANCODE_UP);
-	GameObject::Destroy(canvas->gameObject);
+	GameObject::Destroy(canvas->gameObject, Predef::Unknown);
 }
 
 void MainMenuState::AddCallback(const EventCallbackFunc& callback) {

@@ -3,7 +3,6 @@
 std::vector<Renderer*> Renderer::renderers;
 
 Renderer::Renderer(GameObject* gameObject): IComponent(gameObject) {
-	renderers.push_back(this);
 	transform = gameObject->GetComponent<Transform>();
 }
 
@@ -21,3 +20,21 @@ void Renderer::Draw(SDL_Renderer* renderer) {
 		renderers[i]->OnDraw(renderer);
 	}
 }
+
+void Renderer::OnEnable() {
+	renderers.push_back(this);
+
+	Enable();
+}
+
+void Renderer::OnDisable() {
+	for (int i = 0; i < renderers.size(); i++) {
+		if (renderers[i] == this) {
+			renderers.erase(renderers.begin() + i);
+			break;
+		}
+	}
+
+	Disable();
+}
+

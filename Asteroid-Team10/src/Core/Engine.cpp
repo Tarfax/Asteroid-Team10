@@ -44,7 +44,7 @@ bool Engine::Init() {
 	PredefinedObject::Init();
 	SoundCoordinator::Init();
 
-	//objectPool = ObjectPool::GetInstance();
+	//objectPool = ObjectPool::Create();
 	//objectPool->Init();
 	ObjectPool::Init();
 
@@ -56,12 +56,12 @@ bool Engine::Init() {
 	//SoundCoordinator::LoadEffect("Assets/SoundFx/fire4.wav");
 	//SoundCoordinator::LoadEffect("Assets/SoundFx/explosion.wav");
 	//SoundCoordinator::LoadEffect("Assets/SoundFx/engine.wav");
-	//gameObject = PlayerController::GetInstance();
+	//gameObject = PlayerController::Create();
 	
 	//objectPool->SetPoolSize(ProjectilePool, 30);
-	//Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl1);
+	//Factory::Create<Asteroid>(Predef::Asteroid_Lvl1);
 
-	//particleSystem = ParticleSystem::GetInstance()->GetComponent<ParticleSystem>();
+	//particleSystem = ParticleSystem::Create()->GetComponent<ParticleSystem>();
 
 	return true;
 }

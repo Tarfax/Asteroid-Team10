@@ -8,6 +8,7 @@
 #include <set>
 #include <Component/Core/Renderer.h>
 #include <Component/Core/BoxCollider2D.h>
+#include <FactorySystem/Predef.h>
 
 //#include <Component/Transform.h>
 class Renderer;
@@ -35,7 +36,8 @@ public: //Static
 	static void Update(float deltaTime);
 	static void Draw(SDL_Renderer* renderer);
 	static void Disable();
-	static void Destroy(GameObject* gameObject);
+	static void Destroy(GameObject* gameObject, Predef predef);
+	//static void Destroy(GameObject* gameObject);
 	static void CleanUp();
 
 
@@ -77,8 +79,12 @@ private:
 	static std::map<int, GameObject*> gameObjectsDisabled;
 	static std::map<int, GameObject*> gameObjectsToDestroy;
 
-	static std::set<int> gameObjectsToActivate;
+	static std::set<int> gameObjectsToEnable;
 	static std::set<int> gameObjectsToDisable;
+
+	static std::map<int, GameObject*> gameObjectsToEnableMap;
+	static std::map<int, GameObject*> gameObjectsToDisableMap;
+	static std::map<int, GameObject*> activeGameObjects;
 
 	static std::map<int, GameObject*> gameObjectsToInit;
 

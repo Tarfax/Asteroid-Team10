@@ -31,7 +31,7 @@ void PlayerController::Init() {
 }
 
 
-void PlayerController::SetData(ObjectData* data) {
+void PlayerController::OnSetData(ObjectData* data) {
 	PlayerData* playerData = dynamic_cast<PlayerData*>(data);
 	speed = playerData->Speed;
 	rotationSpeed = playerData->RotationSpeed;
@@ -119,8 +119,8 @@ void PlayerController::HandleInput(float deltaTime) {
 
 
 void PlayerController::Fire() {
-	//GameObject* gameObject = Factory::GetInstance<Projectile>(Predef::Projectile);
-	GameObject* gameObject = objectPool->FetchObject(ProjectilePool);
+	GameObject* gameObject = Factory::Create<Projectile>(Predef::Projectile);
+	//GameObject* gameObject = objectPool->FetchObject(ProjectilePool);
 
 	Transform* projectileTransform = gameObject->GetComponent<Transform>();
 

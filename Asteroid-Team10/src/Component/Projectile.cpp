@@ -13,7 +13,8 @@ void Projectile::Init() {
 
 void Projectile::OnEnable() { }
 
-void Projectile::SetData(ObjectData* data) {
+void Projectile::OnSetData(ObjectData* data) {
+	
 	ProjectileData* projectileData = dynamic_cast<ProjectileData*>(data);
 	speed = projectileData->Speed;
 	lifeTime = projectileData->LifeTime;
@@ -42,8 +43,8 @@ void Projectile::Update(float deltaTime) {
 
 	lifeTimeCounter -= deltaTime;
 	if (lifeTimeCounter < 0.0f) {
-		//GameObject::Destroy(gameObject);
-		gameObject->SetActive(false);
+		GameObject::Destroy(gameObject, Predef::Projectile);
+		//gameObject->SetActive(false);
 		lifeTimeCounter = lifeTime;
 	}
 }

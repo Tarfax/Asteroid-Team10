@@ -19,7 +19,7 @@ void UFO::Init()
 	framesToNextShot = Mathf::RandomFloat(3000, 8000);
 }
 
-void UFO::SetData(ObjectData* data)
+void UFO::OnSetData(ObjectData* data)
 {
 	UFOData* ufoData = dynamic_cast<UFOData*>(data);
 	speed = ufoData->Speed;
@@ -49,7 +49,7 @@ void UFO::Fire()
 	Vector2 test = PlayerController::
 		playerController->gameObject->GetComponent<Transform>()->Position();
 
-	GameObject* object = Factory::GetInstance<Projectile>(Predef::Projectile);
+	GameObject* object = Factory::Create<Projectile>(Predef::Projectile);
 	
 	Projectile* projectile = object->GetComponent<Projectile>();
 	Vector2 direction = Vector2::Direction(test, transform->Position());

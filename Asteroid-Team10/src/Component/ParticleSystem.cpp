@@ -3,7 +3,7 @@
 #include "Math/Mathf.h"
 #include <Utilities/Timer.h>
 
-GameObject* ParticleSystem::GetInstance() {
+GameObject* ParticleSystem::Create() {
 	/*GameObject* gameObject = nullptr;
 
 	gameObject = new GameObject();
@@ -63,7 +63,7 @@ void ParticleSystem::Destroy() {
 	}
 }
 
-void ParticleSystem::SetData(ObjectData* data) {
+void ParticleSystem::OnSetData(ObjectData* data) {
 	AsteroidExplosionData* explosionData = dynamic_cast<AsteroidExplosionData*>(data);
 	sprite = Sprite::CreateSprite(data->TextureIds[0]);
 
@@ -127,7 +127,7 @@ void ParticleSystem::Update(float deltaTime) {
 
 	}
 	else if (isEmitting == false && repeat == false) {
-		GameObject::Destroy(gameObject);
+		GameObject::Destroy(gameObject, Predef::AsteroidExplosion);
 	}
 
 	if (repeat == true) {
@@ -164,7 +164,7 @@ void ParticleSystem::Emit() {
 		if (inactiveParticles.size() > 0) {
 			particle = inactiveParticles[0];
 			inactiveParticles.erase(inactiveParticles.begin());
-			particle->SetData(position, velocity, lifeTime);
+			particle->OnSetData(position, velocity, lifeTime);
 		}
 		else {
 			particle = new Particle(position, velocity, lifeTime);

@@ -27,7 +27,7 @@ public:
 	void OnDisable()			 override {}
 	void Destroy()				 override;
 
-	void SetData(ObjectData* data) override;
+	void OnSetData(ObjectData* data) override;
 
 	static PlayerController* playerController;
 private:

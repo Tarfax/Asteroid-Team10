@@ -14,18 +14,18 @@
 class ParticleSystem : public Renderer , public FactoryObject {
 
 public:
-	static GameObject* GetInstance();
+	static GameObject* Create();
 
 	ParticleSystem(GameObject* gameObject): Renderer(gameObject) { gameObject->name = "ParticleSystem"; }
 
 	void Init() override;
-	void OnEnable() override {}
+	void Enable() override {}
 	void Update(float deltaTime) override;
 	void OnDraw(SDL_Renderer* renderer) override;
-	void OnDisable() override {}
+	void Disable() override {}
 	void Destroy() override;
 
-	void SetData(ObjectData* data) override;
+	void OnSetData(ObjectData* data) override;
 
 	void SetParticleData(ParticleData data);
 

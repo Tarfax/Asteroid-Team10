@@ -4,5 +4,12 @@
 
 class FactoryObject {
 protected:
-	virtual void SetData(ObjectData* data) { }
+	void SetData(ObjectData* data) {
+		definition = data->def;
+		OnSetData(data);
+	}
+
+	virtual void OnSetData(ObjectData* data) { }
+
+	Predef definition;
 };

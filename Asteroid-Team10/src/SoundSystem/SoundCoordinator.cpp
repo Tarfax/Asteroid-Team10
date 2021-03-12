@@ -5,7 +5,7 @@ SoundCoordinator* SoundCoordinator::instance;
 SoundCoordinator::SoundCoordinator() { }
 
 void SoundCoordinator::Init() {
-	GetInstance()->iInit();
+	Create()->iInit();
 }
 
 void SoundCoordinator::iInit() {
@@ -16,7 +16,7 @@ void SoundCoordinator::iInit() {
 }
 
 void SoundCoordinator::PlayMusic(std::string id) {
-	GetInstance()->iPlayMusic(id);
+	Create()->iPlayMusic(id);
 }
 
 void SoundCoordinator::iPlayMusic(std::string id) {
@@ -31,11 +31,11 @@ void SoundCoordinator::LoadMusic(std::string id) {
 		std::cout << Mix_GetError() << ": " << id << std::endl;
 		return;
 	}
-	GetInstance()->musicMap[id] = music;
+	Create()->musicMap[id] = music;
 }
 
 void SoundCoordinator::PlayEffect(std::string id) {
-	GetInstance()->iPlayEffect(id);
+	Create()->iPlayEffect(id);
 }
 
 void SoundCoordinator::iPlayEffect(std::string id) {
@@ -53,19 +53,19 @@ void SoundCoordinator::LoadEffect(std::string id) {
 		std::cout << Mix_GetError() << ": " << id << std::endl;
 		return;
 	}
-	GetInstance()->effectMap[id] = effect;
-	GetInstance()->effectMapChannel[effect] = GetInstance()->effectsLoaded++;
+	Create()->effectMap[id] = effect;
+	Create()->effectMapChannel[effect] = Create()->effectsLoaded++;
 }
 
 void SoundCoordinator::Delete() {
 
 	std::map<std::string, Mix_Music*>::iterator it;
-	for (it = GetInstance()->musicMap.begin(); it != GetInstance()->musicMap.end(); it++) {
+	for (it = Create()->musicMap.begin(); it != Create()->musicMap.end(); it++) {
 		Mix_FreeMusic(it->second);
 	}
 
 	std::map<std::string, Mix_Chunk*>::iterator it2;
-	for (it2 = GetInstance()->effectMap.begin(); it2 != GetInstance()->effectMap.end(); it2++) {
+	for (it2 = Create()->effectMap.begin(); it2 != Create()->effectMap.end(); it2++) {
 		Mix_FreeChunk(it2->second);
 	}
 

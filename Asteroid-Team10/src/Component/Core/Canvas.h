@@ -10,9 +10,9 @@ public:
 
 	void OnDraw(SDL_Renderer* renderer) override;
 	void Init() override;
-	void OnEnable() override {}
+	void Enable() override {}
 	void Update(float deltaTime) override;
-	void OnDisable() override {}
+	void Disable() override {}
 	void Destroy() override;
 
 	void AddUIElement(UIElement* element);

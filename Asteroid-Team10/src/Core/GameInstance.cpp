@@ -5,7 +5,7 @@ GameInstance::GameInstance() { }
 
 void GameInstance::Init() {
 	ChangeToState<MainMenuState>();
-	timeScale = 1;
+	//SetTimeScale(1);
 }
 
 void GameInstance::Update(float deltaTime) {

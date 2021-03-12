@@ -65,12 +65,13 @@ void GamePlayState::OnUpdate(float deltaTime) {
 }
 
 void GamePlayState::OnExit() {
-	GameObject::Destroy(playerTransform->gameObject);
-	GameObject::Destroy(canvas->gameObject);
+	GameObject::Destroy(playerTransform->gameObject, Predef::Player);
+	GameObject::Destroy(canvas->gameObject, Predef::Unknown);
 
 	std::map<int, GameObject*>::iterator it;
 	for (it = spawnedObjects.begin(); it != spawnedObjects.end(); it++) 	{
-		GameObject::Destroy(it->second);
+		/*GameObject::Destroy(it->second, Predef::);*/
+		std::cout << "GamePlayState::OnExit() must destroy all objects, but how?" << std::endl;
 	}
 	spawnedObjects.clear();
 
@@ -84,7 +85,7 @@ void GamePlayState::OnExit() {
 }
 
 void GamePlayState::CreatePlayer() {
-	GameObject* gameObject = Factory::GetInstance<PlayerController>(Predef::Player);
+	GameObject* gameObject = Factory::Create<PlayerController>(Predef::Player);
 	playerTransform = gameObject->GetComponent<Transform>();
 	playerTransform->Position() = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
@@ -95,7 +96,7 @@ void GamePlayState::CreateLevel(int level) {
 	int height = SCREEN_HEIGHT / 3;
 
 	for (int i = 0; i < level + 4; i++) {
-		GameObject* gameObject = Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl1);
+		GameObject* gameObject = Factory::Create<Asteroid>(Predef::Asteroid_Lvl1);
 		Transform* transform = gameObject->GetComponent<Transform>();
 		if (i % 2 == 0) {
 			transform->Position() = Vector2(32, height * (i + 1));
@@ -106,9 +107,31 @@ void GamePlayState::CreateLevel(int level) {
 
 		asteroidsInPlay++;
 		spawnedObjects[gameObject->id] = gameObject;
+		//gameObject->SetActive(true);
+
 	}
 
 }
+
+//void GamePlayState::CreateLevel(int level) {
+//
+//	int height = SCREEN_HEIGHT / 3;
+//
+//	for (int i = 0; i < level + 4; i++) {
+//		//GameObject* gameObject = Factory::Create<Asteroid>(Predef::Asteroid_Lvl1);
+//		GameObject* gameObject = ObjectPool::FetchObject(AsteroidLvl1Pool);
+//		Transform* transform = gameObject->GetComponent<Transform>();
+//		if (i % 2 == 0) {
+//			transform->Position() = Vector2(32, height * (i + 1));
+//		}
+//		else {
+//			transform->Position() = Vector2(SCREEN_WIDTH - 32, height * (i + 1));
+//		}
+//		asteroidsInPlay++;
+//	}
+//
+//}
+//
 
 void GamePlayState::SetScore(int score) {
 	this->score += score;
@@ -149,10 +172,11 @@ bool GamePlayState::OnKeyPressed(KeyPressedEvent& e) {
 		}
 	}
 	return true;
-	gameObject->SetActive(true);
+	//gameObject->SetActive(true);
 }
 
 bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
+	std::cout << "GamePlayState::OnAsteroidDestroyed" << std::endl;
 	spawnedObjects.erase(e.gameObject->id);
 	asteroidsInPlay--;
 
@@ -160,8 +184,8 @@ bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 
 	if (e.Level == 1) {
 		for (int i = 0; i < 2; i++) {
-			//GameObject* gameObject = Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl2);
-			GameObject* gameObject = ObjectPool::FetchObject(AsteroidLvl2Pool);
+			GameObject* gameObject = Factory::Create<Asteroid>(Predef::Asteroid_Lvl2);
+			//GameObject* gameObject = ObjectPool::FetchObject(AsteroidLvl2Pool);
 			Transform* transform = gameObject->GetComponent<Transform>();
 			transform->Position() = collider->GetOrigin();
 			asteroidsInPlay++;
@@ -176,8 +200,8 @@ bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 	else if (e.Level == 2) {
 		BoxCollider2D* collider = e.gameObject->GetComponent<BoxCollider2D>();
 		for (int i = 0; i < 2; i++) {
-			//GameObject* gameObject = Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl3);
-			GameObject* gameObject = ObjectPool::FetchObject(AsteroidLvl3Pool);
+			GameObject* gameObject = Factory::Create<Asteroid>(Predef::Asteroid_Lvl3);
+			//GameObject* gameObject = ObjectPool::FetchObject(AsteroidLvl3Pool);
 			Transform* transform = gameObject->GetComponent<Transform>();
 			transform->Position() = collider->GetOrigin();
 			asteroidsInPlay++;
@@ -201,7 +225,7 @@ bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 		loadNextLevel = true;
 	}
 
-	GameObject* gameObject = Factory::GetInstance<ParticleSystem>(Predef::AsteroidExplosion);
+	GameObject* gameObject = Factory::Create<ParticleSystem>(Predef::AsteroidExplosion);
 	gameObject->GetComponent<Transform>()->Position() = collider->GetOrigin();
 	SoundCoordinator::PlayEffect("Assets/SoundFx/explosion.wav");
 	gameObject->SetActive(true);
@@ -224,22 +248,4 @@ bool GamePlayState::OnMainMenu(MenuMainMenuEvent& e) {
 	gameInstance->ChangeToState<MainMenuState>();
 	return true;
 }
-void GamePlayState::CreateLevel(int level) {
 
-	int height = SCREEN_HEIGHT / 3;
-
-	for (int i = 0; i < level + 4; i++) {
-		//GameObject* gameObject = Factory::GetInstance<Asteroid>(Predef::Asteroid_Lvl1);
-		GameObject* gameObject = ObjectPool::FetchObject(AsteroidLvl1Pool);
-		Transform* transform = gameObject->GetComponent<Transform>();
-		if (i % 2 == 0) {
-			transform->Position() = Vector2(32, height * (i + 1));
-		}
-		else {
-			transform->Position() = Vector2(SCREEN_WIDTH - 32, height * (i + 1));
-		}
-		gameObject->SetActive(true);
-		asteroidsInPlay++;
-	}
-
-}

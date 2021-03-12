@@ -12,12 +12,15 @@ BoxCollider2D::BoxCollider2D(GameObject* gameObject)
 	id(nextId++), bounds({0, 0, 0, 0}), layer(lNothing), collideWithlayer(lNothing),
 	originalBounds({0, 0, 0, 0})
 {
-	colliders[id] = this;
 }
 
 void BoxCollider2D::Init() {
 	transform = gameObject->GetComponent<Transform>();
 	//transform = gameObject->GetComponent<Transform>();
+}
+
+void BoxCollider2D::OnEnable() {
+	colliders[id] = this;
 }
 
 void BoxCollider2D::Update(float deltaTime) {
@@ -28,17 +31,24 @@ void BoxCollider2D::Update(float deltaTime) {
 
 	std::map<int, BoxCollider2D*>::iterator it;
 	for (it = colliders.begin(); it != colliders.end(); it++) {
-		if (it->second != this && it->second->IsColliding(this->bounds, collideWithlayer) && 
-			it->second->gameObject->IsActive()) {
-			int i = it->second->id;
+		if (it->second != this && it->second->IsColliding(this->bounds, collideWithlayer)/* && 
+			it->second->gameObject->IsActive()*/) {
+
+			//int i = it->second->id;
+			GameObject::Destroy(gameObject, Predef::Unknown);
+
 			//std::cout << gameObject->ToString() << " collided with " << it->second->gameObject->ToString() << "\n";
-			//GameObject::Destroy(gameObject);
-			gameObject->SetActive(false);
+			//std::cout << "Rewrite the collision system to work better and more optimized" << std::endl;
+			/*gameObject->SetActive(false);*/
 			//gameObject->GetComponent<Transform>()->Position() = { 400,400 };
 		}
 	}
 
 	bounds = {(int)transform->X(), (int)transform->Y(), (int)(originalBounds.w * transform->Scale().X), (int)(originalBounds.h * transform->Scale().Y)};
+}
+
+void BoxCollider2D::OnDisable() {
+	colliders.erase(id);
 }
 
 void BoxCollider2D::Destroy() {

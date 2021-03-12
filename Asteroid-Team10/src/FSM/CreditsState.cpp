@@ -50,7 +50,7 @@ void CreditsState::OnUpdate(float deltaTime) { }
 void CreditsState::OnExit() {
 	Input::RemoveInputCallback(BindFunction(CreditsState::OnEvent, this), SDL_SCANCODE_DOWN);
 	Input::RemoveInputCallback(BindFunction(CreditsState::OnEvent, this), SDL_SCANCODE_UP);
-	GameObject::Destroy(canvas->gameObject);
+	GameObject::Destroy(canvas->gameObject, Predef::Unknown);
 }
 
 void CreditsState::OnEvent(Event& event) {
