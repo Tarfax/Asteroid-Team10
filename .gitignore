@@ -261,3 +261,5 @@ Session.vim
 *.opendb
 
 Asteroid-Team10.sln
+*.vcxproj
+*.filters
