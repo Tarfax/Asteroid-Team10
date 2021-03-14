@@ -83,9 +83,9 @@ private:
 		Predef pre = Predef::Player;
 		PlayerData* data = new PlayerData();
 		data->TextureIds.push_back("Assets/Sprites/ship.png");
-		data->MaxSpeed = 200.0f;
-		data->Acceleration = 1.0f;
-		data->AccelFalloffStart = 0.0f;
+		data->MaxSpeed = 400.0f;
+		data->Acceleration = 0.15f;
+		data->AccelFalloffStart = 70.0f;
 		data->MomentumFalloff = 0.9999f;
 		data->RotationSpeed = 270.0f;
 		data->FireRate = 0.17f;
@@ -100,7 +100,7 @@ private:
 		ProjectileData* data = new ProjectileData();
 		data->TextureIds.push_back("Assets/Sprites/projectile.png");
 		data->Speed = 450.0f;
-		data->LifeTime = 0.75f;
+		data->LifeTime = 1.25f;
 		data->def = pre;
 		data->Scale = 0.2f;
 
@@ -111,8 +111,8 @@ private:
 		Predef pre = Predef::UFOProjectile;
 		ProjectileData* data = new ProjectileData();
 		data->TextureIds.push_back("Assets/Sprites/UFOProjectile.png");
-		data->Speed = 650.0f;
-		data->LifeTime = 1.25f;
+		data->Speed = 500.0f;
+		data->LifeTime = 1.5f;
 		data->def = pre;
 		data->Scale = 0.8f;
 		data->RotationSpeed = 100;

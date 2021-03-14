@@ -64,8 +64,9 @@ void PlayerController::OnEvent(Event& e) {
 
 bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 	if (e.GetKeyCode() == SDL_SCANCODE_W) {
+		momentumFalloff = 0.9992f;
 
-		float accelerationFalloff =
+		float accelerationFalloff = 
 			Mathf::InverseLerp(maxSpeed, accelFalloffStart, momentum.Magnitude());
 
 		Vector2 speedVector = transform->forward * acceleration;
@@ -111,6 +112,7 @@ void PlayerController::OnUpdate(float deltaTime) {
 
 	momentum *= momentumFalloff;
 	transform->Translate(momentum * deltaTime);
+	momentumFalloff = 0.9999f;
 }
 
 
