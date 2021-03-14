@@ -30,6 +30,8 @@ private:
 	int counter{};
 	int framesToNextShot{};
 
+	bool deathByPlayer = false;
+
 	float ufoSoundTimer;
 	float ufoSoundTime = 0.5f;
 };

@@ -12,6 +12,8 @@
 #include <EventSystem/EngineEvent.h>
 #include <Component/Core/Renderer.h>
 
+#include <Structs/HighScore.h>
+
 
 Engine::Engine() { }
 
@@ -44,6 +46,8 @@ bool Engine::Init() {
 	TextureCoordinator::Init(renderer);
 	PredefinedObject::Init();
 	SoundCoordinator::Init();
+
+	HighScore::LoadScore();
 
 	gameInstance = new GameInstance();
 	gameInstance->Init();

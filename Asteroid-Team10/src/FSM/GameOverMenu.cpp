@@ -3,9 +3,14 @@
 #include <UI/UIFactory.h>
 #include <string>
 #include <Core/EngineData.h>
+#include <Structs/HighScore.h>
 
 void GameOverMenu::Init(int score) {
 	this->score = score;
+
+	HighScore::SetScore(score);
+	HighScore::SaveScore();
+
 	Input::AddInputCallback(BindFunction(GameOverMenu::OnEvent, this), SDL_SCANCODE_DOWN);
 	Input::AddInputCallback(BindFunction(GameOverMenu::OnEvent, this), SDL_SCANCODE_UP);
 

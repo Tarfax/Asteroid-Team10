@@ -18,6 +18,7 @@ void UFO::OnInit()
 }
 
 void UFO::OnEnable() {
+	std::cout << "UFO On Enable" << std::endl;
 	ufoSoundTimer = 0.0f;
 }
 
@@ -94,22 +95,22 @@ void UFO::OnUpdate(float deltaTime)
 }
 
 void UFO::OnCollision(BoxCollider2D* collider) {
+	deathByPlayer = false;
 	if (collider->GetLayer() == Layer::Asteroid) {
 		GameObject::Destroy(gameObject, Predef::UFO);
-
 	}
 	else if (collider->GetLayer() == Layer::Projectile) {
 		GameObject::Destroy(gameObject, Predef::UFO);
-
+		deathByPlayer = true;
 	}
 }
 
 void UFO::OnDisable() {
-	UFODestroyedEvent e(gameObject, gameObject->GetComponent<BoxCollider2D>(), predefData, false);
+	UFODestroyedEvent e(gameObject, gameObject->GetComponent<BoxCollider2D>(), predefData, deathByPlayer);
 	FireDestroyedEvent(e);
 }
 
 void UFO::OnDestroy() {
-	UFODestroyedEvent e(gameObject, gameObject->GetComponent<BoxCollider2D>(), predefData, false);
+	UFODestroyedEvent e(gameObject, gameObject->GetComponent<BoxCollider2D>(), predefData, deathByPlayer);
 	FireDestroyedEvent(e);
 }

@@ -159,6 +159,8 @@
     <ClCompile Include="src\FSM\QuitGameState.cpp" />
     <ClCompile Include="src\FSM\SettingsState.cpp" />
     <ClCompile Include="src\SpatialPartitioning\CollisionGrid.cpp" />
+    <ClCompile Include="src\Structs\HighScore.cpp" />
+    <ClCompile Include="src\Structs\HighScore.h" />
     <ClCompile Include="src\UI\Button.cpp" />
     <ClCompile Include="src\Component\Core\BoxCollider2D.cpp" />
     <ClCompile Include="src\Component\Core\Renderer.cpp" />
@@ -198,6 +200,7 @@
     <ClInclude Include="src\Component\Core\Canvas.h" />
     <ClInclude Include="src\Core\EngineData.h" />
     <ClInclude Include="src\Core\Physics.h" />
+    <ClInclude Include="src\Core\SaveLoadGame.h" />
     <ClInclude Include="src\FSM\CreditsState.h" />
     <ClInclude Include="src\FSM\GameOverMenu.h" />
     <ClInclude Include="src\FSM\GamePlayState.h" />
@@ -250,6 +253,9 @@
     <ClInclude Include="src\UI\UIElement.h" />
     <ClInclude Include="src\UI\UIFactory.h" />
     <ClInclude Include="src\Utilities\Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\HighScore\highscore.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

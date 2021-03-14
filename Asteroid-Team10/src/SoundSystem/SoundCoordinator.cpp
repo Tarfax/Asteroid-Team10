@@ -13,6 +13,7 @@ void SoundCoordinator::iInit() {
 	if (Mix_OpenAudio(Freq, MIX_DEFAULT_FORMAT, 2, ChunkSize) < 0) {
 		std::cout << Mix_GetError() << std::endl;
 	}
+	Mix_AllocateChannels(10);
 }
 
 void SoundCoordinator::PlayMusic(std::string id) {
@@ -42,7 +43,8 @@ void SoundCoordinator::iPlayEffect(std::string id) {
 	if (effectMap.count(id) != 1) {
 		LoadEffect(id);
 	}
-	if (Mix_PlayChannel(effectMapChannel[effectMap[id]], effectMap[id], 0) == -1) {
+	int channel;
+	if (channel = Mix_PlayChannel(effectMapChannel[effectMap[id]], effectMap[id], 0) == -1) {
 		std::cout << Mix_GetError() << ": " << id << std::endl;
 	}
 }

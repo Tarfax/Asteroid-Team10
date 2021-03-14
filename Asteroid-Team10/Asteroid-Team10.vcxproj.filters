@@ -43,6 +43,8 @@
     <ClCompile Include="src\Core\Physics.cpp" />
     <ClCompile Include="src\SpatialPartitioning\CollisionGrid.cpp" />
     <ClCompile Include="src\FSM\GameOverMenu.cpp" />
+    <ClCompile Include="src\Structs\HighScore.h" />
+    <ClCompile Include="src\Structs\HighScore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Action.h" />
@@ -103,5 +105,9 @@
     <ClInclude Include="src\Core\Physics.h" />
     <ClInclude Include="src\FSM\GameOverMenu.h" />
     <ClInclude Include="src\Core\EngineData.h" />
+    <ClInclude Include="src\Core\SaveLoadGame.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\HighScore\highscore.txt" />
   </ItemGroup>
 </Project>

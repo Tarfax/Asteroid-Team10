@@ -13,6 +13,7 @@ class HighScoreState: public GameState {
 
 public:
 	void OnEnter() override;
+	void CreateUI();
 	void OnUpdate(float deltaTime) override;
 	void OnExit() override;
 	std::string ToString() {

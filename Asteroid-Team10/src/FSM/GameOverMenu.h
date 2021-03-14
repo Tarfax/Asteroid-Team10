@@ -6,6 +6,7 @@
 #include <Component/Core/Canvas.h>
 #include <Core/Input.h>
 
+
 class GameOverMenu {
 	using EventCallbackFunc = std::function<void(Event&)>;
 
