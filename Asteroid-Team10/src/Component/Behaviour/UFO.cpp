@@ -1,8 +1,8 @@
 #include "UFO.h"
 #include "PlayerController.h"
 #include "FactorySystem/Factory.h"
-#include "Component/Projectile.h"
-#include "Component/PositionWrapper.h"
+#include "Component/Behaviour/Projectile.h"
+#include "Component/Behaviour/PositionWrapper.h"
 #include "Component/Core/BoxCollider2D.h"
 #include "Component/Core/SpriteRenderer.h"
 #include <EventSystem/ObjectEvent.h>

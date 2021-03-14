@@ -3,7 +3,7 @@
 #include <UI/UIElement.h>
 #include <Structs/Sprite.h>
 #include <SDL.h>
-#include <TextureCoordinator.h>
+#include <TextureCoordinator/TextureCoordinator.h>
 #include <iostream>
 
 class Text: public UIElement {

@@ -2,8 +2,8 @@
 //#include "Core/Input.h"
 #include <SDL.h>
 //#include <Math/Mathf.h>
-#include <Component/PositionWrapper.h>
-#include <Component/Projectile.h>
+#include <Component/Behaviour/PositionWrapper.h>
+#include <Component/Behaviour/Projectile.h>
 #include <Component/Core/BoxCollider2D.h>
 #include <Component/Core/SpriteRenderer.h>
 //#include "Structs/Sprite.h"

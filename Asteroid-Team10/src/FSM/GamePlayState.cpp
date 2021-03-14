@@ -7,11 +7,11 @@
 #include <Core/Engine.h>
 #include <Core/GameInstance.h>
 
-#include <PlayerController.h>
+#include <Component/Behaviour/PlayerController.h>
 
-#include <Component/Asteroid.h>
+#include <Component/Behaviour/Asteroid.h>
 #include <Component/ParticleSystem.h>
-#include <Component/UFO.h>
+#include <Component/Behaviour/UFO.h>
 
 #include <EventSystem/MenuEvent.h>
 

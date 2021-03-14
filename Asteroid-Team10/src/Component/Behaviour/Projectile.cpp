@@ -2,7 +2,7 @@
 
 #include <Component/Core/BoxCollider2D.h>
 #include <Component/Core/SpriteRenderer.h>
-#include "Component/PositionWrapper.h"
+#include "Component/Behaviour/PositionWrapper.h"
 
 Projectile::~Projectile() { }
 

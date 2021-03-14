@@ -1,7 +1,7 @@
 #include "ObjectPool.h"
 #include "FactorySystem/Factory.h"
-#include "Component/Projectile.h"
-#include "Component/Asteroid.h"
+#include "Component/Behaviour/Projectile.h"
+#include "Component/Behaviour/Asteroid.h"
 
 ObjectPool* ObjectPool::instance = nullptr;
 std::map<PoolType, std::set<GameObject*>> ObjectPool::pools;

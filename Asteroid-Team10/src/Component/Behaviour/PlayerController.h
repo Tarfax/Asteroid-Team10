@@ -1,9 +1,7 @@
 #pragma once
 
 #include "Component/Behaviour/Behaviour.h"
-#include "ObjectPool.h"
 #include "FactorySystem/FactoryObject.h"
-#include "Component/Core/Transform.h"
 #include <Objects/GameObject.h>
 #include <EventSystem/Event.h>
 #include <EventSystem/KeyEvent.h>
@@ -13,11 +11,9 @@ class PlayerController: public Behaviour, public FactoryObject {
 public:
 	PlayerController(GameObject* gameObject): Behaviour(gameObject) { gameObject->name = "Player Controller"; }
 	~PlayerController() { 
-		std::cout << " player controller detele? " << std::endl;
-		//delete playerController; 
+		//std::cout << " player controller detele? " << std::endl;
 	}
 
-	//GameObject* GetInstance();
 	static PlayerController* playerController;
 
 protected:
@@ -38,8 +34,6 @@ private:
 	void OnEvent(Event& event);
 	bool OnKeyPressedEvent(KeyPressedEvent& e);
 	void HandleInput(float deltaTime);
-
-	//Transform* transform;
 
 	float maxSpeed;
 	float acceleration;

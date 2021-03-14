@@ -1,7 +1,7 @@
 #pragma once
 
 #include <FactorySystem/FactoryObject.h>
-#include <ObjectPool.h>
+#include <FactorySystem/ObjectPool.h>
 #include "FactorySystem/PredefinedObject.h"
 #include <Objects/GameObject.h>
 class GameObject;

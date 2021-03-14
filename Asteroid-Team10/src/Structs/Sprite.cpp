@@ -1,5 +1,5 @@
 #include "Sprite.h"
-#include <TextureCoordinator.h>
+#include <TextureCoordinator/TextureCoordinator.h>
 #include <iostream>
 
 Sprite* Sprite::CreateSprite(std::string textureId) {

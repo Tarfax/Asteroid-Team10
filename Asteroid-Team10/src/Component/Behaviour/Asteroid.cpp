@@ -1,6 +1,6 @@
 #include "Asteroid.h"
 
-#include "Component/PositionWrapper.h"
+#include "Component/Behaviour/PositionWrapper.h"
 #include "Component/Core/BoxCollider2D.h"
 #include "Component/Core/SpriteRenderer.h"
 
