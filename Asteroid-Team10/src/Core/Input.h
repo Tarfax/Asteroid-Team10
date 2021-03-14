@@ -5,13 +5,6 @@
 #include <EventSystem/Event.h>
 #include <EventSystem/KeyEvent.h>
 
-/// <summary>
-/// Creates a reference to a member function
-/// </summary>
-/// <param name="x">The function</param>
-/// <param name="y">The instance of the class</param>
-#define BindFunction(x, y) std::bind(&x, y, std::placeholders::_1)
-
 class Input {
 	using EventCallbackFunc = std::function<void(Event&)>;
 
@@ -22,6 +15,9 @@ public:
 	}
 
 	static Input* Init();
+	void Destroy() {
+		instance = nullptr;
+	}
 
 	static bool GetKeyDown(SDL_Scancode);
 	static bool GetKeyUp(SDL_Scancode);

@@ -2,21 +2,23 @@
 #include "PlayerController.h"
 #include "FactorySystem/Factory.h"
 #include "Component/Projectile.h"
-#include "Core/Time.h"
 #include "Component/PositionWrapper.h"
 #include "Component/Core/BoxCollider2D.h"
 #include "Component/Core/SpriteRenderer.h"
-#include "Structs/Sprite.h"
-#include "Structs/Vector2.h"
-#include "Math/Mathf.h"
+#include <EventSystem/ObjectEvent.h>
 
-void UFO::Init()
+void UFO::OnInit()
 {
 	gameObject->AddComponent<SpriteRenderer>();
 	gameObject->AddComponent<PositionWrapper>();
 
 	counter = 0;
 	framesToNextShot = Mathf::RandomFloat(3000, 8000);
+
+}
+
+void UFO::OnEnable() {
+	ufoSoundTimer = 0.0f;
 }
 
 void UFO::OnSetData(ObjectData* data)
@@ -33,8 +35,7 @@ void UFO::OnSetData(ObjectData* data)
 
 	BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
 	collider->SetBounds(spriteRenderer->GetRect());
-	collider->SetLayer(Layer::lAsteroid);
-	collider->SetCollideWithLayer(Layer::lProjectile);
+	collider->SetLayer(Layer::UFO);
 
 	float dir = Mathf::RandomFloat(-1, 1);
 	direction.X = dir / fabsf(dir);
@@ -49,8 +50,8 @@ void UFO::Fire()
 	Vector2 test = PlayerController::
 		playerController->gameObject->GetComponent<Transform>()->Position();
 
-	GameObject* object = Factory::Create<Projectile>(Predef::Projectile);
-	
+	GameObject* object = Factory::Create<Projectile>(Predef::UFOProjectile);
+
 	Projectile* projectile = object->GetComponent<Projectile>();
 	Vector2 direction = Vector2::Direction(test, transform->Position());
 	projectile->SetDirection(direction *= projectileSpeed);
@@ -68,11 +69,12 @@ void UFO::Fire()
 	projectileTransform->Position() = position;
 
 	BoxCollider2D* collider = object->GetComponent<BoxCollider2D>();
-	collider->SetLayer(Layer::lAsteroid);
-	collider->SetCollideWithLayer(Layer::lPlayer);
+	collider->SetLayer(Layer::UFOProjectile);
+
+	SoundCoordinator::PlayEffect("Assets/SoundFx/UFOFire.wav");
 }
 
-void UFO::Update(float deltaTime)
+void UFO::OnUpdate(float deltaTime)
 {
 	transform->Position().Y = (sinf(transform->Position().X * frequency) * magnitude) + position;
 	transform->Translate(Vector2((speed * deltaTime) * direction.X, 0.0f));
@@ -83,8 +85,31 @@ void UFO::Update(float deltaTime)
 		framesToNextShot = Mathf::RandomFloat(3000, 8000);
 	}
 	counter++;
+
+	ufoSoundTimer -= deltaTime;
+	if (ufoSoundTimer <= 0.0f) {
+		SoundCoordinator::PlayEffect("Assets/SoundFx/UFOAlive.wav");
+		ufoSoundTimer = ufoSoundTime;
+	}
 }
 
-void UFO::Destroy()
-{
+void UFO::OnCollision(BoxCollider2D* collider) {
+	if (collider->GetLayer() == Layer::Asteroid) {
+		GameObject::Destroy(gameObject, Predef::UFO);
+
+	}
+	else if (collider->GetLayer() == Layer::Projectile) {
+		GameObject::Destroy(gameObject, Predef::UFO);
+
+	}
+}
+
+void UFO::OnDisable() {
+	UFODestroyedEvent e(gameObject, gameObject->GetComponent<BoxCollider2D>(), predefData, false);
+	FireDestroyedEvent(e);
+}
+
+void UFO::OnDestroy() {
+	UFODestroyedEvent e(gameObject, gameObject->GetComponent<BoxCollider2D>(), predefData, false);
+	FireDestroyedEvent(e);
 }

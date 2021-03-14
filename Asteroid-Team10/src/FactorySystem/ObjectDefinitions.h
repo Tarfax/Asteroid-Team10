@@ -42,11 +42,12 @@ public:
 	float Speed;
 	float LifeTime;
 	float Scale;
+	float RotationSpeed;
 };
 
-struct AsteroidExplosionData: public ObjectData {
+struct ParticleEffectData: public ObjectData {
 public:
-	AsteroidExplosionData(): ObjectData() { }
+	ParticleEffectData(): ObjectData() { }
 
 	//Particle System Data
 	float Amount = 100;

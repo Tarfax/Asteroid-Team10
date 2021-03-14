@@ -34,6 +34,12 @@ void Button::SetText(Text* text) {
 	this->text = text;
 }
 
+void Button::SetPositionAndText(Vector2 newPosition) {
+	SetPosition(newPosition);
+	SDL_Rect size = text->GetPosition();
+	text->SetPosition(Vector2(position.x + leftMargin, position.y + (position.h / 2) - (size.h / 2)));
+}
+
 void Button::OnEvent(Event& event) {
 	EventDispatcher dispatcher(event);// = EventDispatcher(event);
 	dispatcher.Dispatch<KeyPressedEvent>(BindFunction(Button::OnKeyPressedEvent, this));

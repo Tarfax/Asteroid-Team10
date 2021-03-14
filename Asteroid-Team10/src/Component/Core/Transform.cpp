@@ -1,15 +1,15 @@
 #include "Transform.h"
-#include <iostream>
-#include <Core/Engine.h>
-#include <Math/Mathf.h>
+//#include <iostream>
+//#include <Core/Engine.h>
+//#include <Math/Mathf.h>
 
-void Transform::Init() {
+void Transform::OnInit() {
 	scale = Vector2(1);
-	position = {0, 0};
+	/*position = {0, 0};*/
 	rotation = 0;
 }
 
-void Transform::Update(float deltaTime) {
+void Transform::OnUpdate(float deltaTime) {
 	if (rotation < 0.0f) {
 		rotation = 360.0f;
 	}
@@ -20,9 +20,6 @@ void Transform::Update(float deltaTime) {
 	forward.X = cos(Mathf::DegToRad(Rotation()));
 	forward.Y = sin(Mathf::DegToRad(Rotation()));
 }
-
-
-void Transform::Destroy() { }
 
 void Transform::Translate(Vector2 move) {
 	position.X += move.X;

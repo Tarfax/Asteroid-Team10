@@ -23,8 +23,7 @@ void Renderer::Draw(SDL_Renderer* renderer) {
 
 void Renderer::OnEnable() {
 	renderers.push_back(this);
-
-	Enable();
+	OnRendererEnable();
 }
 
 void Renderer::OnDisable() {
@@ -34,7 +33,6 @@ void Renderer::OnDisable() {
 			break;
 		}
 	}
-
-	Disable();
+	OnRendererDisable();
 }
 

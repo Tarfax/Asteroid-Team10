@@ -68,21 +68,21 @@ void ObjectPool::Init() {
 
 GameObject* ObjectPool::CreateObject(PoolType pType) {
 	switch (pType) {
-	case AsteroidLvl1Pool:
-		return Factory::Create<Asteroid>(Predef::Asteroid_Lvl1);
-		break;
-	case AsteroidLvl2Pool:
-		return Factory::Create<Asteroid>(Predef::Asteroid_Lvl2);
-		break;
-	case AsteroidLvl3Pool:
-		return Factory::Create<Asteroid>(Predef::Asteroid_Lvl3);
-		break;
-	case ProjectilePool:
-		return Factory::Create<Projectile>(Predef::Projectile);
-		break;
-	case End_DoNotUse:
-		return nullptr;
-		break;
+		case AsteroidLvl1Pool:
+			return Factory::Create<Asteroid>(Predef::Asteroid_Lvl1);
+			break;
+		case AsteroidLvl2Pool:
+			return Factory::Create<Asteroid>(Predef::Asteroid_Lvl2);
+			break;
+		case AsteroidLvl3Pool:
+			return Factory::Create<Asteroid>(Predef::Asteroid_Lvl3);
+			break;
+		case ProjectilePool:
+			return Factory::Create<Projectile>(Predef::Projectile);
+			break;
+		case End_DoNotUse:
+			return nullptr;
+			break;
 	}
 }
 
@@ -91,6 +91,12 @@ std::map<Predef, std::set<int>> ObjectPool::predefIdPool;
 std::map<int, GameObject*> ObjectPool::idGameObjectPool;
 
 // -- Mike version -- 
+
+/// <summary>
+/// Gets first best available pooled object of a predef
+/// </summary>
+/// <param name="predef: "> Type to fetch</param>
+/// <returns>Returns a nullptr if nothing was fetched</returns>
 GameObject* ObjectPool::FetchObject(Predef predef) {
 	if (predefIdPool[predef].size() > 0) {
 
@@ -100,29 +106,36 @@ GameObject* ObjectPool::FetchObject(Predef predef) {
 		predefIdPool[predef].erase(predefIdPool[predef].begin());
 		idGameObjectPool.erase(id);
 
-		std::cout << "getting an already existing object" << pooledGameObject->ToString() << std::endl;
-
 		return pooledGameObject;
 	}
 	return nullptr;
 }
 
 /// <summary>
-/// Places an object in the pool if we want to
+/// Places an object in the pool if we really really want to.
+/// Uknown types does not pool.
 /// </summary>
-/// <param name="gameObject">Object to pool</param>
-/// <param name="definition">Definition</param>
+/// <param name="gameObject: ">Object to pool</param>
+/// <param name="preDefinition: ">Predef ?</param>
 /// <returns>returns true if it was pooled</returns>
-bool ObjectPool::PoolObject(GameObject* gameObject, Predef definition) {
-	if (definition == Predef::Unknown) {
+bool ObjectPool::PoolObject(GameObject* gameObject, Predef predef) {
+	if (predef == Predef::Unknown) {
 		return false;
 	}
 
-	std::cout << "pooled an object " << gameObject->ToString() << std::endl;
-
-
 	int id = gameObject->id;
-	predefIdPool[definition].insert(id);
+	predefIdPool[predef].insert(id);
 	idGameObjectPool[id] = gameObject;
+
 	return true;
+}
+
+void ObjectPool::Destroy() {
+	std::map<int, GameObject*>::iterator it;
+	for (it = idGameObjectPool.begin(); it != idGameObjectPool.end(); ++it) {
+		GameObject::Destroy(it->second);
+	}
+
+	predefIdPool.clear();
+	idGameObjectPool.clear();
 }

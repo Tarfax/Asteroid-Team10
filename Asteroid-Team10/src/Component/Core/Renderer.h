@@ -3,12 +3,12 @@
 #include <Objects/GameObject.h>
 #include <Component/Core/IComponent.h>
 #include <Component/Core/Transform.h>
-#include <vector>
+//#include <vector>
 
 //class GameObject;
 
 class Renderer: public IComponent {
-public: 
+public:
 	static void Draw(SDL_Renderer* renderer);
 protected:
 
@@ -20,15 +20,15 @@ protected:
 
 	Transform* transform;
 
+	virtual void OnRendererEnable() { };
+	virtual void OnRendererDisable() { };
+	virtual void OnInit() { };
+	virtual void OnUpdate(float deltaTime) { };
+	virtual void OnDestroy() { };
+
 private:
 	void OnEnable() override;
 	void OnDisable() override;
-
-	virtual void Enable()= 0;
-	virtual void Disable()= 0;
-	virtual void Init() = 0;
-	virtual void Update(float deltaTime) = 0;
-	virtual void Destroy() = 0;
 
 
 	static std::vector<Renderer*> renderers;

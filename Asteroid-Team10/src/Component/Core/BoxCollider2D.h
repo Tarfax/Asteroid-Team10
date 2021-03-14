@@ -3,29 +3,23 @@
 #include "Component/Core/IComponent.h"
 #include "Component/Core/Transform.h"
 #include <SDL.h>
-#include <map>
+#include <Enums/Layer.h>
 
-enum Layer {
-	lNothing = 1 << 0,
-	lAsteroid = 1 << 1,
-	lPlayer = 1 << 2,
-	lProjectile = 1 << 3
-};
+//#include <map>
+struct Cell;
 
-inline Layer operator|(Layer a, Layer b) {
-	return static_cast<Layer>(static_cast<int>(a) | static_cast<int>(b));
-}
 
 class BoxCollider2D: public IComponent {
-
+	friend class CollisionGrid;
+	friend class Physics;
 public:
 	BoxCollider2D(GameObject* gameObject);
 
-	void Init() override;
+	void OnInit() override;
 	void OnEnable() override;
-	void Update(float deltaTime) override;
+	void OnUpdate(float deltaTime) override;
 	void OnDisable() override;
-	void Destroy() override;
+	void OnDestroy() override;
 
 	void Draw(SDL_Renderer* renderer, Transform* transform);
 
@@ -33,14 +27,16 @@ public:
 	void SetBounds(SDL_Rect rect);
 
 	void SetLayer(Layer layer);
-	void SetCollideWithLayer(Layer layer);
 
 	inline Vector2 GetOrigin() { return Vector2 {(float)bounds.x + (bounds.w / 2), (float)bounds.y + (bounds.h / 2)}; }
 
 	inline SDL_Rect GetBounds() const { return bounds; }
 	inline void ResetBounds() { bounds = {(int)transform->X(), (int)transform->Y(), (int)(originalBounds.w * transform->Scale().X), (int)(originalBounds.h * transform->Scale().Y)}; }
 
-	bool IsColliding(SDL_Rect testAgainst, Layer collideWithLayer);
+	bool IsColliding(BoxCollider2D* other);
+
+	inline Layer GetLayer() { return layer; }
+
 
 private:
 	Transform* transform;
@@ -52,8 +48,10 @@ private:
 	static int nextId;
 
 	Layer layer;
-	Layer collideWithlayer;
 
 	static bool renderCollider;
-	static std::map<int, BoxCollider2D*> colliders;
+
+	Cell* gridCell = nullptr;
+	int cellVectorIndex = -1;
+
 };

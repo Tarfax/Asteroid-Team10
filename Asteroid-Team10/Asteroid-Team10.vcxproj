@@ -149,12 +149,16 @@
     <ClCompile Include="src\Component\Asteroid.cpp" />
     <ClCompile Include="src\Component\Behaviour\Behaviour.cpp" />
     <ClCompile Include="src\Component\Core\Canvas.cpp" />
+    <ClCompile Include="src\Component\Core\IComponent.cpp" />
+    <ClCompile Include="src\Core\Physics.cpp" />
     <ClCompile Include="src\FSM\CreditsState.cpp" />
+    <ClCompile Include="src\FSM\GameOverMenu.cpp" />
     <ClCompile Include="src\FSM\GamePlayState.cpp" />
     <ClCompile Include="src\FSM\HighScoreState.cpp" />
     <ClCompile Include="src\FSM\MainMenuState.cpp" />
     <ClCompile Include="src\FSM\QuitGameState.cpp" />
     <ClCompile Include="src\FSM\SettingsState.cpp" />
+    <ClCompile Include="src\SpatialPartitioning\CollisionGrid.cpp" />
     <ClCompile Include="src\UI\Button.cpp" />
     <ClCompile Include="src\Component\Core\BoxCollider2D.cpp" />
     <ClCompile Include="src\Component\Core\Renderer.cpp" />
@@ -192,7 +196,10 @@
     <ClInclude Include="src\Component\Asteroid.h" />
     <ClInclude Include="src\Component\Behaviour\Behaviour.h" />
     <ClInclude Include="src\Component\Core\Canvas.h" />
+    <ClInclude Include="src\Core\EngineData.h" />
+    <ClInclude Include="src\Core\Physics.h" />
     <ClInclude Include="src\FSM\CreditsState.h" />
+    <ClInclude Include="src\FSM\GameOverMenu.h" />
     <ClInclude Include="src\FSM\GamePlayState.h" />
     <ClInclude Include="src\FSM\GameState.h" />
     <ClInclude Include="src\FSM\HighScoreState.h" />
@@ -200,6 +207,7 @@
     <ClInclude Include="src\EventSystem\MenuEvent.h" />
     <ClInclude Include="src\FSM\QuitGameState.h" />
     <ClInclude Include="src\FSM\SettingsState.h" />
+    <ClInclude Include="src\SpatialPartitioning\CollisionGrid.h" />
     <ClInclude Include="src\UI\Button.h" />
     <ClInclude Include="src\Component\Core\BoxCollider2D.h" />
     <ClInclude Include="src\Component\Core\IComponent.h" />

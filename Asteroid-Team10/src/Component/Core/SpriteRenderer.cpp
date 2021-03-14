@@ -1,12 +1,7 @@
 #include "SpriteRenderer.h"
-//#include <TextureCoordinator.h>
-#include <iostream>
+#include <SDL.h>
 
-void SpriteRenderer::Init() { }
-
-void SpriteRenderer::Update(float deltaTime) { }
-
-void  SpriteRenderer::Destroy() {
+void  SpriteRenderer::OnDestroy() {
 	sprite->Destroy();
 }
 

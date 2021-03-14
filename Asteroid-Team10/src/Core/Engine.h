@@ -1,31 +1,23 @@
 #pragma once
 
-#include <stdio.h>
 #include <SDL.h>
-#include <iostream>
-#include <string>
+#include <Core/EngineData.h>
 
-#include "Objects/GameObject.h"
-#include "Time.h"
-#include "Core/Input.h"
-#include <EventSystem/EngineEvent.h>
-#include "ObjectPool.h"
-
-#include <Core/GameInstance.h>
-#include <Component/ParticleSystem.h>
-#include <Component/Core/Renderer.h>
-
-const int SCREEN_WIDTH {800};
-const int SCREEN_HEIGHT {600};
+class Time;
+class Input;
+class EngineEvent;
+class GameInstance;
+class Renderer;
+class Physics;
+class Event;
+class EngineCloseEvent;
 
 class Engine {
 public:
 	Engine();
 	
 	bool Init();
-
 	void Run();
-
 	void Quit();
 
 private:
@@ -33,13 +25,8 @@ private:
 
 	void SetupEventSystem();
 
-	/// <summary>
-	/// 
-	/// </summary>
-
 	void OnEvent(Event& e);
 	bool OnWindowClose(EngineCloseEvent& e);
-
 
 	SDL_Renderer* renderer;
 	SDL_Window* window;
@@ -48,13 +35,9 @@ private:
 
 	GameInstance* gameInstance;
 	Input* input;
-	GameObject* gameObject;
-	//ObjectPool* objectPool;
-
+	Physics* physics;
 
 	Time* time;
-
-	ParticleSystem* particleSystem;
 
 	bool isRunning;
 };

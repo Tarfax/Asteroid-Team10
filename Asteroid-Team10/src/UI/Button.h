@@ -33,7 +33,7 @@ public:
 	void SetState(ButtonState newState);
 
 	void SetText(Text* text);
-
+	void SetPositionAndText(Vector2 position);
 
 
 private:

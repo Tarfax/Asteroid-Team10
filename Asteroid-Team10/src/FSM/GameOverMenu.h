@@ -6,11 +6,11 @@
 #include <Component/Core/Canvas.h>
 #include <Core/Input.h>
 
-class PauseMenu {
+class GameOverMenu {
 	using EventCallbackFunc = std::function<void(Event&)>;
 
 public:
-	void Init();
+	void Init(int score);
 	void CreateUI();
 	void Update(float deltaTime);
 	void Destroy();
@@ -24,12 +24,11 @@ public:
 	/// Nothing happens if you try to remove the same method twice.
 	/// </summary>
 	void RemoveCallback(const EventCallbackFunc& callback);
-
 private:
 	void OnEvent(Event& event);
 	bool OnKeyPressedEvent(KeyPressedEvent& e);
 
-	void ResumeGame(void*);
+	void RestartGame(void*);
 	void MainMenuState(void*);
 	void FireEvent(Event& event);
 
@@ -43,7 +42,10 @@ private:
 	CallbackData onChangeState;
 
 	int currentSelectedElement = 0;
+	int score;
 
+	Text* gameOver;
+	Text* scoreText;
 	std::vector<Button*> buttons;
 	std::vector<Text*> texts;
 	Image* selectionImage;

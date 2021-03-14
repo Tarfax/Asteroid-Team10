@@ -1,5 +1,6 @@
 #pragma once
 #include <FactorySystem/ObjectDefinitions.h>
+#include <FactorySystem/Predef.h>
 #include <map>
 #include <iostream> 
 class PredefinedObject {
@@ -13,6 +14,8 @@ public:
 		pdProjectile();
 		pdAsteroidExplosion();
 		pdUFO();
+		pUFOExplosion();
+		pdUFOProjectile();
 	}
 
 	static void AddPredefData(Predef def, ObjectData* data) {
@@ -22,7 +25,15 @@ public:
 	static ObjectData* GetPredef(Predef def) {
 		return predefData[def];
 	}
-	
+
+	static void Destroy() {
+		std::map<Predef, ObjectData*>::iterator it;
+		for (it = predefData.begin(); it != predefData.end(); ++it)	{
+			delete it->second;
+		}
+		predefData.clear();
+	}
+
 private:
 	PredefinedObject();
 
@@ -94,14 +105,27 @@ private:
 		data->Scale = 0.2f;
 
 		AddPredefData(pre, data);
-	}  
+	}
+
+	static void pdUFOProjectile() {
+		Predef pre = Predef::UFOProjectile;
+		ProjectileData* data = new ProjectileData();
+		data->TextureIds.push_back("Assets/Sprites/UFOProjectile.png");
+		data->Speed = 650.0f;
+		data->LifeTime = 1.25f;
+		data->def = pre;
+		data->Scale = 0.8f;
+		data->RotationSpeed = 100;
+
+		AddPredefData(pre, data);
+	}
 
 	static void pdAsteroidExplosion() {
 		Predef pre = Predef::AsteroidExplosion;
-		AsteroidExplosionData* data = new AsteroidExplosionData();
+		ParticleEffectData* data = new ParticleEffectData();
 		data->def = pre;
 		data->TextureIds.push_back("Assets/Sprites/asteroidExplosion.png");
-		
+
 		data->MinLifeTime = 1;
 		data->MaxLifeTime = 3;
 
@@ -109,7 +133,7 @@ private:
 		data->Repeat = false;
 		data->StartOnActivation = true;
 
-		data->Amount = 100;
+		data->Amount = 50;
 
 		data->MinVelocityX = -200;
 		data->MinVelocityY = -200;
@@ -123,40 +147,53 @@ private:
 
 		AddPredefData(pre, data);
 	}
-
 	static void pdUFO() {
 		Predef pre = Predef::UFO;
 		UFOData* data = new UFOData();
 		data->TextureIds.push_back("Assets/Sprites/UFO.png");
-		data->Speed = 50.0f;
+		data->Speed = 100.0f;
 		data->PositionRangeMin = 60.0f;
 		data->PositionRangeMax = 400.0f;
 		data->MagnitudeRangeMin = 40.0f;
 		data->MagnitudeRangeMax = 60.0f;
 		data->FrequencyRangeMin = 0.02f;
 		data->FrequencyRangeMax = 0.04f;
-		data->ProjectileSpeed = 0.5f;
+		data->ProjectileSpeed = 1.0f;
 		data->def = pre;
 
 		AddPredefData(pre, data);
 	}
 
-	/*static void pdMainMenu() {
-		Predef pre = Predef::MainMenu;
-		UFOData* data = new UFOData();
-		data->TextureIds.push_back("Assets/Sprites/UFO.png");
-		data->Speed = 50.0f;
-		data->PositionRangeMin = 60.0f;
-		data->PositionRangeMax = 400.0f;
-		data->MagnitudeRangeMin = 40.0f;
-		data->MagnitudeRangeMax = 60.0f;
-		data->FrequencyRangeMin = 0.02f;
-		data->FrequencyRangeMax = 0.04f;
-		data->ProjectileSpeed = 0.5f;
+	static void pUFOExplosion() {
+		Predef pre = Predef::UFOExplosion;
+		ParticleEffectData* data = new ParticleEffectData();
 		data->def = pre;
+		data->TextureIds.push_back("Assets/Sprites/asteroidExplosion.png");
+		data->TextureIds.push_back("Assets/Sprites/UFOExplosion01.png");
+		data->TextureIds.push_back("Assets/Sprites/UFOExplosion02.png");
+		data->TextureIds.push_back("Assets/Sprites/UFOExplosion03.png");
+
+		data->MinLifeTime = 1;
+		data->MaxLifeTime = 3;
+
+		data->EmissionIntervall = 0;
+		data->Repeat = false;
+		data->StartOnActivation = true;
+
+		data->Amount = 15;
+
+		data->MinVelocityX = -45;
+		data->MinVelocityY = -45;
+		data->MaxVelocityX =  45;
+		data->MaxVelocityY =  45;
+
+		data->MinPositionOffsetX = -10;
+		data->MinPositionOffsetY = -10;
+		data->MaxPositionOffsetX = 10;
+		data->MaxPositionOffsetY = 10;
 
 		AddPredefData(pre, data);
-	}*/
+	}
 
 	static std::map<Predef, ObjectData*> predefData;
 };

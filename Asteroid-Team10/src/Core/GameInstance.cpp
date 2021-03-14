@@ -5,7 +5,6 @@ GameInstance::GameInstance() { }
 
 void GameInstance::Init() {
 	ChangeToState<MainMenuState>();
-	//SetTimeScale(1);
 }
 
 void GameInstance::Update(float deltaTime) {
@@ -21,9 +20,11 @@ void GameInstance::Update(float deltaTime) {
 }
 
 void GameInstance::Destroy() {
-	state->Exit();
-	delete state;
-	state = nullptr;
+	if (state != nullptr) {
+		state->Exit();
+		delete state;
+		state = nullptr;
+	}
 }
 
 void GameInstance::SwitchState() {

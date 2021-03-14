@@ -1,37 +1,37 @@
 #include "Engine.h"
-#include "FactorySystem/Factory.h"
-#include "PlayerController.h"
-#include "TextureCoordinator.h"
-#include "SoundSystem/SoundCoordinator.h"
-#include "Component/Asteroid.h"
-#include <string>
-#include <iostream>
-#include <Structs/Vector2.h>
-#include <Math/Mathf.h>
 
-#include <FactorySystem/Predef.h>
-#include <FactorySystem/Factory.h>
+#include <iostream>
+#include <string>
+
+#include <Core/Time.h>
+#include <Core/Input.h>
+#include <Core/Physics.h>
+#include <Core/GameInstance.h>
+
+#include <FactorySystem/PredefinedObject.h>
+#include <EventSystem/EngineEvent.h>
+#include <Component/Core/Renderer.h>
 
 
 Engine::Engine() { }
 
 bool Engine::Init() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-		printf("SDL could not SDL_Init()! SDL_Error: %s\n", SDL_GetError());
+		std::cout << "SDL could not SDL_Init()! SDL_Error: " << SDL_GetError() << std::endl;
 		return false;
 	}
 
 	window = SDL_CreateWindow("Asteroids - by Team 10", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 	if (window == nullptr) {
-		printf("SDL could not SDL_CreateWindow()! SDL_Error: %s\n", SDL_GetError());
+		std::cout << "SDL could not SDL_CreateWindow()! SDL_Error: " << SDL_GetError() << std::endl;
 		return false;
 	}
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	if (renderer == nullptr) {
-		printf("SDL could not SDL_CreateRenderer()! SDL_Error: %s\n", SDL_GetError());
+		std::cout << "SDL could not SDL_CreateRenderer()! SDL_Error: " << SDL_GetError() << std::endl;
 		return false;
 	}
 
@@ -39,29 +39,16 @@ bool Engine::Init() {
 
 	time = new Time();
 	input = Input::Init();
+	physics = Physics::Init(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	TextureCoordinator::Init(renderer);
 	PredefinedObject::Init();
 	SoundCoordinator::Init();
 
-	//objectPool = ObjectPool::Create();
-	//objectPool->Init();
-	ObjectPool::Init();
-
 	gameInstance = new GameInstance();
 	gameInstance->Init();
 
 	SetupEventSystem();
-
-	//SoundCoordinator::LoadEffect("Assets/SoundFx/fire4.wav");
-	//SoundCoordinator::LoadEffect("Assets/SoundFx/explosion.wav");
-	//SoundCoordinator::LoadEffect("Assets/SoundFx/engine.wav");
-	//gameObject = PlayerController::Create();
-	
-	//objectPool->SetPoolSize(ProjectilePool, 30);
-	//Factory::Create<Asteroid>(Predef::Asteroid_Lvl1);
-
-	//particleSystem = ParticleSystem::Create()->GetComponent<ParticleSystem>();
 
 	return true;
 }
@@ -77,7 +64,11 @@ void Engine::Run() {
 		GameObject::Init();
 		GameObject::Enable();
 
+		physics->CheckCollisions();
+
 		gameInstance->Update(time->GetDeltaTime());
+		physics->UpdateColliders();
+
 		Render();
 
 		GameObject::Disable();
@@ -85,7 +76,6 @@ void Engine::Run() {
 
 		time->EndTick();
 	}
-	Quit();
 }
 
 void Engine::Render() {
@@ -95,7 +85,6 @@ void Engine::Render() {
 	//Render all the objects
 	Renderer::Draw(renderer);
 	GameObject::Draw(renderer);
-	//particleSystem->Draw(renderer);
 
 	//Background color
 	SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
@@ -106,10 +95,12 @@ void Engine::Render() {
 
 void Engine::Quit() {
 
-	// TODO:
-	//
-	// Clean up all the game objects?
-	//
+	gameInstance->Destroy();
+	physics->Destroy();
+	SoundCoordinator::Destroy();
+	TextureCoordinator::Destroy();
+	PredefinedObject::Destroy();
+	input->Destroy();
 
 	SDL_DestroyWindow(window);
 	window = nullptr;
@@ -121,9 +112,7 @@ void Engine::Quit() {
 }
 
 void Engine::SetupEventSystem() {
-	//input->RemoveCallback(BindFunction(Engine::OnEvent, this), SDL_SCANCODE_F);
 	input->AddCallback(BindFunction(Engine::OnEvent, this));
-	
 }
 
 
@@ -133,8 +122,8 @@ void Engine::OnEvent(Event& e) {
 }
 
 bool Engine::OnWindowClose(EngineCloseEvent& e) {
-	std::cout << "Don't you fucking quit on me!!\n";
+	std::cout << "\n -- Quit and Clean Up --\n\n";
 	isRunning = false;
+	input->RemoveCallback(BindFunction(Engine::OnEvent, this));
 	return true;
 }
-

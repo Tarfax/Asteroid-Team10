@@ -44,6 +44,8 @@ public:
 	static GameObject* FetchObject(Predef predef);
 	static bool PoolObject(GameObject* gameObject, Predef definition);
 
+	static void Destroy();
+
 	static std::map<Predef, std::set<int>> predefIdPool;
 	static std::map<int, GameObject*> idGameObjectPool;
 };

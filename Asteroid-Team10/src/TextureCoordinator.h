@@ -13,11 +13,12 @@ public:
 	static Sprite* GetSpriteFromId(std::string textureId);
 	static Sprite* GetSpriteFromText(std::string text, std::string fontId, SDL_Color color, int size);
 	static void Delete(Sprite* texture);
+	static void Destroy();
 
 private:
 	TextureCoordinator();
 	static TextureCoordinator* instance;
-	static TextureCoordinator* Create() {
+	static TextureCoordinator* GetInstance() {
 		return instance = (instance != nullptr) ? instance : new TextureCoordinator();
 	}
 

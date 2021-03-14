@@ -11,7 +11,7 @@ public:
 	static Sprite* CreateSprite(std::string textureId);
 
 	Sprite(SDL_Texture* texture, Vector2 size, std::string textureId);
-	~Sprite() { std::cout << "sprite deleted " << TextureId << std::endl; }
+	~Sprite() { /*std::cout << "sprite deleted " << TextureId << std::endl;*/ }
 	void Destroy();
 
 public:

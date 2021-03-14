@@ -3,7 +3,6 @@
 #include <FactorySystem/FactoryObject.h>
 #include <ObjectPool.h>
 #include "FactorySystem/PredefinedObject.h"
-
 #include <Objects/GameObject.h>
 class GameObject;
 
@@ -24,18 +23,24 @@ public:
 		}
 		else {
 			component = gameObject->GetComponent<T>();
+			gameObject->SetActive(true);
 		}
 
-		component->OnSetData(PredefinedObject::GetPredef(predef));
+		component->SetData(PredefinedObject::GetPredef(predef));
 		return gameObject;
 	}
 
 	//Mike version
 	static bool Destroy(GameObject* gameObject, Predef predef) {
 		if (ObjectPool::PoolObject(gameObject, predef) == true) {
+			gameObject->SetActive(false);
 			return true;
 		}
 		return false;
+	}
+
+	static void Destroy() {
+		ObjectPool::Destroy();
 	}
 
 private:

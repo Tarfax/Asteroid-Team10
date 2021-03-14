@@ -8,11 +8,11 @@ class Behaviour : public IComponent {
 
 public:
 	Behaviour(GameObject* gameObject);
-	virtual void Init() = 0;
-	virtual void OnEnable() = 0;
-	virtual void Update(float deltaTime) = 0;
-	virtual void OnDisable() = 0;
-	virtual void Destroy() = 0;
+	virtual void OnInit() = 0;
+	virtual void OnEnable() { }
+	virtual void OnUpdate(float deltaTime) { };
+	virtual void OnDisable() { };
+	virtual void OnDestroy() { };
 protected:
 	Transform* transform;
 };

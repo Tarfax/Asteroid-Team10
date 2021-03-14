@@ -2,12 +2,13 @@
 #include <string>
 #include <functional>
 
+
 enum class EventType {
 	None = 0,
 	KeyPressed, KeyReleased,
 	WindowClose,
-	ObjectDestroyed, ObjectSpawned,
-	MenuStartGame, MenuCredits, MenuSettings, MenuHighScore, MenuQuitGame, MenuResumeGame, MenuMainMenu
+	ObjectSpawned, ObjectDestroyed, ParticleDestroyed, AsteroidDestroyed, UFODestroyed, PlayerDestroyed,
+	MenuStartGame, MenuCredits, MenuSettings, MenuHighScore, MenuQuitGame, MenuResumeGame, MenuRestartGame, MenuMainMenu
 };
 
 enum EventCategory {
@@ -18,6 +19,13 @@ enum EventCategory {
 	EventCategoryGameObject = 4,
 	EventCategoryMenu = 5,
 };
+
+/// <summary>
+/// Creates a reference to a member function
+/// </summary>
+/// <param name="x">The function</param>
+/// <param name="y">The instance of the class</param>
+#define BindFunction(x, y) std::bind(&x, y, std::placeholders::_1)
 
 #define EventClassType(type) static EventType GetStaticType() { return EventType::##type;} \
 							 virtual EventType GetEventType() const override { return GetStaticType(); } \

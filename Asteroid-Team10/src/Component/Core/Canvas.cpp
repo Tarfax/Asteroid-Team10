@@ -1,17 +1,12 @@
 #include "Component/Core/Canvas.h"
-#include <Structs/Sprite.h>
 
-void Canvas::Init() {
-
-}
-
-void Canvas::Update(float deltaTime) {
+void Canvas::OnUpdate(float deltaTime) {
 	for (int i = 0; i < elements.size(); i++) {
 		elements[i]->Update(deltaTime);
 	}
 }
 
-void Canvas::Destroy() {
+void Canvas::OnDestroy() {
 	for (int i = 0; i < elements.size(); i++) 	{
 		elements[i]->Destroy();
 	}

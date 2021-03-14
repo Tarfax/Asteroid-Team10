@@ -19,12 +19,12 @@ public:
 	static void PlayEffect(std::string id);
 	static void LoadEffect(std::string id);
 
-	static void Delete();
+	static void Destroy();
 
 private:
 	SoundCoordinator();
 	static SoundCoordinator* instance;
-	static SoundCoordinator* Create() {
+	static SoundCoordinator* GetInstance() {
 		return instance = (instance != nullptr) ? instance : new SoundCoordinator();
 	}
 

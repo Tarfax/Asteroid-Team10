@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Structs/Vector2.h>
 #include <Component/Core/IComponent.h>
 
 class Transform: public IComponent {
@@ -14,15 +13,15 @@ public:
 	float& X() { return position.X; }
 	float& Y() { return position.Y; }
 
-	void Init() override;
-	void OnEnable() override {}
-	void Update(float deltaTime) override;
-	void OnDisable() override {}
-	void Destroy() override;
-
 	void Translate(Vector2 move);
-
 	Vector2 forward;
+
+protected:
+	void OnInit() override;
+	void OnEnable() override { }
+	void OnUpdate(float deltaTime) override;
+	void OnDisable() override { }
+	void OnDestroy() override { }
 
 private:
 	Vector2 position;

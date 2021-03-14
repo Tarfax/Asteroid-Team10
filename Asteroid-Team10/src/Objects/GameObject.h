@@ -24,10 +24,14 @@ public:
 	void OnDisable() override;
 	void OnDestroy() override;
 
+	void OnCollision(BoxCollider2D* other) { 
+		for (int i = 0; i < components.size(); i++) 	{
+			components[i]->Collision(other);
+		}
+	}
 
 	void SetActive(bool beActive);
 	bool IsActive();
-
 
 public: //Static
 
@@ -36,8 +40,7 @@ public: //Static
 	static void Update(float deltaTime);
 	static void Draw(SDL_Renderer* renderer);
 	static void Disable();
-	static void Destroy(GameObject* gameObject, Predef predef);
-	//static void Destroy(GameObject* gameObject);
+	static void Destroy(GameObject* gameObject, Predef predef = Predef::Unknown);
 	static void CleanUp();
 
 

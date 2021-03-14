@@ -1,59 +1,13 @@
 #include "ParticleSystem.h"
 #include "Objects/GameObject.h"
-#include "Math/Mathf.h"
-#include <Utilities/Timer.h>
+#include <EventSystem/ObjectEvent.h>
 
-GameObject* ParticleSystem::Create() {
-	/*GameObject* gameObject = nullptr;
-
-	gameObject = new GameObject();
-	gameObject->OnInit();
-
-	ParticleSystem* ps = gameObject->AddComponent<ParticleSystem>();
-
-	ParticleData particleData;
-	particleData.EmissionIntervall = 2;
-	particleData.Repeat = true;
-
-	EmitData emitData;
-	emitData.Amount = 100;
-
-	emitData.MinLifeTime = 1;
-	emitData.MaxLifeTime = 3;
-
-	emitData.MinVelocity.X = -100;
-	emitData.MinVelocity.Y = -100;
-	emitData.MaxVelocity.X = 200;
-	emitData.MaxVelocity.Y = 200;
-
-	emitData.MinPositionOffset.X = -0.1f;
-	emitData.MinPositionOffset.Y = -0.1f;
-	emitData.MaxPositionOffset.X = 2;
-	emitData.MaxPositionOffset.Y = 2;
-
-	particleData.Data = emitData;
-
-	ps->SetParticleData(particleData);*/
-
-	//SpriteRenderer* spriteRenderer = gameObject->GetComponent<SpriteRenderer>();
-	//spriteRenderer->SetSprite(ps->sprite);
-
-	//return gameObject;
-	return nullptr;
-}
-
-void ParticleSystem::Init() {
-	//sprite = Sprite::CreateSprite("Assets/Sprites/particle.png");
-	/*transform->Translate({150, 150});*/
-	//Transform* transform = gameObject->GetComponent<Transform>();
-
-	maxParticles = 500;
-
+void ParticleSystem::OnInit() {
 	activeParticles.reserve(maxParticles);
 	inactiveParticles.reserve(maxParticles);
 }
 
-void ParticleSystem::Destroy() {
+void ParticleSystem::OnDestroy() {
 	for (int i = 0; i < activeParticles.size(); i++) {
 		delete activeParticles[i];
 	}
@@ -61,11 +15,16 @@ void ParticleSystem::Destroy() {
 	for (int i = 0; i < inactiveParticles.size(); i++) {
 		delete inactiveParticles[i];
 	}
+
+	FireParticleDestroyedEvent();
 }
 
 void ParticleSystem::OnSetData(ObjectData* data) {
-	AsteroidExplosionData* explosionData = dynamic_cast<AsteroidExplosionData*>(data);
-	sprite = Sprite::CreateSprite(data->TextureIds[0]);
+	ParticleEffectData* explosionData = dynamic_cast<ParticleEffectData*>(data);
+	for (int i = 0; i < data->TextureIds.size(); i++)  	{
+		Sprite* sprite = Sprite::CreateSprite(data->TextureIds[i]);
+		sprites.push_back(sprite);
+	}
 
 	ParticleData particleData;
 	particleData.EmissionIntervall = explosionData->EmissionIntervall;
@@ -94,7 +53,7 @@ void ParticleSystem::OnSetData(ObjectData* data) {
 }
 
 
-void ParticleSystem::Update(float deltaTime) {
+void ParticleSystem::OnUpdate(float deltaTime) {
 
 	if (startOnActivation == true) {
 		Emit();
@@ -121,7 +80,6 @@ void ParticleSystem::Update(float deltaTime) {
 		}
 
 		if (activeParticles.empty() == true) {
-			//std::cout << "It's empty now" << std::endl;
 			isEmitting = false;
 		}
 
@@ -131,8 +89,8 @@ void ParticleSystem::Update(float deltaTime) {
 	}
 
 	if (repeat == true) {
-		timer -= deltaTime;
-		if (timer < 0.0f) {
+		nextLevelTimer -= deltaTime;
+		if (nextLevelTimer < 0.0f) {
 			Emit();
 			SetEmissionTime();
 		}
@@ -186,11 +144,12 @@ void ParticleSystem::SetParticleData(ParticleData data) {
 
 void ParticleSystem::SetEmissionTime() {
 	time = Mathf::RandomFloat(0, emissionIntervall);
-	timer = time;
+	nextLevelTimer = time;
 }
 
 void ParticleSystem::OnDraw(SDL_Renderer* renderer) {
 	if (isEmitting == true) {
+		Sprite* sprite = sprites[(int)Mathf::RandomFloat(0, sprites.size() - 1)];
 		SDL_Rect& source = sprite->Rect;
 		SDL_Rect destination;
 		SDL_Texture* texture = sprite->Texture;
@@ -202,3 +161,16 @@ void ParticleSystem::OnDraw(SDL_Renderer* renderer) {
 	}
 }
 
+void ParticleSystem::OnRendererDisable() {
+	for (int i = 0; i < activeParticles.size(); i++) {
+		delete activeParticles[i];
+	}
+	activeParticles.clear();
+	sprites.clear();
+	FireParticleDestroyedEvent();
+}
+
+void ParticleSystem::FireParticleDestroyedEvent() {
+	ParticleDestroyedEvent event(gameObject, gameObject->GetComponent<BoxCollider2D>(), predefData);
+	FireDestroyedEvent(event);
+}

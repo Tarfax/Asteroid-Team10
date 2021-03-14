@@ -108,6 +108,21 @@ public:
 	EventClassType(MenuResumeGame)
 };
 
+class MenuRestartGameEvent : public MenuEvent {
+public:
+	MenuRestartGameEvent(GameInstance * mainMenu)
+		: MenuEvent(mainMenu)
+	{ }
+
+	std::string ToString() const override {
+		std::stringstream ss;
+		ss << "MenuRestartGameEvent was pressed";
+		return ss.str();
+	}
+
+	EventClassType(MenuRestartGame)
+};
+
 class MenuMainMenuEvent: public MenuEvent {
 public:
 	MenuMainMenuEvent(GameInstance* mainMenu)

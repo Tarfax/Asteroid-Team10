@@ -1,15 +1,16 @@
 #pragma once
-
+#include <FactorySystem/Predef.h>
 #include <FactorySystem/ObjectDefinitions.h>
 
 class FactoryObject {
-protected:
+public:
 	void SetData(ObjectData* data) {
-		definition = data->def;
+		predefData = data->def;
 		OnSetData(data);
 	}
 
+protected:
 	virtual void OnSetData(ObjectData* data) { }
 
-	Predef definition;
+	Predef predefData;
 };

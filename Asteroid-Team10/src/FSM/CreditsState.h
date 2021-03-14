@@ -1,10 +1,10 @@
 #pragma once
 #include <FSM/GameState.h>
-#include <Core/GameInstance.h>
 
 class CreditsState: public GameState {
 public:
 	void OnEnter() override;
+	void CreateUI();
 	void OnUpdate(float deltaTime) override;
 	void OnExit() override;
 

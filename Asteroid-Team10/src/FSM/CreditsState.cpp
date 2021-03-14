@@ -1,10 +1,20 @@
 #include "CreditsState.h"
 #include "MainMenuState.h"
+#include <Core/GameInstance.h>
 
 void CreditsState::OnEnter() {
 	Input::AddInputCallback(BindFunction(CreditsState::OnEvent, this), SDL_SCANCODE_DOWN);
 	Input::AddInputCallback(BindFunction(CreditsState::OnEvent, this), SDL_SCANCODE_UP);
 
+	CreateUI();
+
+	buttons[currentSelectedElement]->SetState(ButtonState::Selected);
+	SDL_Rect position = buttons[currentSelectedElement]->GetPosition();
+	selectionImage->SetPosition(position.x - selectionImage->GetPosition().w - 15, position.y + position.h / 2 - selectionImage->GetPosition().h / 2);
+}
+
+void CreditsState::CreateUI()
+{
 	GameObject* canvasGO = new GameObject();
 	canvas = canvasGO->AddComponent<Canvas>();
 
@@ -39,10 +49,6 @@ void CreditsState::OnEnter() {
 	selectionImage->Init();
 	selectionImage->SetPosition(Vector2(0, 35));
 	canvas->AddUIElement(selectionImage);
-
-	buttons[currentSelectedElement]->SetState(ButtonState::Selected);
-	SDL_Rect position = buttons[currentSelectedElement]->GetPosition();
-	selectionImage->SetPosition(position.x - selectionImage->GetPosition().w - 15, position.y + position.h / 2 - selectionImage->GetPosition().h / 2);
 }
 
 void CreditsState::OnUpdate(float deltaTime) { }

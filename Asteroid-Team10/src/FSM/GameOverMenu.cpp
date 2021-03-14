@@ -1,12 +1,13 @@
-#include "PauseMenu.h"
+#include "GameOverMenu.h"
 #include "SoundSystem/SoundCoordinator.h"
 #include <UI/UIFactory.h>
-#include <iostream>
+#include <string>
 #include <Core/EngineData.h>
 
-void PauseMenu::Init() {
-	Input::AddInputCallback(BindFunction(PauseMenu::OnEvent, this), SDL_SCANCODE_DOWN);
-	Input::AddInputCallback(BindFunction(PauseMenu::OnEvent, this), SDL_SCANCODE_UP);
+void GameOverMenu::Init(int score) {
+	this->score = score;
+	Input::AddInputCallback(BindFunction(GameOverMenu::OnEvent, this), SDL_SCANCODE_DOWN);
+	Input::AddInputCallback(BindFunction(GameOverMenu::OnEvent, this), SDL_SCANCODE_UP);
 
 	CreateUI();
 
@@ -15,15 +16,27 @@ void PauseMenu::Init() {
 	selectionImage->SetPosition(position.x - selectionImage->GetPosition().w - 15, position.y + position.h / 2 - selectionImage->GetPosition().h / 2);
 }
 
-void PauseMenu::CreateUI()
-{
+void GameOverMenu::CreateUI() {
 	GameObject* canvasGO = new GameObject();
 	canvas = canvasGO->AddComponent<Canvas>();
 
-	Text* resumeText = UIFactory::CreateText("Resume Game", {255, 255, 255, 255}, 64);
-	Button* resumeButton = UIFactory::CreateButton("Assets/Sprites/buttonBackgroundNormal.png", "Assets/Sprites/buttonBackgroundSelected.png", Vector2(300, 235), resumeText, BindFunction(PauseMenu::ResumeGame, this));
-	Vector2 size = resumeButton->GetSprite()->Size;
-	Vector2 position {Helper::GetScreenWidthMidPoint() - size.X / 2, 235};
+	gameOver = UIFactory::CreateText("Game Over!", {255, 255, 255, 255}, 88);
+	Vector2 size = gameOver->GetSprite()->Size;
+	Vector2 position {Helper::GetScreenWidthMidPoint() - size.X / 2, 100};
+	gameOver->SetPosition(position);
+	canvas->AddUIElement(gameOver);
+
+	scoreText = UIFactory::CreateText("Score: " + std::to_string(score), {255, 255, 255, 255}, 64);
+	size = scoreText->GetSprite()->Size;
+	position.Y = 165;
+	scoreText->SetPosition(position);
+	
+	canvas->AddUIElement(scoreText);
+
+	Text* resumeText = UIFactory::CreateText("Restart Game", {255, 255, 255, 255}, 58);
+	Button* resumeButton = UIFactory::CreateButton("Assets/Sprites/buttonBackgroundNormal.png", "Assets/Sprites/buttonBackgroundSelected.png", Vector2(300, 235), resumeText, BindFunction(GameOverMenu::RestartGame, this));
+	size = resumeButton->GetSprite()->Size;
+	position.Y = 235;
 	resumeButton->SetPositionAndText(position);
 
 	texts.push_back(resumeText);
@@ -32,7 +45,7 @@ void PauseMenu::CreateUI()
 	canvas->AddUIElement(resumeButton);
 
 	Text* mainMenuText = UIFactory::CreateText("Main Menu", {255, 255, 255, 255}, 64);
-	Button* mainMenuButton = UIFactory::CreateButton("Assets/Sprites/buttonBackgroundNormal.png", "Assets/Sprites/buttonBackgroundSelected.png", Vector2(300, 335), mainMenuText, BindFunction(PauseMenu::MainMenuState, this));
+	Button* mainMenuButton = UIFactory::CreateButton("Assets/Sprites/buttonBackgroundNormal.png", "Assets/Sprites/buttonBackgroundSelected.png", Vector2(300, 335), mainMenuText, BindFunction(GameOverMenu::MainMenuState, this));
 	size = mainMenuButton->GetSprite()->Size;
 	position.Y = 335;
 	mainMenuButton->SetPositionAndText(position);
@@ -48,28 +61,30 @@ void PauseMenu::CreateUI()
 	canvas->AddUIElement(selectionImage);
 }
 
-void PauseMenu::Update(float deltaTime) { }
+void GameOverMenu::Update(float deltaTime) { }
 
-void PauseMenu::Destroy() {
-	Input::RemoveInputCallback(BindFunction(PauseMenu::OnEvent, this), SDL_SCANCODE_DOWN);
-	Input::RemoveInputCallback(BindFunction(PauseMenu::OnEvent, this), SDL_SCANCODE_UP);
+void GameOverMenu::Destroy() {
+	Input::RemoveInputCallback(BindFunction(GameOverMenu::OnEvent, this), SDL_SCANCODE_DOWN);
+	Input::RemoveInputCallback(BindFunction(GameOverMenu::OnEvent, this), SDL_SCANCODE_UP);
 	GameObject::Destroy(canvas->gameObject, Predef::Unknown);
 }
 
-void PauseMenu::AddCallback(const EventCallbackFunc& callback) {
+void GameOverMenu::AddCallback(const EventCallbackFunc& callback) {
 	onChangeState.EventCallback = callback;
+
 }
 
-void PauseMenu::RemoveCallback(const EventCallbackFunc& callback) {
+void GameOverMenu::RemoveCallback(const EventCallbackFunc& callback) {
 	onChangeState.EventCallback = nullptr;
+
 }
 
-void PauseMenu::OnEvent(Event& event) {
+void GameOverMenu::OnEvent(Event& event) {
 	EventDispatcher dispatcher(event);
-	dispatcher.Dispatch<KeyPressedEvent>(BindFunction(PauseMenu::OnKeyPressedEvent, this));
+	dispatcher.Dispatch<KeyPressedEvent>(BindFunction(GameOverMenu::OnKeyPressedEvent, this));
 }
 
-bool PauseMenu::OnKeyPressedEvent(KeyPressedEvent& e) {
+bool GameOverMenu::OnKeyPressedEvent(KeyPressedEvent& e) {
 	if (e.GetKeyCode() == SDL_SCANCODE_UP && e.GetRepeatCount() == 0) {
 		buttons[currentSelectedElement]->SetState(ButtonState::Normal);
 
@@ -95,21 +110,20 @@ bool PauseMenu::OnKeyPressedEvent(KeyPressedEvent& e) {
 		selectionImage->SetPosition(position.x - selectionImage->GetPosition().w - 15, position.y + position.h / 2 - selectionImage->GetPosition().h / 2);
 		SoundCoordinator::PlayEffect("Assets/SoundFx/menuSelection.wav");
 	}
-
 	return true;
 }
 
-void PauseMenu::ResumeGame(void*) {
-	MenuResumeGameEvent e(NULL);
+void GameOverMenu::RestartGame(void*) {
+	MenuRestartGameEvent e(NULL);
 	FireEvent(e);
 }
 
-void PauseMenu::MainMenuState(void*) {
+void GameOverMenu::MainMenuState(void*) {
 	MenuMainMenuEvent e(NULL);
 	FireEvent(e);
 }
 
-void PauseMenu::FireEvent(Event& event) {
+void GameOverMenu::FireEvent(Event& event) {
 	SoundCoordinator::PlayEffect("Assets/SoundFx/menuEnter2.wav");
 	onChangeState.EventCallback(event);
 }

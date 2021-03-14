@@ -5,9 +5,8 @@ int main(int argc, char* args[]) {
 
 	if (engine.Init() == true) {
 		engine.Run();
+		engine.Quit();
 	}
-
-	engine.Quit();
 
 	return 0;
 }

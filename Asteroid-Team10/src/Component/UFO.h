@@ -1,18 +1,20 @@
 #pragma once
 #include "Component/Behaviour/Behaviour.h"
-#include "FactorySystem/FactoryObject.h"
+#include <FactorySystem/FactoryObject.h>
 
+struct ObjectData;
 class UFO : public Behaviour, public FactoryObject {
 
 public:
 	UFO(GameObject* gameObject) : Behaviour(gameObject) {}
 
-	void Init() override;
-	void OnEnable() override {}
-	void Update(float deltaTime) override;
-	void OnDisable() override {}
-	void Destroy() override;
-
+protected:
+	void OnInit() override;
+	void OnUpdate(float deltaTime) override;
+	void OnEnable() override;
+	void OnCollision(BoxCollider2D* collider) override;
+	void OnDisable() override;
+	void OnDestroy() override;
 	void OnSetData(ObjectData* data) override;
 private:
 
@@ -27,4 +29,7 @@ private:
 
 	int counter{};
 	int framesToNextShot{};
+
+	float ufoSoundTimer;
+	float ufoSoundTime = 0.5f;
 };

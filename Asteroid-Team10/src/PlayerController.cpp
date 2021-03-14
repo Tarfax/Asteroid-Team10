@@ -1,22 +1,22 @@
 #include "PlayerController.h"
-#include "Core/Input.h"
+//#include "Core/Input.h"
 #include <SDL.h>
-#include <Math/Mathf.h>
+//#include <Math/Mathf.h>
 #include <Component/PositionWrapper.h>
 #include <Component/Projectile.h>
 #include <Component/Core/BoxCollider2D.h>
 #include <Component/Core/SpriteRenderer.h>
-#include "Structs/Sprite.h"
+//#include "Structs/Sprite.h"
 #include "FactorySystem/Factory.h"
 #include "FactorySystem/ObjectDefinitions.h"
-#include "SoundSystem/SoundCoordinator.h"
+#include <EventSystem/ObjectEvent.h>
 
 PlayerController* PlayerController::playerController = nullptr;
 
-void PlayerController::Init() {
+void PlayerController::OnInit() {
 	playerController = this;
 
-	transform = gameObject->GetComponent<Transform>();
+	//transform = gameObject->GetComponent<Transform>();
 
 	SpriteRenderer* renderer = gameObject->AddComponent<SpriteRenderer>();
 	PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
@@ -26,6 +26,12 @@ void PlayerController::Init() {
 	Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_S);
 	Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_D);
 	Input::AddInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
+}
+
+void PlayerController::OnEnable() {
+	momentum = {0, 0};
+	respawnInvulnerable = 3.0f;
+	isAlive = true;
 }
 
 
@@ -46,30 +52,31 @@ void PlayerController::OnSetData(ObjectData* data) {
 
 	BoxCollider2D* collider = gameObject->GetComponent<BoxCollider2D>();
 	collider->SetBounds(renderer->GetRect());
-	collider->SetLayer(Layer::lPlayer);
-	collider->SetCollideWithLayer(Layer::lNothing);
+	collider->SetLayer(Layer::Player);
 }
 
 void PlayerController::OnEvent(Event& e) {
-	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<KeyPressedEvent>(BindFunction(PlayerController::OnKeyPressedEvent, this));
+	if (isAlive == true) {
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(BindFunction(PlayerController::OnKeyPressedEvent, this));
+	}
 }
 
 bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 	if (e.GetKeyCode() == SDL_SCANCODE_W) {
 
-		float accelerationFalloff = 
+		float accelerationFalloff =
 			Mathf::InverseLerp(maxSpeed, accelFalloffStart, momentum.Magnitude());
 
 		Vector2 speedVector = transform->forward * acceleration;
 		momentum += speedVector * accelerationFalloff;
 
 		float time = 0.04f;
-		static float timer;
-		timer -= e.GetDeltaTime();
-		if (timer <= 0) {
+		static float engineSoundTimer;
+		engineSoundTimer -= e.GetDeltaTime();
+		if (engineSoundTimer <= 0) {
 			SoundCoordinator::PlayEffect("Assets/SoundFx/engine.wav");
-			timer = time;
+			engineSoundTimer = time;
 		}
 	}
 
@@ -93,7 +100,10 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 	return true;
 }
 
-void PlayerController::Update(float deltaTime) {
+void PlayerController::OnUpdate(float deltaTime) {
+	if (respawnInvulnerable > 0.0f) {
+		respawnInvulnerable -= deltaTime;
+	}
 
 	fireRateTimer -= deltaTime;
 
@@ -138,10 +148,29 @@ void PlayerController::Fire() {
 	gameObject->SetActive(true);
 }
 
-void PlayerController::Destroy() {
+void PlayerController::OnDestroy() {
 	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_W);
 	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_A);
 	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_S);
 	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_D);
 	Input::RemoveInputCallback(BindFunction(PlayerController::OnEvent, this), SDL_SCANCODE_SPACE);
+
+	PlayerDestroyedEvent e(gameObject, gameObject->GetComponent<BoxCollider2D>(), predefData);
+	FireDestroyedEvent(e);
+	isAlive = false;
+}
+
+void PlayerController::OnCollision(BoxCollider2D* other) {
+	if (respawnInvulnerable < 0.0f) {
+		Layer collisionLayer = other->GetLayer();
+		if (collisionLayer == Layer::UFOProjectile || collisionLayer == Layer::Asteroid) {
+			GameObject::Destroy(gameObject, predefData);
+		}
+	}
+}
+
+void PlayerController::OnDisable() {
+	PlayerDestroyedEvent e(gameObject, gameObject->GetComponent<BoxCollider2D>(), predefData);
+	FireDestroyedEvent(e);
+	isAlive = false;
 }

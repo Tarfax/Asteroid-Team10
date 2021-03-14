@@ -24,12 +24,11 @@ GameObject::GameObject(): id(nextId++) {
 
 void GameObject::OnInit() {
 	SetActive(true);
-	//gameObjectsDisabled[id] = this;
 }
 
 void GameObject::OnEnable() {
 	for (IComponent* component : components) {
-		component->OnEnable();
+		component->Enable();
 	}
 }
 
@@ -47,7 +46,7 @@ void GameObject::OnDraw(SDL_Renderer* renderer) {
 
 void GameObject::OnDisable() {
 	for (IComponent* component : components) {
-		component->OnDisable();
+		component->Disable();
 	}
 }
 
@@ -71,18 +70,6 @@ void GameObject::SetActive(bool beActive) {
 	}
 	gameObjectsToDisableMap[id] = this;
 	return;
-
-	if (beActive) {
-		if (gameObjectsDisabled.count(id) == 1) {
-			gameObjectsToEnable.emplace(id);
-		}
-	}
-	else {
-		if (gameObjects.count(id) == 1) {
-			gameObjectsToDisable.emplace(id);
-		}
-	}
-
 }
 
 bool GameObject::IsActive() {
@@ -107,18 +94,6 @@ void GameObject::Enable() {
 		activeGameObjects[iterator->first] = iterator->second;
 	}
 	gameObjectsToEnableMap.clear();
-	return;
-
-
-	std::map<int, GameObject*>::iterator it;
-	for (int id : gameObjectsToEnable) {
-		if (gameObjectsDisabled.count(id) == 0) continue;
-		it = gameObjectsDisabled.find(id);
-		it->second->OnEnable();
-		//gameObjects.insert(*it);
-		gameObjectsDisabled.erase(it->second->id);
-	}
-	gameObjectsToEnable.clear();
 }
 
 
@@ -133,19 +108,6 @@ void GameObject::Disable() {
 		}
 	}
 	gameObjectsToDisableMap.clear();
-	return;
-
-	//Implement!: gameObjects to disable.
-
-	std::map<int, GameObject*>::iterator it;
-	for (int id : gameObjectsToDisable) {
-		if (gameObjects.count(id) == 0) continue;
-		it = gameObjects.find(id);
-		it->second->OnDisable();
-		gameObjectsDisabled.insert(*it);
-		gameObjects.erase(it->second->id);
-	}
-	gameObjectsToDisable.clear();
 }
 
 void GameObject::Update(float deltaTime) {
@@ -166,44 +128,26 @@ void GameObject::Draw(SDL_Renderer* renderer) {
 void GameObject::Destroy(GameObject* gameObject, Predef predef) {
 	if (Factory::Destroy(gameObject, predef) == false) {
 		gameObjectsToDestroy[gameObject->id] = gameObject;
-
-		return;
 	}
-	gameObject->SetActive(false);
 }
 
-//void GameObject::Destroy(GameObject* gameObject) {
-//	gameObjectsToDestroy[gameObject->id] = gameObject;
-//}
 
 void GameObject::CleanUp() {
 	std::map<int, GameObject*>::iterator it;
 	for (it = gameObjectsToDestroy.begin(); it != gameObjectsToDestroy.end(); it++) {
 		if (activeGameObjects.count(it->first) == 1) {
+
 			activeGameObjects.erase(it->first);
 		}
+		//it->second->OnDisable();
 		it->second->OnDestroy();
 		ClearOut(it);
+		//std::cout << std::endl;
+		//std::cout << "Just destroyed: " << it->second->ToString();
+		//std::cout << std::endl;
 		delete it->second;
 	}
 	gameObjectsToDestroy.clear();
-
-	//for (int id : gameObjectsToDisable) {
-	//	if (gameObjects.count(id) == 0) continue;
-	//	it = gameObjects.find(id);
-	//	gameObjectsDisabled.emplace(*it);
-	//	gameObjects.erase(it->second->id);
-	//}
-	//gameObjectsToDisable.clear();
-
-	//for (int id : gameObjectsToEnable) {
-	//	if (gameObjectsDisabled.count(id) == 0) continue;
-	//	it = gameObjectsDisabled.find(id);
-	//	gameObjects.insert(*it);
-	//	gameObjectsDisabled.erase(it->second->id);
-	//}
-	//gameObjectsToEnable.clear();
-
 }
 
 void GameObject::ClearOut(std::map<int, GameObject*>::iterator it) {

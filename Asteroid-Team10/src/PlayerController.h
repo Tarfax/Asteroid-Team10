@@ -1,35 +1,34 @@
 #pragma once
 
-#include "Component/Core/IComponent.h"
+#include "Component/Behaviour/Behaviour.h"
 #include "ObjectPool.h"
 #include "FactorySystem/FactoryObject.h"
 #include "Component/Core/Transform.h"
 #include <Objects/GameObject.h>
-#include <Action.h>
 #include <EventSystem/Event.h>
 #include <EventSystem/KeyEvent.h>
 
-class PlayerController: public IComponent, public FactoryObject {
+class PlayerController: public Behaviour, public FactoryObject {
 
 public:
-	PlayerController(GameObject* gameObject): IComponent(gameObject) { gameObject->name = "Player Controller"; }
+	PlayerController(GameObject* gameObject): Behaviour(gameObject) { gameObject->name = "Player Controller"; }
 	~PlayerController() { 
 		std::cout << " player controller detele? " << std::endl;
 		//delete playerController; 
 	}
 
 	//GameObject* GetInstance();
+	static PlayerController* playerController;
 
-
-	void Init()					 override;
-	void OnEnable()				 override {}
-	void Update(float deltaTime) override;
-	void OnDisable()			 override {}
-	void Destroy()				 override;
-
+protected:
+	void OnInit()					 override;
+	void OnEnable() override;
+	void OnUpdate(float deltaTime) override;
+	void OnDestroy()				 override;
+	void OnCollision(BoxCollider2D* other) override;
+	void OnDisable() override;
 	void OnSetData(ObjectData* data) override;
 
-	static PlayerController* playerController;
 private:
 
 	//float IncrementTowards(float currentSpeed, float targetSpeed, float acceleration, float deltaTime);
@@ -40,7 +39,7 @@ private:
 	bool OnKeyPressedEvent(KeyPressedEvent& e);
 	void HandleInput(float deltaTime);
 
-	Transform* transform;
+	//Transform* transform;
 
 	float maxSpeed;
 	float acceleration;
@@ -52,4 +51,7 @@ private:
 
 	float fireRate;
 	float fireRateTimer;
+
+	float respawnInvulnerable = 3.0f;
+	bool isAlive = false;
 };
