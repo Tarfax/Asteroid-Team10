@@ -2,6 +2,9 @@
 
 SoundCoordinator* SoundCoordinator::instance;
 
+int SoundCoordinator::effectVolume = 30;
+int SoundCoordinator::musicVolume = 30;
+
 SoundCoordinator::SoundCoordinator() { }
 
 void SoundCoordinator::Init() {
@@ -51,6 +54,7 @@ void SoundCoordinator::iPlayEffect(std::string id) {
 
 void SoundCoordinator::LoadEffect(std::string id) {
 	Mix_Chunk* effect = Mix_LoadWAV(id.c_str());
+	Mix_VolumeChunk(effect, effectVolume);
 	if (effect == nullptr) {
 		std::cout << Mix_GetError() << ": " << id << std::endl;
 		return;
@@ -73,4 +77,21 @@ void SoundCoordinator::Destroy() {
 	GetInstance()->musicMap.clear();
 	GetInstance()->effectMap.clear();
 	GetInstance()->effectMapChannel.clear();
+}
+
+void SoundCoordinator::SetMusicVolume(int newVolume) {
+	musicVolume = newVolume;
+	Mix_VolumeMusic(newVolume);
+}
+
+void SoundCoordinator::SetEffectVolume(int newVolume) {
+	effectVolume = newVolume;
+	GetInstance()->iSetEffectVolume(newVolume);
+}
+
+void SoundCoordinator::iSetEffectVolume(int newVolume) {
+	std::map<std::string, Mix_Chunk*>::iterator it2;
+	for (it2 = GetInstance()->effectMap.begin(); it2 != GetInstance()->effectMap.end(); it2++) {
+		Mix_VolumeChunk(it2->second, newVolume);
+	}
 }

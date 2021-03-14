@@ -12,7 +12,7 @@ public:
 	Text(std::string text, SDL_Color color, int size) {
 		msg = text;
 		//std::cout << "Text object created: " << text << std::endl;
-		sprite = TextureCoordinator::GetSpriteFromText(text, "Assets/Fonts/novamono.ttf", color, size);
+		sprite = TextureCoordinator::GetSpriteFromText(text, "res/Fonts/novamono.ttf", color, size);
 	}
 
 	//~Text() {

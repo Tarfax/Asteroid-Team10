@@ -24,12 +24,14 @@ private:
 	void OnEvent(Event& event);
 	bool OnKeyPressedEvent(KeyPressedEvent& e);
 
-	void MainMenu(void*);
+	void MainMenu(KeyPressedEvent&);
+
+	float GetXMidPosition(UIElement& e);
 
 	int currentSelectedElement = 0;
 
+	Text* highScore;
 	std::vector<Button*> buttons;
-	std::vector<Text*> texts;
 	Image* selectionImage;
 
 	Canvas* canvas;

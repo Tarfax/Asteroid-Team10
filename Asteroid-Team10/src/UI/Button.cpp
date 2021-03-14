@@ -3,12 +3,17 @@
 #include <iostream>
 
 void Button::Init() {
-	Input::AddInputCallback(BindFunction(Button::OnEvent, this), SDL_SCANCODE_RETURN);
+	//Input::AddInputCallback(BindFunction(Button::OnEvent, this), SDL_SCANCODE_SPACE);
 	SetSize();
 }
 
 void Button::Destroy() {
-	Input::RemoveInputCallback(BindFunction(Button::OnEvent, this), SDL_SCANCODE_RETURN);
+	//Input::RemoveInputCallback(BindFunction(Button::OnEvent, this), SDL_SCANCODE_SPACE);
+
+	for (int i = 0; i < keyCodes.size(); i++) {
+		Input::RemoveInputCallback(BindFunction(Button::OnEvent, this), keyCodes[i]);
+
+	}
 	normalSprite->Destroy();
 	selectedSprite->Destroy();
 }
@@ -29,9 +34,11 @@ void Button::SetState(ButtonState newState) {
 }
 
 void Button::SetText(Text* text) {
-	SDL_Rect size = text->GetPosition();
-	text->SetPosition(Vector2(position.x + leftMargin, position.y + (position.h / 2) - (size.h / 2)));
-	this->text = text;
+	if (text != nullptr) {
+		SDL_Rect size = text->GetPosition();
+		text->SetPosition(Vector2(position.x + leftMargin, position.y + (position.h / 2) - (size.h / 2)));
+		this->text = text;
+	}
 }
 
 void Button::SetPositionAndText(Vector2 newPosition) {
@@ -46,8 +53,13 @@ void Button::OnEvent(Event& event) {
 }
 
 bool Button::OnKeyPressedEvent(KeyPressedEvent& e) {
-	if (e.GetKeyCode() == SDL_SCANCODE_RETURN && e.GetRepeatCount() == 0 && buttonState == ButtonState::Selected) {
-		onEnterPressed(nullptr);
+	if (/*e.GetKeyCode() == SDL_SCANCODE_SPACE && */e.GetRepeatCount() == 0 && buttonState == ButtonState::Selected) {
+		onEnterPressed(e);
 	}
 	return true;
+}
+
+void Button::ListenForInput(SDL_Scancode key) {
+	keyCodes.push_back(key);
+	Input::AddInputCallback(BindFunction(Button::OnEvent, this), key);
 }

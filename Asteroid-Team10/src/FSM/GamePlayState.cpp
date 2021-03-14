@@ -53,9 +53,9 @@ void GamePlayState::CreateUI()
 
 	canvas->AddUIElement(scoreText);
 
-	Image* life1 = new Image("Assets/Sprites/ship.png");
-	Image* life2 = new Image("Assets/Sprites/ship.png");
-	Image* life3 = new Image("Assets/Sprites/ship.png");
+	Image* life1 = new Image("res/Sprites/ship.png");
+	Image* life2 = new Image("res/Sprites/ship.png");
+	Image* life3 = new Image("res/Sprites/ship.png");
 
 	life1->Init();
 	life2->Init();
@@ -77,13 +77,21 @@ void GamePlayState::CreateUI()
 }
 
 void GamePlayState::OnUpdate(float deltaTime) {
+	if (pauseMenu != nullptr) {
+		pauseMenu->Update(deltaTime);
+	}
+
+	if (gameOverMenu != nullptr) {
+		gameOverMenu->Update(deltaTime);
+	}
+
 	if (loadNextLevel == true && isPaused == false) {
 		nextLevelTimer -= deltaTime;
 		if (nextLevelTimer < 0.0f) {
 			CreateLevel(currentLevel++);
 			loadNextLevel = false;
 			nextLevelTimer = timeToLoadLevel;
-			SoundCoordinator::PlayEffect("Assets/SoundFx/levelBegin2.wav");
+			SoundCoordinator::PlayEffect("res/SoundFx/levelBegin2.wav");
 		}
 	}
 
@@ -295,7 +303,7 @@ bool GamePlayState::OnPlayerDestroyed(PlayerDestroyedEvent& e) {
 	gameObject->GetComponent<Transform>()->Position() = e.collider->GetOrigin();
 	AddObjectToList(gameObject, Predef::AsteroidExplosion);
 
-	SoundCoordinator::PlayEffect("Assets/SoundFx/playerDeath.wav");
+	SoundCoordinator::PlayEffect("res/SoundFx/playerDeath.wav");
 
 	Image* image = lifeImages[life];
 	canvas->RemoveUIElement(image);
@@ -360,7 +368,7 @@ bool GamePlayState::OnAsteroidDestroyed(AsteroidDestroyedEvent& e) {
 	gameObject->GetComponent<Transform>()->Position() = collider->GetOrigin();
 	AddObjectToList(gameObject, Predef::AsteroidExplosion);
 
-	SoundCoordinator::PlayEffect("Assets/SoundFx/explosion.wav");
+	SoundCoordinator::PlayEffect("res/SoundFx/explosion.wav");
 	return true;
 }
 
@@ -383,7 +391,6 @@ bool GamePlayState::OnUFODestroyed(UFODestroyedEvent& e) {
 	if (idGameObjects.count(e.gameObject->id) == 0) {
 		return false;
 	}
-	std::cout << "UFO DIED!" << std::endl;
 
 	RemoveObjectFromList(e.gameObject, e.predef);
 
@@ -406,12 +413,12 @@ bool GamePlayState::OnResumeGame(MenuResumeGameEvent& e) {
 	gameInstance->SetPaused(isPaused);
 	gameInstance->SetTimeScale(isPaused ? 0 : 1);
 	DestroyPauseMenu();
-	SoundCoordinator::PlayEffect("Assets/SoundFx/menuEnter2.wav");
+	SoundCoordinator::PlayEffect("res/SoundFx/menuEnter2.wav");
 	return true;
 }
 
 bool GamePlayState::OnMainMenu(MenuMainMenuEvent& e) {
-	SoundCoordinator::PlayEffect("Assets/SoundFx/menuEnter2.wav");
+	SoundCoordinator::PlayEffect("res/SoundFx/menuEnter2.wav");
 	gameInstance->ChangeToState<MainMenuState>();
 	return true;
 }
@@ -419,7 +426,7 @@ bool GamePlayState::OnMainMenu(MenuMainMenuEvent& e) {
 bool GamePlayState::OnRestartGame(MenuRestartGameEvent& e) {
 	DestroyGameOverMenu();
 
-	SoundCoordinator::PlayEffect("Assets/SoundFx/menuEnter2.wav");
+	SoundCoordinator::PlayEffect("res/SoundFx/menuEnter2.wav");
 	gameInstance->ChangeToState<GamePlayState>();
 	return true;
 }

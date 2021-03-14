@@ -40,7 +40,7 @@ private:
 	static void pdAsteroid1() {
 		Predef pre = Predef::Asteroid_Lvl1;
 		AsteroidData* data = new AsteroidData();
-		data->TextureIds.push_back("Assets/Sprites/asteroid_lvl01_1.png");
+		data->TextureIds.push_back("res/Sprites/asteroid_lvl01_1.png");
 		data->RotationSpeed = 50.0f;
 		data->MinSpeed = 50.0f;
 		data->MaxSpeed = 70.0f;
@@ -54,7 +54,7 @@ private:
 	static void pdAsteroid2() {
 		Predef pre = Predef::Asteroid_Lvl2;
 		AsteroidData* data = new AsteroidData();
-		data->TextureIds.push_back("Assets/Sprites/asteroid_lvl02_1.png");
+		data->TextureIds.push_back("res/Sprites/asteroid_lvl02_1.png");
 		data->RotationSpeed = 33.0f;
 		data->MinSpeed = 70.0f;
 		data->MaxSpeed = 110.0f;
@@ -68,7 +68,7 @@ private:
 	static void pdAsteroid3() {
 		Predef pre = Predef::Asteroid_Lvl3;
 		AsteroidData* data = new AsteroidData();
-		data->TextureIds.push_back("Assets/Sprites/asteroid_lvl03_1.png");
+		data->TextureIds.push_back("res/Sprites/asteroid_lvl03_1.png");
 		data->RotationSpeed = 25.0f;
 		data->MinSpeed = 70.0f;
 		data->MaxSpeed = 140.0f;
@@ -82,8 +82,8 @@ private:
 	static void pdPlayer() {
 		Predef pre = Predef::Player;
 		PlayerData* data = new PlayerData();
-		data->TextureIds.push_back("Assets/Sprites/ship.png");
-		data->MaxSpeed = 400.0f;
+		data->TextureIds.push_back("res/Sprites/ship.png");
+		data->MaxSpeed = 700.0f;
 		data->Acceleration = 0.15f;
 		data->AccelFalloffStart = 70.0f;
 		data->MomentumFalloff = 0.9999f;
@@ -98,7 +98,7 @@ private:
 	static void pdProjectile() {
 		Predef pre = Predef::Projectile;
 		ProjectileData* data = new ProjectileData();
-		data->TextureIds.push_back("Assets/Sprites/projectile.png");
+		data->TextureIds.push_back("res/Sprites/projectile.png");
 		data->Speed = 450.0f;
 		data->LifeTime = 1.25f;
 		data->def = pre;
@@ -110,7 +110,7 @@ private:
 	static void pdUFOProjectile() {
 		Predef pre = Predef::UFOProjectile;
 		ProjectileData* data = new ProjectileData();
-		data->TextureIds.push_back("Assets/Sprites/UFOProjectile.png");
+		data->TextureIds.push_back("res/Sprites/UFOProjectile.png");
 		data->Speed = 500.0f;
 		data->LifeTime = 1.5f;
 		data->def = pre;
@@ -124,7 +124,7 @@ private:
 		Predef pre = Predef::AsteroidExplosion;
 		ParticleEffectData* data = new ParticleEffectData();
 		data->def = pre;
-		data->TextureIds.push_back("Assets/Sprites/asteroidExplosion.png");
+		data->TextureIds.push_back("res/Sprites/asteroidExplosion.png");
 
 		data->MinLifeTime = 1;
 		data->MaxLifeTime = 3;
@@ -150,7 +150,7 @@ private:
 	static void pdUFO() {
 		Predef pre = Predef::UFO;
 		UFOData* data = new UFOData();
-		data->TextureIds.push_back("Assets/Sprites/UFO.png");
+		data->TextureIds.push_back("res/Sprites/UFO.png");
 		data->Speed = 100.0f;
 		data->PositionRangeMin = 60.0f;
 		data->PositionRangeMax = 400.0f;
@@ -168,10 +168,10 @@ private:
 		Predef pre = Predef::UFOExplosion;
 		ParticleEffectData* data = new ParticleEffectData();
 		data->def = pre;
-		data->TextureIds.push_back("Assets/Sprites/asteroidExplosion.png");
-		data->TextureIds.push_back("Assets/Sprites/UFOExplosion01.png");
-		data->TextureIds.push_back("Assets/Sprites/UFOExplosion02.png");
-		data->TextureIds.push_back("Assets/Sprites/UFOExplosion03.png");
+		data->TextureIds.push_back("res/Sprites/asteroidExplosion.png");
+		data->TextureIds.push_back("res/Sprites/UFOExplosion01.png");
+		data->TextureIds.push_back("res/Sprites/UFOExplosion02.png");
+		data->TextureIds.push_back("res/Sprites/UFOExplosion03.png");
 
 		data->MinLifeTime = 1;
 		data->MaxLifeTime = 3;

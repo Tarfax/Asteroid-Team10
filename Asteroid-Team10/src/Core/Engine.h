@@ -19,6 +19,7 @@ public:
 	bool Init();
 	void Run();
 	void Quit();
+	static void QuitProgram();
 
 private:
 	void Render();
@@ -39,5 +40,5 @@ private:
 
 	Time* time;
 
-	bool isRunning;
+	static bool isRunning;
 };

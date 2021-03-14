@@ -1,13 +1,9 @@
 #include "QuitGameState.h"
-
-void QuitGameState::OnEnter()
-{
+#include <Core/Engine.h>
+void QuitGameState::OnEnter() {
+	Engine::QuitProgram();
 }
 
-void QuitGameState::OnUpdate(float deltaTime)
-{
-}
+void QuitGameState::OnUpdate(float deltaTime) {}
 
-void QuitGameState::OnExit()
-{
-}
+void QuitGameState::OnExit() { }

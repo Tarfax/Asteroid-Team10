@@ -36,15 +36,21 @@ public:
 	void RemoveCallback(const EventCallbackFunc& callback);
 
 private:
+	void CreateUI();
+
+	float GetXMidPosition(UIElement& e);
 
 	void OnEvent(Event& event);
 	bool OnKeyPressedEvent(KeyPressedEvent& e);
 
-	void StartGame(void*);
-	void Settings(void*);
-	void Credits(void*);
-	void HighScore(void*);
-	void QuitGame(void*);
+	void SetNewSelectionImagePosition();
+	void LerpToNewPosition(float deltaTime);
+
+	void StartGame	(KeyPressedEvent&);
+	void Settings	(KeyPressedEvent&);
+	void Credits	(KeyPressedEvent&);
+	void HighScore	(KeyPressedEvent&);
+	void QuitGame	(KeyPressedEvent&);
 
 	//void FireEvent(Event& event);
 
@@ -60,8 +66,16 @@ private:
 	int currentSelectedElement = 0;
 
 	std::vector<Button*> buttons;
-	std::vector<Text*> texts;
+	//std::vector<Text*> texts;
+
 	Image* selectionImage;
+	SDL_Rect selectionImageStartPosition;
+	SDL_Rect selectionImageEndPosition;
+	float imagePositionTimer = 0.0f;
+	float imagePositionTime = 0.135f;
+	bool setNewSelectionImagePosition;
+
+	Text* gameTitle;
 
 	Canvas* canvas;
 

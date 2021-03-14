@@ -10,9 +10,9 @@ public:
 	SaveGame(std::vector<int> scores) {
 		std::ofstream outputFile;
 
-		outputFile.open("Assets/HighScore/highscore.txt");
+		outputFile.open("res/HighScore/highscore.txt");
 		if (outputFile.fail() == true) {
-			perror("Assets/HighScore/highscore.txt");
+			perror("res/HighScore/highscore.txt");
 			openSuccess = false;
 			return;
 		}
@@ -31,10 +31,10 @@ class LoadGame {
 public:
 	LoadGame() {
 		std::ifstream inputFile;
-		inputFile.open("Assets/HighScore/highscore.txt");
+		inputFile.open("res/HighScore/highscore.txt");
 
 		if (inputFile.fail() == true) {
-			perror("Assets/HighScore/highscore.txt");
+			perror("res/HighScore/highscore.txt");
 			readSuccess = false;
 			return;
 		}

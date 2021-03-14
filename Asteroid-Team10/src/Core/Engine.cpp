@@ -14,6 +14,7 @@
 
 #include <Structs/HighScore.h>
 
+bool Engine::isRunning = false;
 
 Engine::Engine() { }
 
@@ -98,6 +99,7 @@ void Engine::Render() {
 }
 
 void Engine::Quit() {
+	input->RemoveCallback(BindFunction(Engine::OnEvent, this));
 
 	gameInstance->Destroy();
 	physics->Destroy();
@@ -115,6 +117,11 @@ void Engine::Quit() {
 	SDL_Quit();
 }
 
+void Engine::QuitProgram() {
+	std::cout << "\n -- Quit and Clean Up --\n\n";
+	isRunning = false;
+}
+
 void Engine::SetupEventSystem() {
 	input->AddCallback(BindFunction(Engine::OnEvent, this));
 }
@@ -128,6 +135,5 @@ void Engine::OnEvent(Event& e) {
 bool Engine::OnWindowClose(EngineCloseEvent& e) {
 	std::cout << "\n -- Quit and Clean Up --\n\n";
 	isRunning = false;
-	input->RemoveCallback(BindFunction(Engine::OnEvent, this));
 	return true;
 }

@@ -16,8 +16,6 @@ PlayerController* PlayerController::playerController = nullptr;
 void PlayerController::OnInit() {
 	playerController = this;
 
-	//transform = gameObject->GetComponent<Transform>();
-
 	SpriteRenderer* renderer = gameObject->AddComponent<SpriteRenderer>();
 	PositionWrapper* positionWrapper = gameObject->AddComponent<PositionWrapper>();
 
@@ -32,6 +30,7 @@ void PlayerController::OnEnable() {
 	momentum = {0, 0};
 	respawnInvulnerable = 3.0f;
 	isAlive = true;
+	fireRateTimer = fireRate;
 }
 
 
@@ -76,7 +75,7 @@ bool PlayerController::OnKeyPressedEvent(KeyPressedEvent& e) {
 		static float engineSoundTimer;
 		engineSoundTimer -= e.GetDeltaTime();
 		if (engineSoundTimer <= 0) {
-			SoundCoordinator::PlayEffect("Assets/SoundFx/engine.wav");
+			SoundCoordinator::PlayEffect("res/SoundFx/engine.wav");
 			engineSoundTimer = time;
 		}
 	}
@@ -145,7 +144,7 @@ void PlayerController::Fire() {
 	Projectile* projectile = gameObject->GetComponent<Projectile>();
 	projectile->SetDirection(this->transform->forward);
 
-	SoundCoordinator::PlayEffect("Assets/SoundFx/fire4.wav");
+	SoundCoordinator::PlayEffect("res/SoundFx/fire4.wav");
 
 	gameObject->SetActive(true);
 }

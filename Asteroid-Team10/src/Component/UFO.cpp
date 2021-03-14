@@ -18,7 +18,6 @@ void UFO::OnInit()
 }
 
 void UFO::OnEnable() {
-	std::cout << "UFO On Enable" << std::endl;
 	ufoSoundTimer = 0.0f;
 }
 
@@ -72,7 +71,7 @@ void UFO::Fire()
 	BoxCollider2D* collider = object->GetComponent<BoxCollider2D>();
 	collider->SetLayer(Layer::UFOProjectile);
 
-	SoundCoordinator::PlayEffect("Assets/SoundFx/UFOFire.wav");
+	SoundCoordinator::PlayEffect("res/SoundFx/UFOFire.wav");
 }
 
 void UFO::OnUpdate(float deltaTime)
@@ -89,7 +88,7 @@ void UFO::OnUpdate(float deltaTime)
 
 	ufoSoundTimer -= deltaTime;
 	if (ufoSoundTimer <= 0.0f) {
-		SoundCoordinator::PlayEffect("Assets/SoundFx/UFOAlive.wav");
+		SoundCoordinator::PlayEffect("res/SoundFx/UFOAlive.wav");
 		ufoSoundTimer = ufoSoundTime;
 	}
 }
@@ -102,6 +101,7 @@ void UFO::OnCollision(BoxCollider2D* collider) {
 	else if (collider->GetLayer() == Layer::Projectile) {
 		GameObject::Destroy(gameObject, Predef::UFO);
 		deathByPlayer = true;
+		SoundCoordinator::PlayEffect("res/SoundFx/UFODies.wav");
 	}
 }
 

@@ -5,8 +5,8 @@
 #include <Core/EngineData.h>
 
 void HighScoreState::OnEnter() {
-	Input::AddInputCallback(BindFunction(HighScoreState::OnEvent, this), SDL_SCANCODE_DOWN);
-	Input::AddInputCallback(BindFunction(HighScoreState::OnEvent, this), SDL_SCANCODE_UP);
+	Input::AddInputCallback(BindFunction(HighScoreState::OnEvent, this), SDL_SCANCODE_S);
+	Input::AddInputCallback(BindFunction(HighScoreState::OnEvent, this), SDL_SCANCODE_W);
 
 	CreateUI();
 
@@ -26,54 +26,42 @@ void HighScoreState::CreateUI()
 	std::reverse(scores.begin(), scores.end());
 
 	float xPosition = SCREEN_WIDTH / 2;
-
-	int startHeightPosition = 40;
+	int startHeightPosition = EngineHelper::GetScreenTitlePosition();
 	int heightIncrement = 50;
+
+	highScore = UIFactory::CreateText("High Score", {255, 255, 255, 255}, 128);
+	Vector2 position = {GetXMidPosition(*highScore), (float)startHeightPosition};
+	highScore->SetPosition(position);
+	canvas->AddUIElement(highScore);
+
+	startHeightPosition = SCREEN_HEIGHT / 3;
+
 	for (int i = 0; i < scores.size(); i++) {
 		Text* pos1Text = UIFactory::CreateText(std::to_string(i + 1) + ": " + std::to_string(scores[i]), {255, 255, 255, 255}, 64);
-		pos1Text->SetPosition(xPosition - (pos1Text->GetSprite()->Size.X / 2), startHeightPosition + heightIncrement * i);
-		texts.push_back(pos1Text);
+		pos1Text->SetPosition(GetXMidPosition(*pos1Text), startHeightPosition + heightIncrement * i);
 		canvas->AddUIElement(pos1Text);
 	}
 
-	//Text* pos2Text = UIFactory::CreateText("2: ", {255, 255, 255, 255}, 64);
-	//Text* pos3Text = UIFactory::CreateText("3: ", {255, 255, 255, 255}, 64);
-	//Text* pos4Text = UIFactory::CreateText("4: ", {255, 255, 255, 255}, 64);
-	//Text* pos5Text = UIFactory::CreateText("5: ", {255, 255, 255, 255}, 64);
-
-	//pos2Text->SetPosition(300, 90);
-	//pos3Text->SetPosition(300, 140);
-	//pos4Text->SetPosition(300, 190);
-	//pos5Text->SetPosition(300, 240);
-
-	//texts.push_back(pos2Text);
-	//canvas->AddUIElement(pos2Text);
-	//texts.push_back(pos3Text);
-	//canvas->AddUIElement(pos3Text);
-	//texts.push_back(pos4Text);
-	//canvas->AddUIElement(pos4Text);
-	//texts.push_back(pos5Text);
-	//canvas->AddUIElement(pos5Text);
-
 	Text* text = UIFactory::CreateText("<-- Back", {255, 255, 255, 255}, 64);
-	Button* backButton = UIFactory::CreateButton("Assets/Sprites/buttonBackgroundNormal.png", "Assets/Sprites/buttonBackgroundSelected.png", Vector2(300, 435), text, BindFunction(HighScoreState::MainMenu, this));
+	Button* backButton = UIFactory::CreateButton("res/Sprites/buttonBackgroundNormal.png", "res/Sprites/buttonBackgroundSelected.png", Vector2(300, 435), text, BindFunction(HighScoreState::MainMenu, this));
+	backButton->SetPositionAndText({GetXMidPosition(*backButton), (float)(startHeightPosition + heightIncrement * 6)});
+	backButton->ListenForInput(SDL_SCANCODE_SPACE);
 
-	texts.push_back(text);
 	canvas->AddUIElement(text);
 	buttons.push_back(backButton);
 	canvas->AddUIElement(backButton);
 
-	selectionImage = new Image("Assets/Sprites/ship.png");
+	selectionImage = new Image("res/Sprites/ship.png");
 	selectionImage->Init();
-	selectionImage->SetPosition(Vector2(0, 35));
+	selectionImage->SetPosition(Vector2(0, EngineHelper::GetScreenHeightMidPoint()));
 	canvas->AddUIElement(selectionImage);
 }
 
 void HighScoreState::OnUpdate(float deltaTime) { }
 
 void HighScoreState::OnExit() {
-	Input::RemoveInputCallback(BindFunction(HighScoreState::OnEvent, this), SDL_SCANCODE_DOWN);
-	Input::RemoveInputCallback(BindFunction(HighScoreState::OnEvent, this), SDL_SCANCODE_UP);
+	Input::RemoveInputCallback(BindFunction(HighScoreState::OnEvent, this), SDL_SCANCODE_S);
+	Input::RemoveInputCallback(BindFunction(HighScoreState::OnEvent, this), SDL_SCANCODE_W);
 	GameObject::Destroy(canvas->gameObject, Predef::Unknown);
 }
 
@@ -83,7 +71,7 @@ void HighScoreState::OnEvent(Event& event) {
 }
 
 bool HighScoreState::OnKeyPressedEvent(KeyPressedEvent& e) {
-	if (e.GetKeyCode() == SDL_SCANCODE_UP && e.GetRepeatCount() == 0) {
+	if (e.GetKeyCode() == SDL_SCANCODE_W && e.GetRepeatCount() == 0) {
 		buttons[currentSelectedElement]->SetState(ButtonState::Normal);
 
 		currentSelectedElement--;
@@ -93,10 +81,10 @@ bool HighScoreState::OnKeyPressedEvent(KeyPressedEvent& e) {
 		buttons[currentSelectedElement]->SetState(ButtonState::Selected);
 		SDL_Rect position = buttons[currentSelectedElement]->GetPosition();
 		selectionImage->SetPosition(position.x - selectionImage->GetPosition().w - 15, position.y + position.h / 2 - selectionImage->GetPosition().h / 2);
-		SoundCoordinator::PlayEffect("Assets/SoundFx/menuSelection.wav");
+		SoundCoordinator::PlayEffect("res/SoundFx/menuSelection.wav");
 	}
 
-	if (e.GetKeyCode() == SDL_SCANCODE_DOWN && e.GetRepeatCount() == 0) {
+	if (e.GetKeyCode() == SDL_SCANCODE_S && e.GetRepeatCount() == 0) {
 		buttons[currentSelectedElement]->SetState(ButtonState::Normal);
 
 		currentSelectedElement++;
@@ -106,18 +94,17 @@ bool HighScoreState::OnKeyPressedEvent(KeyPressedEvent& e) {
 		buttons[currentSelectedElement]->SetState(ButtonState::Selected);
 		SDL_Rect position = buttons[currentSelectedElement]->GetPosition();
 		selectionImage->SetPosition(position.x - selectionImage->GetPosition().w - 15, position.y + position.h / 2 - selectionImage->GetPosition().h / 2);
-		SoundCoordinator::PlayEffect("Assets/SoundFx/menuSelection.wav");
+		SoundCoordinator::PlayEffect("res/SoundFx/menuSelection.wav");
 	}
 
 	return true;
 }
 
-void HighScoreState::MainMenu(void*) {
-	SoundCoordinator::PlayEffect("Assets/SoundFx/menuEnter2.wav");
+void HighScoreState::MainMenu(KeyPressedEvent& e) {
+	SoundCoordinator::PlayEffect("res/SoundFx/menuEnter2.wav");
 	gameInstance->ChangeToState<MainMenuState>();
 }
 
-/*oid HighScore::FireEvent(Event& event) {
-	SoundCoordinator::PlayEffect("Assets/SoundFx/menuEnter2.wav");
-	onChangeState.EventCallback(event);
-}*/
+float HighScoreState::GetXMidPosition(UIElement& e) {
+	return SCREEN_WIDTH / 2 - e.GetSprite()->Size.X / 2;
+}

@@ -26,11 +26,14 @@ public:
 	void RemoveCallback(const EventCallbackFunc& callback);
 
 private:
+	void SetNewSelectionImagePosition();
+	void LerpToNewPosition(float deltaTime);
+
 	void OnEvent(Event& event);
 	bool OnKeyPressedEvent(KeyPressedEvent& e);
 
-	void ResumeGame(void*);
-	void MainMenuState(void*);
+	void ResumeGame(KeyPressedEvent&);
+	void MainMenuState(KeyPressedEvent&);
 	void FireEvent(Event& event);
 
 	struct CallbackData {
@@ -45,8 +48,13 @@ private:
 	int currentSelectedElement = 0;
 
 	std::vector<Button*> buttons;
-	std::vector<Text*> texts;
+
 	Image* selectionImage;
+	SDL_Rect selectionImageStartPosition;
+	SDL_Rect selectionImageEndPosition;
+	float imagePositionTimer = 0.0f;
+	float imagePositionTime = 0.135f;
+	bool setNewSelectionImagePosition;
 
 	Canvas* canvas;
 };

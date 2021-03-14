@@ -13,7 +13,7 @@ enum class ButtonState { Normal = 0, Selected = 1 };
 class Button: public UIElement {
 
 public:
-	Button(std::string normalButton, std::string selectedButton, std::function<void(void*)> callback) {
+	Button(std::string normalButton, std::string selectedButton, std::function<void(KeyPressedEvent&)> callback) {
 		//std::cout << "Button object created: " << normalButton << std::endl;
 
 		normalSprite = Sprite::CreateSprite(normalButton);
@@ -26,6 +26,8 @@ public:
 	//	std::cout << "Button object ~: " << normalSprite->TextureId << std::endl;
 	//}
 
+	void ListenForInput(SDL_Scancode key);
+
 	void Init() override;
 	void Destroy() override;
 	void Update(float deltaTime) override;
@@ -37,6 +39,8 @@ public:
 
 
 private:
+	std::vector<SDL_Scancode> keyCodes;
+
 	void OnEvent(Event& event);
 	bool OnKeyPressedEvent(KeyPressedEvent& e);
 
@@ -49,6 +53,6 @@ private:
 
 	ButtonState buttonState;
 	bool isReleased;
-	std::function<void(void*)> onEnterPressed;
+	std::function<void(KeyPressedEvent&)> onEnterPressed;
 
 };
